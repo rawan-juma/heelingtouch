@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "809379889395",
+    "project_id": "heelingtouchproject",
+    "storage_bucket": "heelingtouchproject.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:809379889395:android:fcf673f536139b9bb4f786",
+        "android_client_info": {
+          "package_name": "com.example.heelingtouchproject"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "809379889395-7hn4luhbpa4p88a7p1bvg8vsia901emv.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.heelingtouchproject",
+            "certificate_hash": "ca1f26db5fff04a076ae71c67e3160ad95568364"
+          }
+        },
+        {
+          "client_id": "809379889395-ofipddj991c7aji9rppvigr5ek2cnd90.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA6j8XaGqydDYDQermC2Cms5bRih1mCYc4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "809379889395-ofipddj991c7aji9rppvigr5ek2cnd90.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
