@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:heelingtouchproject/controllers/auth_helper.dart';
 import 'package:heelingtouchproject/controllers/route_helper.dart';
+import 'package:heelingtouchproject/model/Ads.dart';
 // import 'package:firebase_auth/firebase_auth.dart';
 // import 'package:heelingtouchproject/helpers/auth_helper.dart';
 // import 'package:heelingtouchproject/helpers/route_helper.dart';
@@ -62,6 +63,7 @@ class AppProvider extends ChangeNotifier {
   AppProvider() {
     fetchStories();
     getTherapists();
+    fetchAds();
   }
   List<Therapist> therapistsList = [];
 
@@ -70,9 +72,32 @@ class AppProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  Therapist therapist = Therapist(
+      id: "id",
+      fName: "fName",
+      lName: "lName",
+      bio: "bio",
+      phonenumber: "phonenumber",
+      img: "img",
+      status: true,
+      password: "password");
+  getTherapist(String id) async {
+    therapist = await FirestoreHelper.firestoreHelper.getTherapist(id);
+    notifyListeners();
+  }
+
   addStory() async {
     await FirestoreHelper.firestoreHelper
         .addStory(storyDescriptionController.text);
+    notifyListeners();
+  }
+
+  List<Ads> adsList = [];
+  fetchAds() async {
+    adsList = await FirestoreHelper.firestoreHelper.fetchAdsFuture();
+    // log('user id cat ___ ${AuthHelper.authHelper.getUserId()}');
+    // SpHelper.spHelper.setUserID(AuthHelper.authHelper.getUserId());
+    isLoading = true;
     notifyListeners();
   }
 

@@ -55,7 +55,7 @@ class MyApp extends StatelessWidget {
               // primarySwatch: Colors.blue,
               ),
           debugShowCheckedModeBanner: false,
-          home: PatientHome(),
+          home: const MyHomePage1(),
         );
       }),
     );

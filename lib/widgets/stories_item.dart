@@ -4,7 +4,7 @@ import 'package:sizer/sizer.dart';
 
 // ignore: must_be_immutable
 class StorytItem extends StatelessWidget {
-  late String img;
+  String img;
   StorytItem(this.img, {Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {

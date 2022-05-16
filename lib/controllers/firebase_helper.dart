@@ -4,6 +4,7 @@ import 'dart:developer';
 import 'dart:io';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:heelingtouchproject/model/Ads.dart';
 import 'package:heelingtouchproject/model/therapist.dart';
 import 'package:heelingtouchproject/model/user_model.dart';
 import 'package:http/http.dart' as http;
@@ -144,6 +145,29 @@ class FirestoreHelper {
     return storiesList;
   }
 
+  Future<List<Ads>> fetchAdsFuture() async {
+    List<Ads> adsList = [];
+    try {
+      String uri =
+          'https://heelingtouchproject-default-rtdb.firebaseio.com/Ads.json';
+      http.Response res = await http.get(
+        Uri.parse(uri),
+      );
+      final extractedData = json.decode(res.body) as Map<String, dynamic>;
+
+      extractedData.forEach((categoryID, categoryData) {
+        adsList.add(Ads(
+          img: categoryData["ads_image"],
+        ));
+      });
+
+      log('responseeeeeeeeeeeeeeeee${res.body}');
+    } catch (err) {
+      log('errorrrrrrrrrrrrrrrrrrr: $err');
+    }
+    return adsList;
+  }
+
   Future<List<Therapist>> getTherapists() async {
     List<Therapist> therapistsList = [];
     try {
@@ -156,11 +180,14 @@ class FirestoreHelper {
 
       extractedData.forEach((therapistID, therapistData) {
         therapistsList.add(Therapist(
-          id: therapistID,
-          fName: therapistData['first_name'],
-          lName: therapistData['family_name'],
-          image: therapistData["img_profile"],
-        ));
+            id: therapistID,
+            fName: therapistData['first_name'],
+            lName: therapistData['family_name'],
+            bio: therapistData['bio'],
+            phonenumber: therapistData['mobile_number'],
+            img: therapistData["img_profile"],
+            status: therapistData["status"],
+            password: therapistData["password"]));
       });
 
       log('responseeeeeeeeeeeeeeeee${res.body}');
@@ -168,6 +195,47 @@ class FirestoreHelper {
       log('errorrrrrrrrrrrrrrrrrrr: $err');
     }
     return therapistsList;
+  }
+
+  Future<Therapist> getTherapist(String id) async {
+    Therapist therapist = Therapist(
+        id: id,
+        fName: "fName",
+        lName: "lName",
+        bio: "bio",
+        phonenumber: "phonenumber",
+        img: "img",
+        status: true,
+        password: "password");
+    try {
+      String uri =
+          'https://heelingtouchproject-default-rtdb.firebaseio.com/Physiotherapist/$id.json';
+      http.Response res = await http.get(
+        Uri.parse(uri),
+      );
+      final Map<String, dynamic> responseData = json.decode(res.body);
+      String fName = responseData['first_name'];
+      String familyname = responseData['family_name'];
+      String bio = responseData['bio'];
+      String mobilenumber = responseData['mobile_number'];
+      String imgprofile = responseData['img_profile'];
+      bool status = responseData['status'];
+      String password = responseData['password'];
+      therapist = Therapist(
+          id: id,
+          fName: fName,
+          lName: familyname,
+          bio: bio,
+          phonenumber: mobilenumber,
+          img: imgprofile,
+          status: status,
+          password: password);
+
+      log('responseeeeeeeeeeeeeeeee${res.body}');
+    } catch (err) {
+      log('errorrrrrrrrrrrrrrrrrrr: $err');
+    }
+    return therapist;
   }
 
   uploadImage() async {
