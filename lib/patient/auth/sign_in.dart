@@ -24,181 +24,152 @@ class SignIn extends StatelessWidget {
           body: Directionality(
             textDirection: TextDirection.rtl,
             child: SingleChildScrollView(
-              child: Column(
-                // crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Container(
-                      alignment: Alignment.topRight,
-                      height: 20.h,
-                      width: double.infinity,
-                      decoration: const BoxDecoration(
-                          image: DecorationImage(
-                        image: AssetImage(
-                          'assets/topwave.png',
-                        ),
-                        fit: BoxFit.fill,
-                      )),
-                      child: Padding(
-                        padding: EdgeInsets.only(top: 6.h),
-                        child: IconButton(
-                            onPressed: () {
-                              Navigator.pop(
-                                context,
-                              );
-                            },
-                            icon: const Icon(
-                              Icons.arrow_back_ios,
-                              color: Colors.white,
-                            )),
-                      )),
-                  Padding(
-                    padding: EdgeInsets.only(right: 4.w),
-                    child: Container(
-                      alignment: Alignment.topRight,
-                      child: Text(
-                        'مرحبا بك',
-                        style: TextStyle(
-                          fontSize: 18.sp,
-                        ),
-                        textAlign: TextAlign.right,
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(right: 4.w),
-                    child: Container(
-                      alignment: Alignment.topRight,
-                      child: Text(
-                        'قم بتسجيل الدخول',
-                        style: TextStyle(
-                          fontSize: 18.sp,
-                        ),
-                        textAlign: TextAlign.right,
-                      ),
-                    ),
-                  ),
-                  CustomTextField(
-                    'رقم الهاتف',
-                    authProvider.phoneController,
-                    TextInputType.number,
-                    iconS: Padding(
-                      padding: EdgeInsets.only(top: 2.5.h),
-                      child: Text(
-                        "970+",
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 12.sp),
-                      ),
-                    ),
-                  ),
-                  CustomTextField(
-                    'كلمة المرور',
-                    authProvider.passwordController,
-                    TextInputType.visiblePassword,
-                    iconS: const Icon(
-                      Icons.remove_red_eye_outlined,
-                      color: Color(0xff2FA09C),
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(top: 4.h),
-                    child: App_Button('تسجيل الدخول', 90.w, () {
-                      // authProvider.signInUser();
-                      _scaffoldKey.currentState!.showSnackBar(new SnackBar(
-                        duration: new Duration(seconds: 4),
-                        content: new Row(
-                          children: <Widget>[
-                            new CircularProgressIndicator(),
-                            new Text("  Signing-In...")
-                          ],
-                        ),
-                      ));
-                      authProvider.register().whenComplete(
-                          () => Navigator.of(context).pushNamed("/Home"));
+              child: Container(
+                height: 100.h,
+                child: Column(
+                  // crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Container(
+                        alignment: Alignment.topRight,
+                        height: 20.h,
+                        width: double.infinity,
+                        decoration: const BoxDecoration(
+                            image: DecorationImage(
+                          image: AssetImage(
+                            'assets/topwave.png',
+                          ),
+                          fit: BoxFit.fill,
+                        )),
+                        child: Padding(
+                          padding: EdgeInsets.only(top: 6.h),
+                          child: IconButton(
+                              onPressed: () {
+                                Navigator.pop(
+                                  context,
+                                );
+                              },
+                              icon: const Icon(
+                                Icons.arrow_back_ios,
+                                color: Colors.white,
+                              )),
+                        )),
 
-                      // Navigator.pushReplacement(
-                      //     context,
-                      //     MaterialPageRoute(
-                      //         builder: (context) => const Verification()));
-                      // if (authProvider.emailController.text.isEmpty ||
-                      //     authProvider.passwordController.text.isEmpty) {
-                      //   Fluttertoast.showToast(
-                      //       msg: "Please Fill all Fields !",
-                      //       toastLength: Toast.LENGTH_SHORT,
-                      //       gravity: ToastGravity.BOTTOM,
-                      //       timeInSecForIosWeb: 1,
-                      //       backgroundColor: Colors.red,
-                      //       textColor: Colors.white,
-                      //       fontSize: 14.sp);
-                      // } else if (authProvider.emailController.text.contains('@') ==
-                      //         false ||
-                      //     authProvider.emailController.text.contains('.') ==
-                      //         false) {
-                      //   Fluttertoast.showToast(
-                      //       msg: "Please Enter Correct Email Format !",
-                      //       toastLength: Toast.LENGTH_SHORT,
-                      //       gravity: ToastGravity.BOTTOM,
-                      //       timeInSecForIosWeb: 1,
-                      //       backgroundColor: Colors.red,
-                      //       textColor: Colors.black,
-                      //       fontSize: 14.sp);
-                      // } else {
-                      //   authProvider.login1();
-                      // }
-                    }),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Text(
-                        'ليس لديك حساب؟',
-                        style: TextStyle(
-                          fontSize: 13.sp,
+                    Column(
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.only(right: 4.w),
+                          child: Container(
+                            alignment: Alignment.topRight,
+                            child: Text(
+                              'مرحبا بك',
+                              style: TextStyle(
+                                fontSize: 18.sp,
+                              ),
+                              textAlign: TextAlign.right,
+                            ),
+                          ),
                         ),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(builder: (context) => SignUp()),
-                          );
-                        },
-                        child: Text(
-                          'انشاء حساب',
-                          style: TextStyle(
-                              fontSize: 13.sp, color: const Color(0xff2FA09C)),
+                        Padding(
+                          padding: EdgeInsets.only(right: 4.w),
+                          child: Container(
+                            alignment: Alignment.topRight,
+                            child: Text(
+                              'قم بتسجيل الدخول',
+                              style: TextStyle(
+                                fontSize: 18.sp,
+                              ),
+                              textAlign: TextAlign.right,
+                            ),
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
-                  Center(
-                    child: GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => ForgetPassword()),
-                        );
-                      },
-                      child: Text(
-                        'نسيت كلمة المرور؟',
-                        style: TextStyle(
-                          fontSize: 13.sp,
+                        CustomTextField(
+                          'رقم الهاتف',
+                          authProvider.phoneController,
+                          TextInputType.number,
+                          iconS: Padding(
+                            padding: EdgeInsets.only(top: 2.5.h),
+                            child: Text(
+                              "970+",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 12.sp),
+                            ),
+                          ),
                         ),
-                      ),
+                        Padding(
+                          padding: EdgeInsets.only(top: 4.h),
+                          child: App_Button('تسجيل الدخول', 90.w, () {
+                            // authProvider.signInUser();
+                            // _scaffoldKey.currentState!.showSnackBar( SnackBar(
+                            //   duration:  Duration(seconds: 4),
+                            //   content:  Row(
+                            //     children: <Widget>[
+                            //        CircularProgressIndicator(),
+                            //        Text("  Signing-In...")
+                            //     ],
+                            //   ),
+                            // ));
+                            authProvider.register();
+                            // .whenComplete(
+                            //     () => Navigator.of(context).pushNamed("/Home"));
+
+                            Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        const Verification()));
+                            // if (authProvider.emailController.text.isEmpty ||
+                            //     authProvider.passwordController.text.isEmpty) {
+                            //   Fluttertoast.showToast(
+                            //       msg: "Please Fill all Fields !",
+                            //       toastLength: Toast.LENGTH_SHORT,
+                            //       gravity: ToastGravity.BOTTOM,
+                            //       timeInSecForIosWeb: 1,
+                            //       backgroundColor: Colors.red,
+                            //       textColor: Colors.white,
+                            //       fontSize: 14.sp);
+                            // } else if (authProvider.emailController.text.contains('@') ==
+                            //         false ||
+                            //     authProvider.emailController.text.contains('.') ==
+                            //         false) {
+                            //   Fluttertoast.showToast(
+                            //       msg: "Please Enter Correct Email Format !",
+                            //       toastLength: Toast.LENGTH_SHORT,
+                            //       gravity: ToastGravity.BOTTOM,
+                            //       timeInSecForIosWeb: 1,
+                            //       backgroundColor: Colors.red,
+                            //       textColor: Colors.black,
+                            //       fontSize: 14.sp);
+                            // } else {
+                            //   authProvider.login1();
+                            // }
+                          }),
+                        ),
+                      ],
                     ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(top: 7.4.h),
-                    child: Image.asset(
+                    // CustomTextField(
+                    //   'كلمة المرور',
+                    //   authProvider.passwordController,
+                    //   TextInputType.visiblePassword,
+                    //   iconS: const Icon(
+                    //     Icons.remove_red_eye_outlined,
+                    //     color: Color(0xff2FA09C),
+                    //   ),
+                    // ),
+
+                    //
+                    // Padding(
+                    //   padding: EdgeInsets.only(top: 25.h),
+                    //   child:
+                    Image.asset(
                       'assets/bottomwave.png',
                       height: 20.h,
                       width: double.infinity,
                       fit: BoxFit.fill,
                     ),
-                  ),
-                ],
+                    // ),
+                  ],
+                ),
               ),
             ),
           ));

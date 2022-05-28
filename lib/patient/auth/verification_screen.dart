@@ -85,12 +85,16 @@ class _VerificationState extends State<Verification> {
                   Padding(
                     padding: EdgeInsets.only(top: 10.h),
                     child: App_Button("تأكيد", 330.w, () {
+                      if (_code == "") {
+                        const SnackBar snackBar = SnackBar(
+                          content: Text("Please Fill the Fields !"),
+                          backgroundColor: Colors.red,
+                        );
+                        snackbarKey.currentState?.showSnackBar(snackBar);
+                      } else {
+                        authProvider.verifyNumber(_code);
+                      }
                       log(_code);
-                      authProvider.verifyNumber(_code);
-                      Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => MyHomePage1()));
                     }),
                   ),
                 ],

@@ -5,13 +5,14 @@ import 'package:heelingtouchproject/therapist/auth/edit_profile.dart';
 import 'package:heelingtouchproject/therapist/notifications_screen.dart';
 import 'package:heelingtouchproject/therapist/story_details.dart';
 import 'package:heelingtouchproject/widgets/app_button.dart';
-import 'package:provider/provider.dart';
 import 'package:readmore/readmore.dart';
 import 'package:sizer/sizer.dart';
 
-import '../Controllers/app_provider.dart';
+import 'consultaion_request_page.dart';
 
 class TherapistDetails extends StatefulWidget {
+  const TherapistDetails({Key? key}) : super(key: key);
+
   @override
   State<TherapistDetails> createState() => _TherapistDetailsState();
 }
@@ -88,7 +89,7 @@ class _TherapistDetailsState extends State<TherapistDetails> {
                             color: const Color(0xff2FA09C),
                             shape: BoxShape.circle,
                             image: DecorationImage(
-                              fit: BoxFit.contain,
+                              fit: BoxFit.fill,
                               image: NetworkImage(SpHelper.spHelper
                                           .getTherapisImg() ==
                                       ""
@@ -132,7 +133,8 @@ class _TherapistDetailsState extends State<TherapistDetails> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => EditProfile()),
+                                builder: (context) =>
+                                    const ConsultationRequest()),
                           );
                         }),
                       ],

@@ -1,22 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:heelingtouchproject/patient/therapist_page.dart';
-import 'package:heelingtouchproject/therapist/chat_details.dart';
 import 'package:sizer/sizer.dart';
 import 'package:flutter_svg_provider/flutter_svg_provider.dart';
+
+import '../controllers/sp_helper.dart';
 
 // ignore: must_be_immutable
 class Therapist2Item extends StatelessWidget {
   String id;
   String fName;
   String lName;
-  // String bio;
+  String phone;
+  String bio;
   // String time;
   String img;
   Therapist2Item(
       this.id,
       this.fName,
       this.lName,
-      //  this.bio, this.time,
+      this.phone,
+      this.bio,
+      // this.time,
       this.img,
       {Key? key})
       : super(key: key);
@@ -27,8 +31,16 @@ class Therapist2Item extends StatelessWidget {
       textDirection: TextDirection.rtl,
       child: GestureDetector(
           onTap: () {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => TherapistDetails()));
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const TherapistDetails()));
+            SpHelper.spHelper.setTherapistID(id);
+            SpHelper.spHelper.setTherapistFname(fName);
+            SpHelper.spHelper.setTherapistLname(lName);
+            SpHelper.spHelper.setTherapistBio(bio);
+            SpHelper.spHelper.setTherapistImg(img);
+            SpHelper.spHelper.setTherapistPhoneNumber(phone);
           },
           child: Padding(
             padding: const EdgeInsets.all(8.0),
@@ -51,12 +63,14 @@ class Therapist2Item extends StatelessWidget {
                             height: 15.h,
                             width: 28.w,
                             decoration: BoxDecoration(
-                                color: const Color.fromARGB(255, 230, 230, 230),
+                                color: const Color(0xff2FA09C),
                                 borderRadius:
                                     const BorderRadius.all(Radius.circular(15)),
                                 image: DecorationImage(
                                   fit: BoxFit.fill,
-                                  image: NetworkImage(img),
+                                  image: NetworkImage(img == ""
+                                      ? "https://www.pngall.com/wp-content/uploads/12/Avatar-Profile-Vector-PNG-Clipart.png"
+                                      : img),
                                 )),
                           ),
                           SizedBox(

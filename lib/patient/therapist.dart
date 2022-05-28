@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:heelingtouchproject/patient/search_therapist.dart';
 import 'package:heelingtouchproject/widgets/thirapst2_item.dart';
 import 'package:provider/provider.dart';
 import '../controllers/app_provider.dart';
@@ -44,10 +45,10 @@ class TherapistList extends StatelessWidget {
               IconButton(
                 icon: Image.asset("assets/Search.png"),
                 onPressed: () {
-                  // Navigator.push(
-                  //   context,
-                  //   MaterialPageRoute(builder: (context) => Chat()),
-                  // );
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => SearchTherapist()),
+                  );
                 },
               ),
               IconButton(
@@ -63,14 +64,19 @@ class TherapistList extends StatelessWidget {
             ],
           ),
           body: SizedBox(
-            height: 25.h,
-            child: ListView(
-                physics: const BouncingScrollPhysics(),
-                scrollDirection: Axis.vertical,
-                children: appProvider.therapistsList.map((e) {
-                  return Therapist2Item(e.id, e.fName, e.lName, e.img);
-                }).toList()),
-          ),
+              height: 100.h,
+              child: appProvider.therapistsList.isNotEmpty
+                  ? ListView(
+                      physics: const BouncingScrollPhysics(),
+                      scrollDirection: Axis.vertical,
+                      children: appProvider.therapistsList.map((e) {
+                        return Therapist2Item(e.id, e.fName, e.lName,
+                            e.phonenumber, e.bio, e.img);
+                      }).toList())
+                  : const Center(
+                      child: CircularProgressIndicator(
+                      color: Color(0xff2FA09C),
+                    ))),
         ),
       );
     });

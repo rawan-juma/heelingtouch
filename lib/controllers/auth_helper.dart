@@ -5,8 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:heelingtouchproject/controllers/firebase_helper.dart';
 import 'package:heelingtouchproject/controllers/route_helper.dart';
+import 'package:heelingtouchproject/main.dart';
+import 'package:no_context_navigation/no_context_navigation.dart';
 
 import '../patient/auth/sign_in.dart';
+import '../widgets/custom_dialog.dart';
 // import '../patient/auth/verification_screen.dart';
 // import 'package:heelingtouchproject/widgets/custom_dialog.dart';
 
@@ -15,6 +18,7 @@ class AuthHelper {
 
   static AuthHelper authHelper = AuthHelper._();
   FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+
   //bool otpVisibility = false;
 
   String verificationID = "";
@@ -25,6 +29,8 @@ class AuthHelper {
       verificationCompleted: (PhoneAuthCredential credential) async {
         await firebaseAuth.signInWithCredential(credential).then((value) {
           log("You are logged in successfully");
+
+          // navKey.currentState.pushReplacementNamed(routeName);
         });
       },
       verificationFailed: (FirebaseAuthException e) {
@@ -65,54 +71,41 @@ class AuthHelper {
     PhoneAuthCredential credential = PhoneAuthProvider.credential(
         verificationId: verificationID, smsCode: otp);
     log(verificationID);
-    await firebaseAuth.signInWithCredential(credential).then(
-      (value) {
-        log(credential.providerId);
-        log(firebaseAuth.currentUser!.uid);
-        log("You are logged in successfully");
-        Fluttertoast.showToast(
-          msg: "You are logged in successfully",
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.CENTER,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.red,
-          textColor: Colors.white,
-          fontSize: 16.0,
-        );
-      },
-    ).whenComplete(
-      () async {
-        await FirestoreHelper.firestoreHelper.addUserToDB(
-            firebaseAuth.currentUser!.uid, username, phoneNumber, password);
-        RouteHelper.routeHelper.goToPageWithReplacement(SignIn.routeName);
-        verificationID = "";
-        log(verificationID);
-        // Navigator.pushReplacement(
-        //   context,
-        //   MaterialPageRoute(
-        //     builder: (context) => Home(),
-        //   ),
-        // );
-      },
-    );
+    try {
+      await firebaseAuth.signInWithCredential(credential).then(
+        (value) {
+          navService.pushNamed(MyHomePage1.routeName, args: 'From Home Screen');
+        },
+      ).whenComplete(
+        () async {
+          await FirestoreHelper.firestoreHelper.addUserToDB(
+              firebaseAuth.currentUser!.uid, username, phoneNumber, password);
+          verificationID = "";
+          log(verificationID);
+        },
+      );
+    } catch (err) {
+      log(err.toString());
+    }
   }
 
-//   String? getUserId() {
-//     // log('user id= ${firebaseAuth.currentUser.uid}');
-//     // if (firebaseAuth.currentUser.uid == null) {
-//     //   log('no user added yet!');
-//     // }
-//     // return 'no user added yet';
-//     // } else {
+  String getUserId() {
+    // log('user id= ${firebaseAuth.currentUser.uid}');
+    // if (firebaseAuth.currentUser.uid == null) {
+    //   log('no user added yet!');
+    // }
+    // return 'no user added yet';
+    // } else {
 
-//     // try {
-//     return firebaseAuth.currentUser?.uid;
-//     // } catch (e) {
-//     //   log('error from get user id: $e');
-//     // }
-//     // return "";
-//     // }
-//   }
+    // try {
+    // log(firebaseAuth.currentUser?.uid.toString());
+    return firebaseAuth.currentUser!.uid;
+    // } catch (e) {
+    //   log('error from get user id: $e');
+    // }
+    // return "";
+    // }
+  }
 
 // // ignore: missing_return
 //   Future<Object> signup(String email, String password) async {
@@ -139,50 +132,61 @@ class AuthHelper {
 //   }
 //   // ignore: missing_return
 
-//   // ignore: missing_return
-//   Future<Object> signin(String email, String password) async {
-//     try {
-//       UserCredential userCredential = await firebaseAuth
-//           .signInWithEmailAndPassword(email: email, password: password);
-//       return userCredential;
-//     } on FirebaseAuthException catch (e) {
-//       if (e.code == 'user-not-found') {
-//         CustomDialoug.customDialoug
-//             .showCustomDialoug('No user found for that email.');
-//       } else if (e.code == 'wrong-password') {
-//         CustomDialoug.customDialoug
-//             .showCustomDialoug('Wrong password provided for that user.');
-//       }
-//     }
-//     return UserCredential;
-//   }
+  // ignore: missing_return
+  Future<Object> signin(String email, String password) async {
+    try {
+      UserCredential userCredential = await firebaseAuth
+          .signInWithEmailAndPassword(email: email, password: password);
 
-//   resetPassword(String email) async {
-//     await firebaseAuth.sendPasswordResetEmail(email: email);
-//     CustomDialoug.customDialoug.showCustomDialoug(
-//         'we have sent email for reset password, please check your email');
-//     // print('we have sent email for reset password, please check your email');
-//   }
+      return userCredential;
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found') {
+        log(e.code);
+        const SnackBar snackBar = SnackBar(
+          content: Text('user not found'),
+          backgroundColor: Colors.red,
+        );
 
-//   verifyEmail() async {
-//     await firebaseAuth.currentUser?.sendEmailVerification();
-//     CustomDialoug.customDialoug.showCustomDialoug(
-//         'verification email has been sent, please check your email');
-//   }
+        snackbarKey.currentState?.showSnackBar(snackBar);
+      } else if (e.code == 'wrong-password') {
+        log(e.code);
+        const SnackBar snackBar = SnackBar(
+          content: Text('Wrong password provided for that user.'),
+          backgroundColor: Colors.red,
+        );
+        snackbarKey.currentState?.showSnackBar(snackBar);
+      }
+    }
+    return UserCredential;
+  }
 
-//   logout() async {
-//     firebaseAuth.signOut();
-//   }
+  resetPassword(String email) async {
+    await firebaseAuth.sendPasswordResetEmail(email: email);
+    // CustomDialoug.customDialoug.showCustomDialoug(
+    //     'we have sent email for reset password, please check your email');
+    // print('we have sent email for reset password, please check your email');
+  }
 
-//   bool checkEmailVerification() {
-//     return firebaseAuth.currentUser?.emailVerified ?? false;
-//   }
+  verifyEmail() async {
+    await firebaseAuth.currentUser?.sendEmailVerification();
+    // CustomDialoug.customDialoug.showCustomDialoug(
+    //     'verification email has been sent, please check your email');
+  }
 
-//   bool checkUserLoging() {
-//     if (firebaseAuth.currentUser == null) {
-//       return false;
-//     } else {
-//       return true;
-//     }
+  logout() async {
+    firebaseAuth.signOut();
+    log(firebaseAuth.signOut().toString());
+  }
+
+  bool checkEmailVerification() {
+    return firebaseAuth.currentUser?.emailVerified ?? false;
+  }
+
+  bool checkUserLoging() {
+    if (firebaseAuth.currentUser == null) {
+      return false;
+    } else {
+      return true;
+    }
+  }
 }
-// }

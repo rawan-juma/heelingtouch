@@ -1,17 +1,15 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:heelingtouchproject/patient/patient_profile.dart';
-import 'package:heelingtouchproject/patient/search_story.dart';
-import 'package:heelingtouchproject/widgets/story2_item.dart';
+import 'package:heelingtouchproject/patient/search_therapist.dart';
+import 'package:heelingtouchproject/therapist/notifications_screen.dart';
 import 'package:provider/provider.dart';
-
-import '../controllers/app_provider.dart';
-import '../therapist/chat_screen.dart';
-import '../therapist/notifications_screen.dart';
 import 'package:sizer/sizer.dart';
+import '../controllers/app_provider.dart';
+import '../widgets/thirapst2_item.dart';
 
-class StoriesList extends StatelessWidget {
-  const StoriesList({Key? key}) : super(key: key);
+class ConsultaionRequest extends StatelessWidget {
+  const ConsultaionRequest({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +20,7 @@ class StoriesList extends StatelessWidget {
           backgroundColor: Colors.white,
           appBar: AppBar(
             centerTitle: true,
-            title: Text('قصص النجاح',
+            title: Text('استشارة طبية',
                 style:
                     TextStyle(color: const Color(0xffffffff), fontSize: 13.sp),
                 textAlign: TextAlign.center),
@@ -32,25 +30,13 @@ class StoriesList extends StatelessWidget {
             shadowColor: Colors.grey[100],
             systemOverlayStyle: SystemUiOverlayStyle.light, leadingWidth: 100,
 
-            leading: Row(
-              children: [
-                IconButton(
-                  icon: const Icon(Icons.arrow_back_ios),
-                  onPressed: () {
-                    Navigator.pop(
-                      context,
-                    );
-                  },
-                ),
-              ],
-            ),
             actions: [
               IconButton(
                 icon: Image.asset("assets/Search.png"),
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => SearchStory()),
+                    MaterialPageRoute(builder: (context) => SearchTherapist()),
                   );
                 },
               ),
@@ -67,14 +53,19 @@ class StoriesList extends StatelessWidget {
             ],
           ),
           body: SizedBox(
-            height: 100.h,
-            child: ListView(
-                physics: const BouncingScrollPhysics(),
-                scrollDirection: Axis.vertical,
-                children: appProvider.storiesList.map((e) {
-                  return Story2Item(e.id, e.description, e.imgs);
-                }).toList()),
-          ),
+              height: 100.h,
+              child: appProvider.therapistsList.isNotEmpty
+                  ? ListView(
+                      physics: const BouncingScrollPhysics(),
+                      scrollDirection: Axis.vertical,
+                      children: appProvider.therapistsList.map((e) {
+                        return Therapist2Item(e.therapistID, e.fName, e.lName,
+                            e.phonenumber, e.bio, e.img);
+                      }).toList())
+                  : const Center(
+                      child: CircularProgressIndicator(
+                      color: Color(0xff2FA09C),
+                    ))),
         ),
       );
     });

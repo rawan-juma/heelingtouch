@@ -1,11 +1,13 @@
 // import 'dart:developer';
 import 'dart:developer';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:heelingtouchproject/controllers/auth_helper.dart';
 import 'package:heelingtouchproject/controllers/route_helper.dart';
 import 'package:heelingtouchproject/model/Ads.dart';
+import 'package:heelingtouchproject/model/messege.dart';
 // import 'package:firebase_auth/firebase_auth.dart';
 // import 'package:heelingtouchproject/helpers/auth_helper.dart';
 // import 'package:heelingtouchproject/helpers/route_helper.dart';
@@ -15,8 +17,13 @@ import 'package:heelingtouchproject/model/Ads.dart';
 import 'package:heelingtouchproject/model/story.dart';
 import 'package:heelingtouchproject/model/therapist.dart';
 import 'package:heelingtouchproject/model/user_model.dart';
+import 'package:heelingtouchproject/patient/auth/sign_in.dart';
 import 'package:heelingtouchproject/patient/pateint_home.dart';
+import 'package:heelingtouchproject/patient/stories.dart';
+import 'package:no_context_navigation/no_context_navigation.dart';
 // import 'package:heelingtouchproject/widgets/custom_dialog.dart';
+import '../main.dart';
+import '../widgets/custom_dialog.dart';
 import 'firebase_helper.dart';
 
 class AppProvider extends ChangeNotifier {
@@ -26,9 +33,12 @@ class AppProvider extends ChangeNotifier {
 
   TextEditingController phoneController = TextEditingController();
   TextEditingController otpController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController usernameController = TextEditingController();
   TextEditingController storyDescriptionController = TextEditingController();
+  TextEditingController searchController = TextEditingController();
+  TextEditingController searchStoryisController = TextEditingController();
 
   register() {
     AuthHelper.authHelper.loginWithPhone(phoneController.text, otpVisibility);
@@ -55,7 +65,7 @@ class AppProvider extends ChangeNotifier {
           textColor: Colors.white,
           fontSize: 16.0,
         );
-        RouteHelper.routeHelper.goToPageWithReplacement(PatientHome.routeName);
+        // RouteHelper.routeHelper.goToPageWithReplacement(PatientHome.routeName);
       }
     }
   }
@@ -64,6 +74,8 @@ class AppProvider extends ChangeNotifier {
     fetchStories();
     getTherapists();
     fetchAds();
+    search();
+    searchStrories();
   }
   List<Therapist> therapistsList = [];
 
@@ -72,23 +84,37 @@ class AppProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Therapist therapist = Therapist(
-      id: "id",
-      fName: "fName",
-      lName: "lName",
-      bio: "bio",
-      phonenumber: "phonenumber",
-      img: "img",
-      status: true,
-      password: "password");
-  getTherapist(String id) async {
-    therapist = await FirestoreHelper.firestoreHelper.getTherapist(id);
-    notifyListeners();
-  }
+  // Therapist therapist = Therapist(
+  //     id: "id",
+  //     fName: "fName",
+  //     lName: "lName",
+  //     bio: "bio",
+  //     phonenumber: "phonenumber",
+  //     img: "img",
+  //     status: true,
+  //     email: "password");
+  // getTherapist(String id) async {
+  //   therapist = await FirestoreHelper.firestoreHelper.getTherapist(id);
+  //   notifyListeners();
+  // }
 
   addStory() async {
     await FirestoreHelper.firestoreHelper
         .addStory(storyDescriptionController.text);
+    notifyListeners();
+  }
+
+  addConsultaion(String therpistID) async {
+    await FirestoreHelper.firestoreHelper
+        .requestConsultaion("ZtkOGoVnH2datRrIqPRfdtF2pH33", therpistID)
+        .whenComplete(() {
+      const SnackBar snackBar = SnackBar(
+        content: Text('تم تاكيد طلبك بنجاح'),
+        backgroundColor: Colors.green,
+      );
+
+      snackbarKey.currentState?.showSnackBar(snackBar);
+    });
     notifyListeners();
   }
 
@@ -112,10 +138,25 @@ class AppProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  List<Therapist> searchedTherapists = [];
+  search() async {
+    searchedTherapists = await FirestoreHelper.firestoreHelper
+        .searchTherapists(searchController.text);
+    notifyListeners();
+  }
+
+  List<Stroies> searchedStories = [];
+  searchStrories() async {
+    searchedStories = await FirestoreHelper.firestoreHelper
+        .SearchStories(searchStoryisController.text);
+    notifyListeners();
+  }
+
   uploadImage() async {
     await FirestoreHelper.firestoreHelper.uploadImage();
     notifyListeners();
   }
+
   // getAllUsers() async {
   //   users = await FirestoreHelper.firestoreHelper.getAllUsersFromFirestore();
   //   users.removeWhere((element) => element.id == myId);
@@ -136,11 +177,11 @@ class AppProvider extends ChangeNotifier {
   //   notifyListeners();
   // }
 
-  // resetControllers() {
-  //   usernameController.clear();
-  //   emailController.clear();
-  //   passwordController.clear();
-  // }
+  resetControllers() {
+    usernameController.clear();
+    emailController.clear();
+    passwordController.clear();
+  }
 
   // updateProfile() async {
   //   try {
@@ -157,79 +198,92 @@ class AppProvider extends ChangeNotifier {
   //   }
   // }
 
-  // checkLogin() {
-  //   bool isLoggedIn = AuthHelper.authHelper.checkUserLoging();
-  //   if (isLoggedIn) {
-  //     // myId = AuthHelper.authHelper.getUserId();
-  //     getAllUsers();
-  //     log('user ID+++++++++++++++++++++++');
-  //     // RouteHelper.routeHelper
-  //     //     .goToPageWithReplacement(FluidNavBarDemo.routeName);
-  //   } else {
-  //     log('user ID+++++++++++++++++++++++');
-  //     // RouteHelper.routeHelper.goToPageWithReplacement(Sign_In.routeName);
-  //   }
-  // }
+  checkLogin() {
+    bool isLoggedIn = AuthHelper.authHelper.checkUserLoging();
+    if (isLoggedIn) {
+      AuthHelper.authHelper.getUserId();
+      log(AuthHelper.authHelper.getUserId().toString());
+      navService.pushNamed(MyHomePage1.routeName, args: 'From Home Screen');
+    } else {
+      AuthHelper.authHelper.getUserId();
+      log(AuthHelper.authHelper.getUserId().toString());
+      log('user ID+++++++++++++++++++++++');
+      navService.pushNamed(MyHomePage1.routeName, args: 'From Home Screen');
+    }
+  }
 
-  // register() async {
-  //   try {
-  //     UserCredential? userCredinial = (await AuthHelper.authHelper.signup(
-  //         emailController.text, passwordController.text)) as UserCredential?;
-  //     RegisterRequest registerRequest = RegisterRequest(
-  //       id: userCredinial!.user!.uid,
-  //       email: emailController.text,
-  //       username: usernameController.text,
-  //     );
-  //     await FirestoreHelper.firestoreHelper.addUserToFirestore(registerRequest);
-  //     await AuthHelper.authHelper.verifyEmail();
-  // CustomDialoug.customDialoug.showCustomDialoug(
-  //     'يرجى تاكيد الحساب, سيتم ارساله بعد قليل عبر البريد الالكتروني',
-  //     sendVericiafion);
-  //     RouteHelper.routeHelper.goToPage(SignIn.routeName);
-  //     resetControllers();
-  //   } catch (err) {
-  //     log('exceptionnnnnnnnnnnn///// $err');
-  //   }
-  // }
+  logout() async {
+    await AuthHelper.authHelper.logout();
+    navService.pushNamedAndRemoveUntil(SignIn.routeName,
+        args: 'From Home Screen');
 
-  // logout() async {
-  //   await AuthHelper.authHelper.logout();
-  //   // RouteHelper.routeHelper.goToPageWithReplacement(Sign_In.routeName);
-  // }
+    // RouteHelper.routeHelper.goToPageWithReplacement(Sign_In.routeName);
+  }
 
-  // // String userID;
-  // login1() async {
-  //   try {
-  //     UserCredential userCredinial = (await AuthHelper.authHelper.signin(
-  //         emailController.text, passwordController.text)) as UserCredential;
-  //     FirestoreHelper.firestoreHelper
-  //         .getUserFromFirestore(userCredinial.user!.uid);
-  //     log(userCredinial.user!.uid);
-  //     bool isVerifiedEmail = AuthHelper.authHelper.checkEmailVerification();
-  //     log(isVerifiedEmail.toString());
-  //     if (isVerifiedEmail) {
-  //       RouteHelper.routeHelper.goToPageWithReplacement(MyHomePage1.routeName);
-  //       resetControllers();
-  //     } else {
-  //       log('errorrrrrrrrrrrrrrrrrrrrr ');
+  GlobalKey<NavigatorState> navKey = GlobalKey<NavigatorState>();
+  late String userId;
+  login1() async {
+    try {
+      UserCredential userCredinial = (await AuthHelper.authHelper.signin(
+          emailController.text, passwordController.text)) as UserCredential;
+      // FirestoreHelper.firestoreHelper
+      //     .getUserFromFirestore(userCredinial.user!.uid);
+      log(userCredinial.user!.uid);
+      bool isVerifiedEmail = AuthHelper.authHelper.checkEmailVerification();
 
-  //       // CustomDialoug.customDialoug.showCustomDialoug(
-  //       //     'يجب عليك تاكيد حسابك من خلال البريد الالكتروني, هل تريد ارسال رابط التاكيد مجددا؟',
-  //       //     sendVericiafion);
-  //     }
-  //   } catch (err) {
-  //     log('errorrrrrrrrrrrrrrrrrrrrrrrrrrr $err');
-  //   }
-  // }
+      log(isVerifiedEmail.toString());
+      if (isVerifiedEmail) {
+        //  .whenComplete(() =>
 
-  // sendVericiafion() {
-  //   AuthHelper.authHelper.verifyEmail();
-  //   AuthHelper.authHelper.logout();
-  // }
+        navService.pushNamed(MyHomePage.routeName, args: 'From Home Screen');
+        // )
+        userId = userCredinial.user!.uid;
+        FirestoreHelper.firestoreHelper
+            .updateTherapistData(emailController.text, userCredinial.user!.uid);
+        resetControllers();
+        log('مششششششششش ايرور');
+        // navKey.currentState!.pushReplacementNamed(MyHomePage.routeName);
+      } else {
+        log('errorrrrrrrrrrrrrrrrrrrrr ');
+        sendVericiafion();
+        // CustomDialoug.customDialoug.showCustomDialoug(
+        //     'يجب عليك تاكيد حسابك من خلال البريد الالكتروني, هل تريد ارسال رابط التاكيد مجددا؟',
+        //     sendVericiafion);
+      }
+    } catch (err) {
+      const Center(child: CircularProgressIndicator());
+      // if (err.toString() ==
+      //     "type '_Type' is not a subtype of type 'UserCredential' in type cast") {
+      //   const SnackBar snackBar = SnackBar(
+      //     content: Text('please check your internet connection.'),
+      //     backgroundColor: Colors.red,
+      //   );
+      //   snackbarKey.currentState?.showSnackBar(snackBar);
+      // }
+      log('errorrrrrrrrrrrrrrrrrrrrrrrrrrr $err');
+    }
+    // }
 
-  // resetPassword() async {
-  //   AuthHelper.authHelper.resetPassword(emailController.text);
-  //   resetControllers();
-  // }
+    // resetPassword() async {
+    //   AuthHelper.authHelper.resetPassword(emailController.text);
+    //   resetControllers();
+    // }
+  }
 
+  createChatRoom(String time, String therapistID, String messege) async {
+    MessageModel messageModel = MessageModel(
+      content: messege,
+      recieverId: therapistID,
+      senderId: "ZtkOGoVnH2datRrIqPRfdtF2pH33",
+      hour: "3:00",
+    );
+    await FirestoreHelper.firestoreHelper
+        .CreateChatRoom(time, therapistID, messageModel);
+    notifyListeners();
+  }
+
+  sendVericiafion() {
+    AuthHelper.authHelper.verifyEmail();
+    // AuthHelper.authHelper.logout();
+  }
 }

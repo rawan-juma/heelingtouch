@@ -6,14 +6,17 @@ import 'package:curved_nav_bar/fab_bar/fab_bottom_app_bar_item.dart';
 import 'package:curved_nav_bar/flutter_curved_bottom_nav_bar.dart';
 import 'package:flutter/services.dart';
 import 'package:heelingtouchproject/controllers/app_provider.dart';
+import 'package:heelingtouchproject/controllers/fb_notifications.dart';
 import 'package:heelingtouchproject/patient/auth/sign_in.dart';
 import 'package:heelingtouchproject/patient/auth/sign_up.dart';
 import 'package:heelingtouchproject/patient/auth/verification_screen.dart';
 import 'package:heelingtouchproject/patient/browse.dart';
+import 'package:heelingtouchproject/patient/consultaion_request.dart';
 import 'package:heelingtouchproject/patient/pateint_home.dart';
 import 'package:heelingtouchproject/therapist/add_screen.dart';
 import 'package:heelingtouchproject/therapist/consultation_requests.dart';
 import 'package:heelingtouchproject/therapist/therapist_home.dart';
+import 'package:no_context_navigation/no_context_navigation.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 import 'controllers/sp_helper.dart';
@@ -23,11 +26,15 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   SpHelper.spHelper.initSharedPrefrences();
+  await FbNotifications.initNotifications();
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
     statusBarColor: Colors.transparent,
   ));
   runApp(const MyApp());
 }
+
+final GlobalKey<ScaffoldMessengerState> snackbarKey =
+    GlobalKey<ScaffoldMessengerState>();
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -43,13 +50,25 @@ class MyApp extends StatelessWidget {
       },
       child: Sizer(builder: (context, orientation, deviceType) {
         return MaterialApp(
-          routes: {
-            Verification.routeName: (context) => const Verification(),
-            SignIn.routeName: (context) => SignIn(),
-            SignUp.routeName: (context) => const SignUp(),
-            PatientHome.routeName: (context) => PatientHome(),
-            MyHomePage1.routeName: (context) => const MyHomePage1(),
+          navigatorKey: NavigationService.navigationKey,
+          onGenerateRoute: (RouteSettings settings) {
+            switch (settings.name) {
+              case Verification.routeName:
+                return MaterialPageRoute(builder: (_) => const Verification());
+              case SignIn.routeName:
+                return MaterialPageRoute(builder: (_) => SignIn());
+              case SignUp.routeName:
+                return MaterialPageRoute(builder: (_) => const SignUp());
+              case MyHomePage.routeName:
+                return MaterialPageRoute(builder: (_) => const MyHomePage());
+              case MyHomePage1.routeName:
+                return MaterialPageRoute(builder: (_) => const MyHomePage1());
+              default:
+                return null;
+            }
           },
+          scaffoldMessengerKey: snackbarKey, // <= this
+
           title: 'Flutter Demo',
           theme: ThemeData(
               // primarySwatch: Colors.blue,
@@ -63,6 +82,8 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
+  static const routeName = '/therapistHome';
+
   const MyHomePage({Key? key}) : super(key: key);
   @override
   _MyHomePageState createState() => _MyHomePageState();
@@ -177,10 +198,9 @@ class _MyHomePageState1 extends State<MyHomePage1> {
         ],
         bodyItems: [
           PatientHome(),
-          //  PatientHome(),
           const Browse(),
         ],
-        actionBarView: PatientHome(),
+        actionBarView: const ConsultaionRequest(),
       ),
     );
   }

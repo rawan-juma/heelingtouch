@@ -29,8 +29,10 @@ class PatientHome extends StatelessWidget {
           appBar: AppBar(
             centerTitle: true,
             title: Text('الرئيسية',
-                style:
-                    TextStyle(color: const Color(0xffffffff), fontSize: 13.sp),
+                style: TextStyle(
+                    color: const Color(0xffffffff),
+                    fontSize: 13.sp,
+                    fontFamily: 'NeoSansArabic'),
                 textAlign: TextAlign.center),
             backgroundColor: const Color(0xff2FA09C),
             // elevation: 2,
@@ -147,7 +149,8 @@ class PatientHome extends StatelessWidget {
                       children: [
                         Text(
                           "الاخصائيين",
-                          style: TextStyle(fontSize: 13.sp),
+                          style: TextStyle(
+                              fontSize: 13.sp, fontFamily: 'NeoSansArabic'),
                         ),
                         GestureDetector(
                           onTap: () {
@@ -173,7 +176,7 @@ class PatientHome extends StatelessWidget {
                         physics: const BouncingScrollPhysics(),
                         scrollDirection: Axis.horizontal,
                         children: appProvider.therapistsList.map((e) {
-                          return TherapistItem(e.id, e.fName, e.lName,
+                          return TherapistItem(e.therapistID, e.fName, e.lName,
                               e.phonenumber, e.bio, e.img);
                         }).toList()),
                   ),

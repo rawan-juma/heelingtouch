@@ -55,11 +55,13 @@ class TherapistItem extends StatelessWidget {
                               const Offset(0, 2), // changes position of shadow
                         ),
                       ],
-                      color: const Color.fromARGB(255, 230, 230, 230),
+                      color: const Color(0xff2FA09C),
                       borderRadius: const BorderRadius.all(Radius.circular(15)),
                       image: DecorationImage(
                         fit: BoxFit.fill,
-                        image: NetworkImage(img),
+                        image: NetworkImage(img == ""
+                            ? "https://www.pngall.com/wp-content/uploads/12/Avatar-Profile-Vector-PNG-Clipart.png"
+                            : img),
                       )),
                 ),
                 Padding(
