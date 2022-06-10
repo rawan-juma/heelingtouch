@@ -3,7 +3,9 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:heelingtouchproject/controllers/app_provider.dart';
+import 'package:heelingtouchproject/patient/search_therapist.dart';
 import 'package:heelingtouchproject/patient/stories.dart';
 import 'package:heelingtouchproject/patient/therapist.dart';
 import 'package:heelingtouchproject/therapist/chat_screen.dart';
@@ -43,9 +45,8 @@ class PatientHome extends StatelessWidget {
             leading: Row(
               children: [
                 IconButton(
-                  icon: Image.asset(
-                    "assets/Profile.png",
-                  ),
+                  icon: SvgPicture.asset("assets/Profile.svg",
+                      semanticsLabel: 'profile icon'),
                   onPressed: () {
                     Navigator.push(
                       context,
@@ -55,9 +56,8 @@ class PatientHome extends StatelessWidget {
                   },
                 ),
                 IconButton(
-                  icon: Image.asset(
-                    "assets/Chat.png",
-                  ),
+                  icon: SvgPicture.asset("assets/Chat.svg",
+                      semanticsLabel: 'chat icon'),
                   onPressed: () {
                     Navigator.push(
                       context,
@@ -69,16 +69,18 @@ class PatientHome extends StatelessWidget {
             ),
             actions: [
               IconButton(
-                icon: Image.asset("assets/Search.png"),
+                icon: SvgPicture.asset("assets/Search.svg",
+                    semanticsLabel: 'search icon'),
                 onPressed: () {
-                  // Navigator.push(
-                  //   context,
-                  //   MaterialPageRoute(builder: (context) => Chat()),
-                  // );
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => SearchTherapist()),
+                  );
                 },
               ),
               IconButton(
-                icon: Image.asset("assets/Notification.png"),
+                icon: SvgPicture.asset("assets/Notification.svg",
+                    semanticsLabel: 'notification icon'),
                 onPressed: () {
                   Navigator.push(
                     context,
@@ -98,15 +100,15 @@ class PatientHome extends StatelessWidget {
                   Container(
                     margin: EdgeInsets.only(top: 2.h, left: 2.w, right: 2.w),
                     decoration: BoxDecoration(
-                      color: const Color.fromARGB(0, 124, 124, 124),
+                      // color: const Color.fromARGB(0, 124, 124, 124),
                       borderRadius: BorderRadius.circular(20),
                     ),
                     child: ImageSlideshow(
-                        width: double.infinity,
+                        width: 92.w,
                         height: 25.h,
                         initialPage: 0,
                         indicatorColor: const Color(0xff2FA09C),
-                        indicatorBackgroundColor: Colors.grey,
+                        indicatorBackgroundColor: Colors.white,
                         onPageChanged: (value) {
                           // debugPrint('Page changed: $value');
                         },

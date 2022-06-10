@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:heelingtouchproject/model/articles.dart';
 import 'package:heelingtouchproject/model/videos.dart';
 import 'package:heelingtouchproject/widgets/article_item.dart';
@@ -44,7 +45,8 @@ class Browse extends StatelessWidget {
 
                 actions: [
                   IconButton(
-                    icon: Image.asset("assets/Search.png"),
+                    icon: SvgPicture.asset("assets/Search.svg",
+                        semanticsLabel: 'search icon'),
                     onPressed: () {
                       // Navigator.push(
                       //   context,
@@ -53,7 +55,8 @@ class Browse extends StatelessWidget {
                     },
                   ),
                   IconButton(
-                    icon: Image.asset("assets/Notification.png"),
+                    icon: SvgPicture.asset("assets/Notification.svg",
+                        semanticsLabel: 'notification icon'),
                     onPressed: () {
                       Navigator.push(
                         context,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:heelingtouchproject/controllers/sp_helper.dart';
 import 'package:heelingtouchproject/therapist/auth/edit_profile.dart';
 import 'package:heelingtouchproject/therapist/notifications_screen.dart';
@@ -56,7 +57,7 @@ class _TherapistDetailsState extends State<TherapistDetails> {
             shadowColor: Colors.grey[100], automaticallyImplyLeading: false,
             systemOverlayStyle: SystemUiOverlayStyle.light,
             leading: IconButton(
-              icon: Image.asset("assets/Arrow - Right 2.png"),
+              icon: const Icon(Icons.arrow_back_ios),
               onPressed: () {
                 Navigator.pop(
                   context,
@@ -66,7 +67,8 @@ class _TherapistDetailsState extends State<TherapistDetails> {
 
             actions: [
               IconButton(
-                icon: Image.asset("assets/Notification.png"),
+                icon: SvgPicture.asset("assets/Notification.svg",
+                    semanticsLabel: 'notification icon'),
                 onPressed: () {
                   Navigator.push(
                     context,

@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:heelingtouchproject/patient/patient_profile.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:heelingtouchproject/patient/search_story.dart';
 import 'package:heelingtouchproject/widgets/story2_item.dart';
 import 'package:provider/provider.dart';
-
 import '../controllers/app_provider.dart';
-import '../therapist/chat_screen.dart';
 import '../therapist/notifications_screen.dart';
 import 'package:sizer/sizer.dart';
 
@@ -48,7 +46,8 @@ class StoriesList extends StatelessWidget {
             ),
             actions: [
               IconButton(
-                icon: Image.asset("assets/Search.png"),
+                icon: SvgPicture.asset("assets/Search.svg",
+                    semanticsLabel: 'search icon'),
                 onPressed: () {
                   Navigator.push(
                     context,
@@ -57,7 +56,8 @@ class StoriesList extends StatelessWidget {
                 },
               ),
               IconButton(
-                icon: Image.asset("assets/Notification.png"),
+                icon: SvgPicture.asset("assets/Notification.svg",
+                    semanticsLabel: 'notification icon'),
                 onPressed: () {
                   Navigator.push(
                     context,

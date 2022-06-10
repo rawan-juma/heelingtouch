@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:heelingtouchproject/patient/personal_info.dart';
 import 'package:heelingtouchproject/patient/settings.dart';
 import 'package:settings_ui/settings_ui.dart';
@@ -20,14 +21,16 @@ class PatientProfile extends StatelessWidget {
               centerTitle: true,
               title: Text('بروفايلي',
                   style: TextStyle(
-                      color: const Color(0xffffffff), fontSize: 13.sp),
+                      color: const Color(0xffffffff),
+                      fontSize: 13.sp,
+                      fontFamily: 'NeoSansArabic'),
                   textAlign: TextAlign.center),
               backgroundColor: const Color(0xff2FA09C),
               // elevation: 2,
               shadowColor: Colors.grey[100], automaticallyImplyLeading: false,
               systemOverlayStyle: SystemUiOverlayStyle.light,
               leading: IconButton(
-                icon: Image.asset("assets/Arrow - Right 2.png"),
+                icon: const Icon(Icons.arrow_back_ios),
                 onPressed: () {
                   Navigator.pop(
                     context,
@@ -37,7 +40,8 @@ class PatientProfile extends StatelessWidget {
 
               actions: [
                 IconButton(
-                  icon: Image.asset("assets/Notification.png"),
+                  icon: SvgPicture.asset("assets/Notification.svg",
+                      semanticsLabel: 'notification icon'),
                   onPressed: () {
                     Navigator.push(
                       context,
@@ -57,27 +61,33 @@ class PatientProfile extends StatelessWidget {
                     Stack(
                       children: [
                         Center(
-                          child: Image.asset(
-                            "assets/patientCover.png",
-                          ),
+                          child: SvgPicture.asset("assets/cover.svg",
+                              width: 90.w, semanticsLabel: 'cover'),
                         ),
                         Center(
                           child: Container(
-                              width: 27.w,
-                              height: 24.h,
+                              margin: EdgeInsets.only(top: 8.h),
+                              width: 120,
+                              height: 110,
                               decoration: const BoxDecoration(
                                   color: Color(0xffc0c0c0),
                                   shape: BoxShape.circle,
                                   image: DecorationImage(
                                     fit: BoxFit.cover,
-                                    image: AssetImage("assets/personP.png"),
+                                    image: NetworkImage(
+                                      "https://www.pngall.com/wp-content/uploads/12/Avatar-Profile-Vector-PNG-Clipart.png",
+                                    ),
                                   ))),
                         ),
                       ],
                     ),
+                    SizedBox(
+                      height: 2.h,
+                    ),
                     Text(
                       "الاء رائد بصل",
-                      style: TextStyle(fontSize: 13.sp),
+                      style: TextStyle(
+                          fontSize: 13.sp, fontFamily: 'NeoSansArabic'),
                     ),
                     SizedBox(
                       height: 50.h,
@@ -92,7 +102,9 @@ class PatientProfile extends StatelessWidget {
                               SettingsTile.navigation(
                                   title: Text(
                                     'المعلومات الشخصية',
-                                    style: TextStyle(fontSize: 13.sp),
+                                    style: TextStyle(
+                                        fontSize: 12.sp,
+                                        fontFamily: 'NeoSansArabic'),
                                   ),
                                   trailing: const Icon(
                                     Icons.arrow_forward_ios,
@@ -113,7 +125,9 @@ class PatientProfile extends StatelessWidget {
                               SettingsTile.navigation(
                                   title: Text(
                                     'تذاكري',
-                                    style: TextStyle(fontSize: 13.sp),
+                                    style: TextStyle(
+                                        fontSize: 12.sp,
+                                        fontFamily: 'NeoSansArabic'),
                                   ),
                                   trailing: const Icon(
                                     Icons.arrow_forward_ios,
@@ -133,7 +147,9 @@ class PatientProfile extends StatelessWidget {
                               SettingsTile.navigation(
                                   title: Text(
                                     'استشاراتي',
-                                    style: TextStyle(fontSize: 13.sp),
+                                    style: TextStyle(
+                                        fontSize: 12.sp,
+                                        fontFamily: 'NeoSansArabic'),
                                   ),
                                   trailing: const Icon(
                                     Icons.arrow_forward_ios,
@@ -174,7 +190,9 @@ class PatientProfile extends StatelessWidget {
                               SettingsTile.navigation(
                                   title: Text(
                                     'الاعدادات',
-                                    style: TextStyle(fontSize: 13.sp),
+                                    style: TextStyle(
+                                        fontSize: 12.sp,
+                                        fontFamily: 'NeoSansArabic'),
                                   ),
                                   trailing: const Icon(
                                     Icons.arrow_forward_ios,
@@ -195,7 +213,9 @@ class PatientProfile extends StatelessWidget {
                               SettingsTile.navigation(
                                   title: Text(
                                     'تسجيل الخروج',
-                                    style: TextStyle(fontSize: 13.sp),
+                                    style: TextStyle(
+                                        fontSize: 12.sp,
+                                        fontFamily: 'NeoSansArabic'),
                                   ),
                                   onPressed: (context) {}),
                             ],

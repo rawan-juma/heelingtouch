@@ -10,41 +10,45 @@ class ArticleDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        centerTitle: true,
-        title: Text(SpHelper.spHelper.getArticleTitle(),
-            style: TextStyle(color: const Color(0xffffffff), fontSize: 13.sp),
-            textAlign: TextAlign.center),
-        backgroundColor: const Color(0xff2FA09C),
-        // elevation: 2,
-        shadowColor: Colors.grey[100],
-        systemOverlayStyle: SystemUiOverlayStyle.light,
-        automaticallyImplyLeading: false,
-        // leading: IconButton(
-        //   icon: Image.asset("assets/share-2.png"),
-        //   onPressed: () {
-        //     Navigator.push(
-        //       context,
-        //       MaterialPageRoute(builder: (context) => NotificationScreen()),
-        //     );
-        //   },
-        // ),
-        actions: [
-          IconButton(
-            icon: Image.asset("assets/Arrow - Right 2.png"),
+    return Directionality(
+      textDirection: TextDirection.rtl,
+      child: Scaffold(
+        backgroundColor: Colors.white,
+        appBar: AppBar(
+          centerTitle: true,
+          title: Text(SpHelper.spHelper.getArticleTitle(),
+              style: TextStyle(color: const Color(0xffffffff), fontSize: 13.sp),
+              textAlign: TextAlign.center),
+          backgroundColor: const Color(0xff2FA09C),
+          // elevation: 2,
+          shadowColor: Colors.grey[100],
+          systemOverlayStyle: SystemUiOverlayStyle.light,
+          automaticallyImplyLeading: false,
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back_ios),
+            // icon: Image.asset("assets/share-2.png"),
             onPressed: () {
               Navigator.pop(
                 context,
               );
+              // Navigator.push(
+              //   context,
+              //   MaterialPageRoute(builder: (context) => NotificationScreen()),
+              // );
             },
           ),
-        ],
-      ),
-      body: Directionality(
-        textDirection: TextDirection.rtl,
-        child: SingleChildScrollView(
+          // actions: [
+          //   IconButton(
+          //     icon: const Icon(Icons.arrow_back_ios),
+          //     onPressed: () {
+          // Navigator.pop(
+          //   context,
+          // );
+          //     },
+          //   ),
+          // ],
+        ),
+        body: SingleChildScrollView(
           child: Column(
             children: [
               Container(

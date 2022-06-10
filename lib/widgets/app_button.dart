@@ -21,7 +21,7 @@ class App_Button extends StatelessWidget {
                 title,
                 style: TextStyle(
                   fontFamily: 'NeoSansArabic',
-                  fontSize: 15.sp,
+                  fontSize: 13.sp,
                   color: const Color(0xffFFFFFF),
                 ),
               ),

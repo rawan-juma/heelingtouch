@@ -449,7 +449,7 @@ class FirestoreHelper {
         if (therapistData['first_name'].contains(txt) == true) {
           therapistsList.add(Therapist(
               id: therapistID,
-              therapistID: therapistID,
+              therapistID: therapistData['userID'],
               fName: therapistData['first_name'],
               lName: therapistData['family_name'],
               bio: therapistData['bio'],

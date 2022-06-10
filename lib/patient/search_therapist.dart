@@ -1,9 +1,12 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:heelingtouchproject/widgets/therapist_item.dart';
+import 'package:heelingtouchproject/patient/therapist_page.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 import '../controllers/app_provider.dart';
+import '../controllers/sp_helper.dart';
 
 // ignore: must_be_immutable
 class SearchTherapist extends StatelessWidget {
@@ -74,7 +77,24 @@ class SearchTherapist extends StatelessWidget {
                     children: [
                       Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: Text("${e.fName} ${e.lName}"),
+                        child: GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          const TherapistDetails()));
+                              SpHelper.spHelper.setTherapistID(e.id);
+                              SpHelper.spHelper.setTherapistFname(e.fName);
+                              SpHelper.spHelper.setTherapistLname(e.lName);
+                              SpHelper.spHelper.setTherapistBio(e.bio);
+                              SpHelper.spHelper.setTherapistImg(e.img);
+                              SpHelper.spHelper
+                                  .setTherapistPhoneNumber(e.phonenumber);
+                              appProvider.fetchTherpistStories(e.therapistID);
+                              log(e.therapistID);
+                            },
+                            child: Text("${e.fName} ${e.lName}")),
                       ),
                       Divider(
                         height: 2.h,

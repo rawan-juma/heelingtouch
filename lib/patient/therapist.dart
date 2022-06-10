@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:heelingtouchproject/patient/search_therapist.dart';
 import 'package:heelingtouchproject/widgets/thirapst2_item.dart';
 import 'package:provider/provider.dart';
@@ -45,7 +46,8 @@ class TherapistList extends StatelessWidget {
             ),
             actions: [
               IconButton(
-                icon: Image.asset("assets/Search.png"),
+                icon: SvgPicture.asset("assets/Search.svg",
+                    semanticsLabel: 'search icon'),
                 onPressed: () {
                   Navigator.push(
                     context,
@@ -54,7 +56,8 @@ class TherapistList extends StatelessWidget {
                 },
               ),
               IconButton(
-                icon: Image.asset("assets/Notification.png"),
+                icon: SvgPicture.asset("assets/Notification.svg",
+                    semanticsLabel: 'notification icon'),
                 onPressed: () {
                   Navigator.push(
                     context,

@@ -5,6 +5,7 @@ import 'package:curved_nav_bar/curved_bar/curved_action_bar.dart';
 import 'package:curved_nav_bar/fab_bar/fab_bottom_app_bar_item.dart';
 import 'package:curved_nav_bar/flutter_curved_bottom_nav_bar.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:heelingtouchproject/controllers/app_provider.dart';
 import 'package:heelingtouchproject/controllers/fb_notifications.dart';
 import 'package:heelingtouchproject/patient/auth/sign_in.dart';
@@ -163,24 +164,22 @@ class _MyHomePageState1 extends State<MyHomePage1> {
               log(value.toString());
             },
             activeIcon: Container(
+              height: 65,
+              width: 65,
               padding: const EdgeInsets.all(8),
               decoration: const BoxDecoration(
                   color: Color(0xff2FA09C), shape: BoxShape.circle),
-              child: Image.asset(
-                "assets/myConsultations.png",
-                height: 50,
-                width: 50,
-              ),
+              child: SvgPicture.asset("assets/Consultaion.svg",
+                  semanticsLabel: 'Consultaion icon'),
             ),
             inActiveIcon: Container(
+              height: 65,
+              width: 65,
               padding: const EdgeInsets.all(8),
               decoration: const BoxDecoration(
                   color: Color(0xff2FA09C), shape: BoxShape.circle),
-              child: Image.asset(
-                "assets/myConsultations.png",
-                height: 50,
-                width: 50,
-              ),
+              child: SvgPicture.asset("assets/Consultaion.svg",
+                  semanticsLabel: 'Consultaion icon'),
             ),
             text: "للاستشارة"),
         activeColor: const Color(0xff2FA09C),
@@ -188,12 +187,16 @@ class _MyHomePageState1 extends State<MyHomePage1> {
         inActiveColor: Colors.black45,
         appBarItems: [
           FABBottomAppBarItem(
-              activeIcon: Image.asset("assets/Home.png"),
-              inActiveIcon: Image.asset("assets/InHome.png"),
+              activeIcon: SvgPicture.asset("assets/Home0.svg",
+                  semanticsLabel: 'home icon'),
+              inActiveIcon: SvgPicture.asset("assets/Home.svg",
+                  semanticsLabel: 'home icon'),
               text: 'الرئيسية'),
           FABBottomAppBarItem(
-              activeIcon: Image.asset("assets/play.png"),
-              inActiveIcon: Image.asset("assets/InPlay.png"),
+              activeIcon: SvgPicture.asset("assets/Play.svg",
+                  semanticsLabel: 'play icon'),
+              inActiveIcon: SvgPicture.asset("assets/Play0.svg",
+                  semanticsLabel: 'play icon'),
               text: 'المحتوى الطبي'),
         ],
         bodyItems: [

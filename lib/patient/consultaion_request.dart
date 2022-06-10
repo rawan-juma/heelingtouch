@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:heelingtouchproject/patient/search_therapist.dart';
 import 'package:heelingtouchproject/therapist/notifications_screen.dart';
 import 'package:provider/provider.dart';
@@ -32,7 +33,8 @@ class ConsultaionRequest extends StatelessWidget {
 
             actions: [
               IconButton(
-                icon: Image.asset("assets/Search.png"),
+                icon: SvgPicture.asset("assets/Search.svg",
+                    semanticsLabel: 'search icon'),
                 onPressed: () {
                   Navigator.push(
                     context,
@@ -41,7 +43,8 @@ class ConsultaionRequest extends StatelessWidget {
                 },
               ),
               IconButton(
-                icon: Image.asset("assets/Notification.png"),
+                icon: SvgPicture.asset("assets/Notification.svg",
+                    semanticsLabel: 'notification icon'),
                 onPressed: () {
                   Navigator.push(
                     context,

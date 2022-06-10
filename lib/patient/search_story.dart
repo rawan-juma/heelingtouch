@@ -4,6 +4,8 @@ import 'package:heelingtouchproject/widgets/therapist_item.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 import '../controllers/app_provider.dart';
+import '../controllers/sp_helper.dart';
+import '../therapist/story_details.dart';
 
 // ignore: must_be_immutable
 class SearchStory extends StatelessWidget {
@@ -40,7 +42,7 @@ class SearchStory extends StatelessWidget {
                           color: Colors.grey,
                         ),
                         onPressed: () {
-                          appProvider.searchController.clear();
+                          appProvider.searchStoryisController.clear();
                         },
                       ),
                       hintText: 'بحث',
@@ -72,7 +74,23 @@ class SearchStory extends StatelessWidget {
                     children: [
                       Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: Text(e.description),
+                        child: GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        const StroyDetails()));
+                            SpHelper.spHelper
+                                .setStoryDescription(e.description);
+                            SpHelper.spHelper.setStoryImg(e.imgs);
+                          },
+                          child: Text(
+                            e.description,
+                            textAlign: TextAlign.right,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
                       ),
                       Divider(
                         height: 2.h,
