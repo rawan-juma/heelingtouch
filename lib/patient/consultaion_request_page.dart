@@ -23,7 +23,9 @@ class ConsultationRequest extends StatelessWidget {
               centerTitle: true,
               title: Text('حجز استشارة',
                   style: TextStyle(
-                      color: const Color(0xffffffff), fontSize: 13.sp),
+                      fontFamily: 'NeoSansArabic',
+                      color: const Color(0xffffffff),
+                      fontSize: 13.sp),
                   textAlign: TextAlign.center),
               backgroundColor: const Color(0xff2FA09C),
               // elevation: 2,
@@ -53,7 +55,9 @@ class ConsultationRequest extends StatelessWidget {
                   child: Text(
                     "نوع الاستشارة",
                     style: TextStyle(
-                        color: const Color(0xff2FA09C), fontSize: 14.sp),
+                        fontFamily: 'NeoSansArabic',
+                        color: const Color(0xff2FA09C),
+                        fontSize: 13.sp),
                   ),
                 ),
                 Row(
@@ -78,6 +82,9 @@ class ConsultationRequest extends StatelessWidget {
                   ),
                   child: const Text(
                     '03:00 am',
+                    style: TextStyle(
+                      fontFamily: 'NeoSansArabic',
+                    ),
                     textAlign: TextAlign.right,
                   ),
                 ),

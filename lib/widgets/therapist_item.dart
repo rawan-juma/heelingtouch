@@ -30,8 +30,7 @@ class TherapistItem extends StatelessWidget {
           SpHelper.spHelper.setTherapistBio(bio);
           SpHelper.spHelper.setTherapistImg(img);
           SpHelper.spHelper.setTherapistPhoneNumber(phone);
-
-          // appProvider.getTherapist(id);
+          appProvider.fetchTherpistStories(id);
         },
         child: Padding(
           padding: EdgeInsets.only(top: 2.h, left: 2.w, right: 4.w),
@@ -68,7 +67,8 @@ class TherapistItem extends StatelessWidget {
                   padding: EdgeInsets.only(top: 1.h),
                   child: Text(
                     "د.$fName $lName",
-                    style: TextStyle(fontSize: 13.sp),
+                    style:
+                        TextStyle(fontFamily: 'NeoSansArabic', fontSize: 12.sp),
                   ),
                 )
               ],

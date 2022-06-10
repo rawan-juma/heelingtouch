@@ -17,7 +17,10 @@ class Home extends StatelessWidget {
       appBar: AppBar(
         centerTitle: true,
         title: Text('مواعيدي',
-            style: TextStyle(color: const Color(0xffffffff), fontSize: 13.sp),
+            style: TextStyle(
+                fontFamily: 'NeoSansArabic',
+                color: const Color(0xffffffff),
+                fontSize: 13.sp),
             textAlign: TextAlign.center),
         backgroundColor: const Color(0xff2FA09C),
         // elevation: 2,
@@ -76,19 +79,20 @@ class CalendarScreen extends StatefulWidget {
 
 class _CalendarScreenState extends State<CalendarScreen> {
   final List<NeatCleanCalendarEvent> _eventList = [
-    NeatCleanCalendarEvent('داليا محمد',
-        startTime: DateTime(DateTime.now().year, DateTime.now().month,
-            DateTime.now().day, 10, 0),
-        endTime: DateTime(DateTime.now().year, DateTime.now().month,
-            DateTime.now().day + 2, 12, 0),
-        color: Colors.orange,
-        isMultiDay: true),
+    // NeatCleanCalendarEvent('داليا محمد',
+    //     startTime: DateTime(DateTime.now().year, DateTime.now().month,
+    //         DateTime.now().day, 10, 0),
+    //     endTime: DateTime(DateTime.now().year, DateTime.now().month,
+    //         DateTime.now().day + 2, 12, 0),
+    //     color: Colors.orange,
+    //     isMultiDay: true),
     NeatCleanCalendarEvent('مريم سعيد',
         startTime: DateTime(DateTime.now().year, DateTime.now().month,
-            DateTime.now().day - 2, 14, 30),
+            DateTime.now().day, DateTime.now().hour, DateTime.now().minute),
         endTime: DateTime(DateTime.now().year, DateTime.now().month,
-            DateTime.now().day + 2, 17, 0),
+            DateTime.now().day, DateTime.now().hour, DateTime.now().minute),
         color: Colors.pink,
+        isAllDay: false,
         isMultiDay: true),
   ];
 
@@ -96,8 +100,8 @@ class _CalendarScreenState extends State<CalendarScreen> {
   void initState() {
     super.initState();
     // Force selection of today on first load, so that the list of today's events gets shown.
-    _handleNewDate(DateTime(
-        DateTime.now().year, DateTime.now().month, DateTime.now().day));
+    // _handleNewDate(DateTime(
+    //     DateTime.now().year, DateTime.now().month, DateTime.now().day));
   }
 
   @override
@@ -137,7 +141,13 @@ class _CalendarScreenState extends State<CalendarScreen> {
                 isExpanded: true,
                 expandableDateFormat: 'EEEE, dd. MMMM yyyy',
                 // datePickerType: DatePickerType.date,
+                displayMonthTextStyle: const TextStyle(
+                    fontFamily: 'NeoSansArabic',
+                    color: Colors.black,
+                    fontWeight: FontWeight.w800,
+                    fontSize: 13),
                 dayOfWeekStyle: const TextStyle(
+                    fontFamily: 'NeoSansArabic',
                     color: Colors.black,
                     fontWeight: FontWeight.w800,
                     fontSize: 11),
@@ -147,7 +157,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
         ));
   }
 
-  void _handleNewDate(date) {
-    log('Date selected: $date');
-  }
+  // void _handleNewDate(date) {
+  //   log('Date selected: $date');
+  // }
 }

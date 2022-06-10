@@ -148,27 +148,27 @@ class PatientProfile extends StatelessWidget {
                                   }),
                             ],
                           ),
-                          SettingsSection(
-                            tiles: <SettingsTile>[
-                              SettingsTile.navigation(
-                                  title: Text(
-                                    'تغيير كلمة المرور',
-                                    style: TextStyle(fontSize: 13.sp),
-                                  ),
-                                  trailing: const Icon(
-                                    Icons.arrow_forward_ios,
-                                    size: 20,
-                                  ),
-                                  onPressed: (context) {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              ChangePatientPassword()),
-                                    );
-                                  }),
-                            ],
-                          ),
+                          // SettingsSection(
+                          //   tiles: <SettingsTile>[
+                          //     SettingsTile.navigation(
+                          //         title: Text(
+                          //           'تغيير كلمة المرور',
+                          //           style: TextStyle(fontSize: 13.sp),
+                          //         ),
+                          //         trailing: const Icon(
+                          //           Icons.arrow_forward_ios,
+                          //           size: 20,
+                          //         ),
+                          //         onPressed: (context) {
+                          //           Navigator.push(
+                          //             context,
+                          //             MaterialPageRoute(
+                          //                 builder: (context) =>
+                          //                     ChangePatientPassword()),
+                          //           );
+                          //         }),
+                          //   ],
+                          // ),
                           SettingsSection(
                             tiles: <SettingsTile>[
                               SettingsTile.navigation(

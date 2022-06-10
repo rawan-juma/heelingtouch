@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:heelingtouchproject/therapist/chat_details.dart';
+import 'package:heelingtouchproject/controllers/sp_helper.dart';
+import 'package:heelingtouchproject/therapist/story_details.dart';
 import 'package:sizer/sizer.dart';
 
 // ignore: must_be_immutable
@@ -16,7 +17,9 @@ class Story2Item extends StatelessWidget {
       child: GestureDetector(
           onTap: () {
             Navigator.push(context,
-                MaterialPageRoute(builder: (context) => const ChatDetails()));
+                MaterialPageRoute(builder: (context) => const StroyDetails()));
+            SpHelper.spHelper.setStoryDescription(description);
+            SpHelper.spHelper.setStoryImg(img);
           },
           child: Padding(
             padding: const EdgeInsets.all(8.0),
@@ -57,6 +60,8 @@ class Story2Item extends StatelessWidget {
                               child: Text(
                                 description,
                                 style: const TextStyle(
+                                  fontFamily: 'NeoSansArabic',
+                                  height: 1.6,
                                   color: Color(0xff1D1D1D),
                                 ),
                                 textAlign: TextAlign.right,

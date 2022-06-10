@@ -7,6 +7,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:heelingtouchproject/controllers/auth_helper.dart';
 import 'package:heelingtouchproject/controllers/route_helper.dart';
 import 'package:heelingtouchproject/model/Ads.dart';
+import 'package:heelingtouchproject/model/articles.dart';
 import 'package:heelingtouchproject/model/messege.dart';
 // import 'package:firebase_auth/firebase_auth.dart';
 // import 'package:heelingtouchproject/helpers/auth_helper.dart';
@@ -17,6 +18,7 @@ import 'package:heelingtouchproject/model/messege.dart';
 import 'package:heelingtouchproject/model/story.dart';
 import 'package:heelingtouchproject/model/therapist.dart';
 import 'package:heelingtouchproject/model/user_model.dart';
+import 'package:heelingtouchproject/model/videos.dart';
 import 'package:heelingtouchproject/patient/auth/sign_in.dart';
 import 'package:heelingtouchproject/patient/pateint_home.dart';
 import 'package:heelingtouchproject/patient/stories.dart';
@@ -76,6 +78,8 @@ class AppProvider extends ChangeNotifier {
     fetchAds();
     search();
     searchStrories();
+    fetchArticles();
+    fetchVideos();
   }
   List<Therapist> therapistsList = [];
 
@@ -99,8 +103,9 @@ class AppProvider extends ChangeNotifier {
   // }
 
   addStory() async {
-    await FirestoreHelper.firestoreHelper
-        .addStory(storyDescriptionController.text);
+    await FirestoreHelper.firestoreHelper.addStory(
+        AuthHelper.authHelper.getUserId().toString(),
+        storyDescriptionController.text);
     notifyListeners();
   }
 
@@ -132,6 +137,34 @@ class AppProvider extends ChangeNotifier {
   List<Stroies> storiesList = [];
   fetchStories() async {
     storiesList = await FirestoreHelper.firestoreHelper.fetchStoriesFuture();
+    // log('user id cat ___ ${AuthHelper.authHelper.getUserId()}');
+    // SpHelper.spHelper.setUserID(AuthHelper.authHelper.getUserId());
+    isLoading = true;
+    notifyListeners();
+  }
+
+  List<Stroies> TherpistStoriesList = [];
+  fetchTherpistStories(String id) async {
+    TherpistStoriesList =
+        await FirestoreHelper.firestoreHelper.fetchTherapistStoriesFuture(id);
+    // log('user id cat ___ ${AuthHelper.authHelper.getUserId()}');
+    // SpHelper.spHelper.setUserID(AuthHelper.authHelper.getUserId());
+    isLoading = true;
+    notifyListeners();
+  }
+
+  List<Article> articlesList = [];
+  fetchArticles() async {
+    articlesList = await FirestoreHelper.firestoreHelper.fetchArticlesFuture();
+    // log('user id cat ___ ${AuthHelper.authHelper.getUserId()}');
+    // SpHelper.spHelper.setUserID(AuthHelper.authHelper.getUserId());
+    isLoading = true;
+    notifyListeners();
+  }
+
+  List<Video> videosList = [];
+  fetchVideos() async {
+    videosList = await FirestoreHelper.firestoreHelper.fetchVideosFuture();
     // log('user id cat ___ ${AuthHelper.authHelper.getUserId()}');
     // SpHelper.spHelper.setUserID(AuthHelper.authHelper.getUserId());
     isLoading = true;

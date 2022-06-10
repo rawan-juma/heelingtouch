@@ -5,8 +5,8 @@ import 'package:heelingtouchproject/controllers/sp_helper.dart';
 import 'package:heelingtouchproject/therapist/notifications_screen.dart';
 import 'package:sizer/sizer.dart';
 
-class StroyDetails extends StatelessWidget {
-  const StroyDetails({Key? key}) : super(key: key);
+class ArticleDetails extends StatelessWidget {
+  const ArticleDetails({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -14,13 +14,14 @@ class StroyDetails extends StatelessWidget {
       backgroundColor: Colors.white,
       appBar: AppBar(
         centerTitle: true,
-        title: Text('عنوان قصة النجاح',
+        title: Text(SpHelper.spHelper.getArticleTitle(),
             style: TextStyle(color: const Color(0xffffffff), fontSize: 13.sp),
             textAlign: TextAlign.center),
         backgroundColor: const Color(0xff2FA09C),
         // elevation: 2,
         shadowColor: Colors.grey[100],
         systemOverlayStyle: SystemUiOverlayStyle.light,
+        automaticallyImplyLeading: false,
         // leading: IconButton(
         //   icon: Image.asset("assets/share-2.png"),
         //   onPressed: () {
@@ -30,7 +31,6 @@ class StroyDetails extends StatelessWidget {
         //     );
         //   },
         // ),
-        automaticallyImplyLeading: false,
         actions: [
           IconButton(
             icon: Image.asset("assets/Arrow - Right 2.png"),
@@ -56,12 +56,12 @@ class StroyDetails extends StatelessWidget {
                   child: SizedBox.fromSize(
                     size: const Size.fromRadius(48), // Image radius
                     child: Image.network(
-                      SpHelper.spHelper.getStoryImg(),
+                      SpHelper.spHelper.getArticleImg(),
                       fit: BoxFit.cover,
                     ),
                   ),
                 ),
-                // ImageSlideshow(
+                //  ImageSlideshow(
                 //   width: double.infinity,
                 //   height: 200,
                 //   initialPage: 0,
@@ -77,8 +77,8 @@ class StroyDetails extends StatelessWidget {
                 //       borderRadius: BorderRadius.circular(20), // Image border
                 //       child: SizedBox.fromSize(
                 //         size: const Size.fromRadius(48), // Image radius
-                //         child: Image.asset(
-                //           'assets/story.png',
+                //         child: Image.network(
+                //           SpHelper.spHelper.getArticleImg(),
                 //           fit: BoxFit.cover,
                 //         ),
                 //       ),
@@ -119,7 +119,7 @@ class StroyDetails extends StatelessWidget {
                 alignment: Alignment.topRight,
                 margin: EdgeInsets.only(right: 5.w, top: 1.h),
                 child: Text(
-                  SpHelper.spHelper.getStoryDescription(),
+                  SpHelper.spHelper.getArticleDescription(),
                   style: TextStyle(
                       color: const Color(0xff000000), fontSize: 13.sp),
                 ),

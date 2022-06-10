@@ -70,17 +70,24 @@ class _TherapistSignInState extends State<TherapistSignIn>
                 child: Text(
                   'مرحبا بك',
                   style: TextStyle(
-                    fontSize: 18.sp,
-                  ),
+                      color: const Color(0xff1D1D1D),
+                      fontFamily: 'NeoSansArabic',
+                      fontSize: 18.sp,
+                      fontWeight: FontWeight.bold),
                   textAlign: TextAlign.right,
                 ),
+              ),
+              SizedBox(
+                height: 2.h,
               ),
               Padding(
                 padding: EdgeInsets.only(right: 4.w),
                 child: Text(
                   'قم بتسجيل الدخول',
                   style: TextStyle(
-                    fontSize: 18.sp,
+                    color: const Color(0xff1D1D1D),
+                    fontFamily: 'NeoSansArabic',
+                    fontSize: 16.sp,
                   ),
                   textAlign: TextAlign.right,
                 ),
@@ -102,7 +109,13 @@ class _TherapistSignInState extends State<TherapistSignIn>
                   if (appProvider.emailController.text.isEmpty ||
                       appProvider.passwordController.text.isEmpty) {
                     const SnackBar snackBar = SnackBar(
-                      content: Text("Please Fill all Fields !"),
+                      content: Text(
+                        "!قم رجاءاً بتعبئة جميع الحقول",
+                        style: TextStyle(
+                          fontFamily: 'NeoSansArabic',
+                        ),
+                        textAlign: TextAlign.right,
+                      ),
                       backgroundColor: Colors.red,
                     );
                     snackbarKey.currentState?.showSnackBar(snackBar);
@@ -119,7 +132,13 @@ class _TherapistSignInState extends State<TherapistSignIn>
                           false ||
                       appProvider.emailController.text.contains('.') == false) {
                     const SnackBar snackBar = SnackBar(
-                      content: Text("Please Enter Correct Email Format !"),
+                      content: Text(
+                        ".قم رجاءاً بادخال صيغة ايميل صحيحة",
+                        style: TextStyle(
+                          fontFamily: 'NeoSansArabic',
+                        ),
+                        textAlign: TextAlign.right,
+                      ),
                       backgroundColor: Colors.red,
                     );
                     snackbarKey.currentState?.showSnackBar(snackBar);
@@ -147,14 +166,16 @@ class _TherapistSignInState extends State<TherapistSignIn>
                     child: Text(
                       'نسيت كلمة المرور؟',
                       style: TextStyle(
-                        fontSize: 13.sp,
+                        color: const Color(0xff1D1D1D),
+                        fontFamily: 'NeoSansArabic',
+                        fontSize: 11.sp,
                       ),
                     ),
                   ),
                 ),
               ),
               Padding(
-                padding: EdgeInsets.only(top: 10.8.h),
+                padding: EdgeInsets.only(top: 15.h),
                 child: Image.asset(
                   'assets/bottomwave.png',
                   height: 20.h,

@@ -1,11 +1,11 @@
-class Stroies {
+class Article {
   late String id;
-  late String therapistID;
+  late String title;
   late String description;
   late String imgs;
-  Stroies(
+  Article(
       {required this.id,
-      required this.therapistID,
+      required this.title,
       required this.description,
       required this.imgs});
 }

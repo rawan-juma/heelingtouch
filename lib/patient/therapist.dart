@@ -20,8 +20,10 @@ class TherapistList extends StatelessWidget {
           appBar: AppBar(
             centerTitle: true,
             title: Text('الإخصائيين',
-                style:
-                    TextStyle(color: const Color(0xffffffff), fontSize: 13.sp),
+                style: TextStyle(
+                    fontFamily: 'NeoSansArabic',
+                    color: const Color(0xffffffff),
+                    fontSize: 13.sp),
                 textAlign: TextAlign.center),
             backgroundColor: const Color(0xff2FA09C),
             // elevation: 2,
@@ -70,7 +72,7 @@ class TherapistList extends StatelessWidget {
                       physics: const BouncingScrollPhysics(),
                       scrollDirection: Axis.vertical,
                       children: appProvider.therapistsList.map((e) {
-                        return Therapist2Item(e.id, e.fName, e.lName,
+                        return Therapist2Item(e.therapistID, e.fName, e.lName,
                             e.phonenumber, e.bio, e.img);
                       }).toList())
                   : const Center(

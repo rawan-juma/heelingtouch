@@ -11,6 +11,8 @@ import 'package:heelingtouchproject/widgets/custom_text_field.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
+import '../../main.dart';
+
 // ignore: must_be_immutable
 class SignIn extends StatelessWidget {
   static const routeName = '/login';
@@ -24,7 +26,7 @@ class SignIn extends StatelessWidget {
           body: Directionality(
             textDirection: TextDirection.rtl,
             child: SingleChildScrollView(
-              child: Container(
+              child: SizedBox(
                 height: 100.h,
                 child: Column(
                   // crossAxisAlignment: CrossAxisAlignment.center,
@@ -64,11 +66,16 @@ class SignIn extends StatelessWidget {
                             child: Text(
                               'مرحبا بك',
                               style: TextStyle(
-                                fontSize: 18.sp,
-                              ),
+                                  color: const Color(0xff1D1D1D),
+                                  fontFamily: 'NeoSansArabic',
+                                  fontSize: 18.sp,
+                                  fontWeight: FontWeight.bold),
                               textAlign: TextAlign.right,
                             ),
                           ),
+                        ),
+                        SizedBox(
+                          height: 2.h,
                         ),
                         Padding(
                           padding: EdgeInsets.only(right: 4.w),
@@ -77,7 +84,9 @@ class SignIn extends StatelessWidget {
                             child: Text(
                               'قم بتسجيل الدخول',
                               style: TextStyle(
-                                fontSize: 18.sp,
+                                color: const Color(0xff1D1D1D),
+                                fontFamily: 'NeoSansArabic',
+                                fontSize: 16.sp,
                               ),
                               textAlign: TextAlign.right,
                             ),
@@ -87,12 +96,15 @@ class SignIn extends StatelessWidget {
                           'رقم الهاتف',
                           authProvider.phoneController,
                           TextInputType.number,
+                          length: 9,
                           iconS: Padding(
                             padding: EdgeInsets.only(top: 2.5.h),
                             child: Text(
                               "970+",
                               style: TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 12.sp),
+                                  fontFamily: 'NeoSansArabic',
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 11.sp),
                             ),
                           ),
                         ),
@@ -109,58 +121,50 @@ class SignIn extends StatelessWidget {
                             //     ],
                             //   ),
                             // ));
-                            authProvider.register();
-                            // .whenComplete(
-                            //     () => Navigator.of(context).pushNamed("/Home"));
 
-                            Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        const Verification()));
-                            // if (authProvider.emailController.text.isEmpty ||
-                            //     authProvider.passwordController.text.isEmpty) {
-                            //   Fluttertoast.showToast(
-                            //       msg: "Please Fill all Fields !",
-                            //       toastLength: Toast.LENGTH_SHORT,
-                            //       gravity: ToastGravity.BOTTOM,
-                            //       timeInSecForIosWeb: 1,
-                            //       backgroundColor: Colors.red,
-                            //       textColor: Colors.white,
-                            //       fontSize: 14.sp);
-                            // } else if (authProvider.emailController.text.contains('@') ==
-                            //         false ||
-                            //     authProvider.emailController.text.contains('.') ==
-                            //         false) {
-                            //   Fluttertoast.showToast(
-                            //       msg: "Please Enter Correct Email Format !",
-                            //       toastLength: Toast.LENGTH_SHORT,
-                            //       gravity: ToastGravity.BOTTOM,
-                            //       timeInSecForIosWeb: 1,
-                            //       backgroundColor: Colors.red,
-                            //       textColor: Colors.black,
-                            //       fontSize: 14.sp);
-                            // } else {
-                            //   authProvider.login1();
-                            // }
+                            if (authProvider.phoneController.text.isEmpty) {
+                              const SnackBar snackBar = SnackBar(
+                                content: Text(
+                                  '!قم رجاءاً بادخال رقم الهاتف',
+                                  style: TextStyle(
+                                    fontFamily: 'NeoSansArabic',
+                                  ),
+                                  textAlign: TextAlign.right,
+                                ),
+                                backgroundColor: Colors.red,
+                              );
+                              snackbarKey.currentState?.showSnackBar(snackBar);
+                            } else if ((authProvider
+                                        .phoneController.text.length <
+                                    9) ||
+                                !(authProvider.phoneController.text
+                                    .startsWith('59'))) {
+                              const SnackBar snackBar = SnackBar(
+                                content: Text(
+                                  '.قم بادخال الرقم بشكل صحيح, حيث يبدا ب 59 ثم الرقم',
+                                  style: TextStyle(
+                                    fontFamily: 'NeoSansArabic',
+                                  ),
+                                  textAlign: TextAlign.right,
+                                ),
+                                backgroundColor: Colors.red,
+                              );
+                              snackbarKey.currentState?.showSnackBar(snackBar);
+                            } else {
+                              authProvider.register();
+                              // .whenComplete(
+                              //     () => Navigator.of(context).pushNamed("/Home"));
+
+                              // Navigator.push(
+                              //     context,
+                              //     MaterialPageRoute(
+                              //         builder: (context) =>
+                              //             const Verification()));
+                            }
                           }),
                         ),
                       ],
                     ),
-                    // CustomTextField(
-                    //   'كلمة المرور',
-                    //   authProvider.passwordController,
-                    //   TextInputType.visiblePassword,
-                    //   iconS: const Icon(
-                    //     Icons.remove_red_eye_outlined,
-                    //     color: Color(0xff2FA09C),
-                    //   ),
-                    // ),
-
-                    //
-                    // Padding(
-                    //   padding: EdgeInsets.only(top: 25.h),
-                    //   child:
                     Image.asset(
                       'assets/bottomwave.png',
                       height: 20.h,

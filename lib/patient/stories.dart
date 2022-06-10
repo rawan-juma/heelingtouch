@@ -23,8 +23,10 @@ class StoriesList extends StatelessWidget {
           appBar: AppBar(
             centerTitle: true,
             title: Text('قصص النجاح',
-                style:
-                    TextStyle(color: const Color(0xffffffff), fontSize: 13.sp),
+                style: TextStyle(
+                    fontFamily: 'NeoSansArabic',
+                    color: const Color(0xffffffff),
+                    fontSize: 13.sp),
                 textAlign: TextAlign.center),
             backgroundColor: const Color(0xff2FA09C),
             // elevation: 2,

@@ -10,9 +10,11 @@ import 'package:heelingtouchproject/model/Ads.dart';
 import 'package:heelingtouchproject/model/messege.dart';
 import 'package:heelingtouchproject/model/therapist.dart';
 import 'package:heelingtouchproject/model/user_model.dart';
+import 'package:heelingtouchproject/model/videos.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
+import '../model/articles.dart';
 import '../model/story.dart';
 
 class FirestoreHelper {
@@ -181,6 +183,7 @@ class FirestoreHelper {
 
   String imageUrl = "";
   Future<void> addStory(
+    String therapistID,
     String description,
   ) async {
     try {
@@ -188,7 +191,7 @@ class FirestoreHelper {
           'https://heelingtouchproject-default-rtdb.firebaseio.com/Stories.json';
       http.Response res = await http.post(Uri.parse(uri),
           body: json.encode({
-            // 'therapistID':therapistID,
+            'therapistID': therapistID,
             'description': description,
             'image': imageUrl,
           }));
@@ -212,9 +215,38 @@ class FirestoreHelper {
       extractedData.forEach((categoryID, categoryData) {
         storiesList.add(Stroies(
           id: categoryID,
+          therapistID: categoryData['therapistID'],
           description: categoryData['description'],
           imgs: categoryData["image"],
         ));
+      });
+
+      log('responseeeeeeeeeeeeeeeee${res.body}');
+    } catch (err) {
+      log('errorrrrrrrrrrrrrrrrrrr: $err');
+    }
+    return storiesList;
+  }
+
+  Future<List<Stroies>> fetchTherapistStoriesFuture(String therapistID) async {
+    List<Stroies> storiesList = [];
+    try {
+      String uri =
+          'https://heelingtouchproject-default-rtdb.firebaseio.com/Stories.json';
+      http.Response res = await http.get(
+        Uri.parse(uri),
+      );
+      final extractedData = json.decode(res.body) as Map<String, dynamic>;
+
+      extractedData.forEach((categoryID, categoryData) {
+        if (therapistID == categoryData['therapistID']) {
+          storiesList.add(Stroies(
+            id: categoryID,
+            therapistID: categoryData['therapistID'],
+            description: categoryData['description'],
+            imgs: categoryData["image"],
+          ));
+        }
       });
 
       log('responseeeeeeeeeeeeeeeee${res.body}');
@@ -238,6 +270,7 @@ class FirestoreHelper {
         if (categoryData["description"].contains(txt) == true) {
           storiesList.add(Stroies(
             id: categoryID,
+            therapistID: categoryData['therapistID'],
             description: categoryData['description'],
             imgs: categoryData["image"],
           ));
@@ -249,6 +282,58 @@ class FirestoreHelper {
       log('errorrrrrrrrrrrrrrrrrrr: $err');
     }
     return storiesList;
+  }
+
+  Future<List<Article>> fetchArticlesFuture() async {
+    List<Article> articlesList = [];
+    try {
+      String uri =
+          'https://heelingtouchproject-default-rtdb.firebaseio.com/Article.json';
+      http.Response res = await http.get(
+        Uri.parse(uri),
+      );
+      final extractedData = json.decode(res.body) as Map<String, dynamic>;
+
+      extractedData.forEach((articleID, articleData) {
+        articlesList.add(Article(
+          id: articleID,
+          title: articleData['article_title'],
+          description: articleData['article_description'],
+          imgs: articleData["art_image"],
+        ));
+      });
+
+      log('response of articles ${res.body}');
+    } catch (err) {
+      log('error of articles: $err');
+    }
+    return articlesList;
+  }
+
+  Future<List<Video>> fetchVideosFuture() async {
+    List<Video> videosList = [];
+    try {
+      String uri =
+          'https://heelingtouchproject-default-rtdb.firebaseio.com/Video.json';
+      http.Response res = await http.get(
+        Uri.parse(uri),
+      );
+      final extractedData = json.decode(res.body) as Map<String, dynamic>;
+
+      extractedData.forEach((videoID, videoData) {
+        videosList.add(Video(
+            id: videoID,
+            title: videoData['video_title'],
+            description: videoData['video_description'],
+            // imgs: videoData["art_image"],
+            url: videoData["video_url"]));
+      });
+
+      log('response of videos ${res.body}');
+    } catch (err) {
+      log('error of videos: $err');
+    }
+    return videosList;
   }
 
   Future<void> requestConsultaion(String userID, String therpistID) async {

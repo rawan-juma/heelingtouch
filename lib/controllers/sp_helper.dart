@@ -63,4 +63,49 @@ class SpHelper {
     String? userID = sharedPreferences?.getString('img');
     return userID;
   }
+
+  setArticleTitle(String title) {
+    sharedPreferences?.setString('artTitle', title);
+  }
+
+  getArticleTitle() {
+    String? userID = sharedPreferences?.getString('artTitle');
+    return userID;
+  }
+
+  setArticleDescription(String description) {
+    sharedPreferences?.setString('artDescription', description);
+  }
+
+  getArticleDescription() {
+    String? userID = sharedPreferences?.getString('artDescription');
+    return userID;
+  }
+
+  setArticleImg(String img) {
+    sharedPreferences?.setString('artImg', img);
+  }
+
+  getArticleImg() {
+    String? userID = sharedPreferences?.getString('artImg');
+    return userID;
+  }
+
+  setStoryDescription(String description) {
+    sharedPreferences?.setString('StoryDescription', description);
+  }
+
+  getStoryDescription() {
+    String? userID = sharedPreferences?.getString('StoryDescription');
+    return userID;
+  }
+
+  setStoryImg(String img) {
+    sharedPreferences?.setString('StoryImg', img);
+  }
+
+  getStoryImg() {
+    String? userID = sharedPreferences?.getString('StoryImg');
+    return userID;
+  }
 }

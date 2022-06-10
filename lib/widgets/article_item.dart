@@ -1,47 +1,124 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:heelingtouchproject/patient/article_details.dart';
+import 'package:heelingtouchproject/patient/therapist_page.dart';
 import 'package:sizer/sizer.dart';
+import 'package:flutter_svg_provider/flutter_svg_provider.dart';
+
+import '../controllers/sp_helper.dart';
 
 // ignore: must_be_immutable
 class ArticleItem extends StatelessWidget {
-  late String title;
-  late String description;
-  late String img;
-  ArticleItem(this.title, this.description, this.img, {Key? key})
+  String id;
+  String title;
+  String description;
+  String img;
+  ArticleItem(this.id, this.title, this.description, this.img, {Key? key})
       : super(key: key);
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {},
-      // child: Center(
-      child: Container(
-        margin: const EdgeInsets.symmetric(vertical: 250, horizontal: 15),
-        height: 20.h,
-        width: 95.w,
-        decoration: BoxDecoration(
-            borderRadius: const BorderRadius.all(Radius.circular(15)),
-            color: const Color(0xff2FA09C),
-            image: DecorationImage(
-              fit: BoxFit.fill,
-              image: AssetImage(img),
-            )),
-        child: Container(
-          decoration: const BoxDecoration(
-            borderRadius: BorderRadius.all(Radius.circular(15)),
-            gradient: LinearGradient(
-              colors: [
-                // Colors.yellow.w,
-                Color.fromARGB(255, 109, 109, 109),
-                Color.fromARGB(26, 233, 233, 233),
-              ],
-              begin: FractionalOffset(1.0, 1.0),
-              end: FractionalOffset(1.0, 0.0),
-              stops: [0.0, 1.0],
+    // return Consumer<AppProvider>(builder: (context, appProvider, x) {
+    return Directionality(
+      textDirection: TextDirection.rtl,
+      child: GestureDetector(
+          onTap: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const ArticleDetails()));
+            SpHelper.spHelper.setArticleTitle(title);
+            SpHelper.spHelper.setArticleDescription(description);
+            SpHelper.spHelper.setArticleImg(img);
+            // SpHelper.spHelper.setTherapistBio(bio);
+            // SpHelper.spHelper.setTherapistImg(img);
+            // SpHelper.spHelper.setTherapistPhoneNumber(phone);
+          },
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: SizedBox(
+              width: double.infinity,
+              height: 17.h,
+              child: Card(
+                elevation: 2.5,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(15),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        children: [
+                          Container(
+                            height: 15.h,
+                            width: 28.w,
+                            decoration: BoxDecoration(
+                                color: const Color(0xff2FA09C),
+                                borderRadius:
+                                    const BorderRadius.all(Radius.circular(15)),
+                                image: DecorationImage(
+                                  fit: BoxFit.fill,
+                                  image: NetworkImage(img == ""
+                                      ? "https://www.pngall.com/wp-content/uploads/12/Avatar-Profile-Vector-PNG-Clipart.png"
+                                      : img),
+                                )),
+                          ),
+                          SizedBox(
+                            width: 2.w,
+                          ),
+                          Column(
+                            // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SizedBox(
+                                width: 60.w,
+                                child: Text(
+                                  title,
+                                  style: TextStyle(
+                                      fontFamily: 'NeoSansArabic',
+                                      fontSize: 12.sp,
+                                      color: const Color(0xff2FA09C),
+                                      fontWeight: FontWeight.bold),
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                              SizedBox(
+                                height: 1.h,
+                              ),
+                              Visibility(
+                                visible: true,
+                                child: SizedBox(
+                                  width: 60.w,
+                                  child: Text(
+                                    description,
+                                    style: const TextStyle(
+                                      height: 1.3,
+                                      fontFamily: 'NeoSansArabic',
+                                      color: Color(0xff1D1D1D),
+                                    ),
+                                    textAlign: TextAlign.right,
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 4,
+                                    softWrap: true,
+                                  ),
+                                ),
+                              ),
+
+                              // ),
+                            ],
+                          ),
+                        ],
+                      ),
+
+                      // SizedBox(
+                      //   width: 40.w,
+                      // ),
+                    ],
+                  ),
+                ),
+              ),
             ),
-          ),
-        ),
-      ),
-      // ),
+          )),
     );
   }
 }

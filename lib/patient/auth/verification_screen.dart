@@ -26,48 +26,97 @@ class _VerificationState extends State<Verification> {
       return Directionality(
         textDirection: TextDirection.rtl,
         child: Scaffold(
-            appBar: AppBar(
-              centerTitle: true,
-              title: Text('تأكيد رقم الهاتف',
-                  style: TextStyle(
-                      color: const Color(0xffffffff), fontSize: 13.sp),
-                  textAlign: TextAlign.center),
-
-              backgroundColor: const Color(0xff2FA09C),
-              // elevation: 2,
-              shadowColor: Colors.grey[100], automaticallyImplyLeading: false,
-              systemOverlayStyle: SystemUiOverlayStyle.light,
-              elevation: 0,
-              leading: IconButton(
-                icon: const Icon(
-                  Icons.arrow_back_ios,
-                  color: Colors.white,
-                ),
-                onPressed: () {
-                  Navigator.pop(
-                    context,
-                  );
-                },
-              ),
-            ),
-            body: SingleChildScrollView(
-              child: Column(
-                children: [
-                  Container(
-                    color: Colors.transparent,
-                    alignment: Alignment.center,
-                    margin: EdgeInsets.only(top: 10.h),
-                    child: Text(
-                      'تم ارسال كود تفعيل الى ${authProvider.phoneController.text}',
-                      style: TextStyle(color: Colors.black45, fontSize: 12.sp),
+            body: SizedBox(
+          height: 100.h,
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                    alignment: Alignment.topRight,
+                    height: 22.h,
+                    width: double.infinity,
+                    decoration: const BoxDecoration(
+                        image: DecorationImage(
+                      image: AssetImage(
+                        'assets/topwavee.png',
+                      ),
+                      fit: BoxFit.fill,
+                    )),
+                    child: Padding(
+                      padding: EdgeInsets.only(top: 6.h),
+                      child: IconButton(
+                          onPressed: () {
+                            Navigator.pop(
+                              context,
+                            );
+                          },
+                          icon: const Icon(
+                            Icons.arrow_back_ios,
+                            color: Colors.white,
+                          )),
+                    )),
+                Padding(
+                  padding: EdgeInsets.only(right: 4.w),
+                  child: Text(
+                    'التحقق من رقم الموبايل',
+                    style: TextStyle(
+                      color: const Color(0xff1D1D1D),
+                      fontFamily: 'NeoSansArabic',
+                      fontSize: 16.sp,
                     ),
+                    textAlign: TextAlign.right,
                   ),
-                  Container(
-                    margin: EdgeInsets.only(top: 10.h),
+                ),
+                Container(
+                  margin: EdgeInsets.only(top: 3.h, right: 12.w),
+                  child: Image.asset(
+                    'assets/verfication.png',
+                    width: 70.w,
+                    height: 32.h,
+                    fit: BoxFit.fill,
+                  ),
+                ),
+                Row(
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.only(right: 4.w, top: 5.h),
+                      child: Text(
+                        'لقد ارسالنا لك رمز التحقق إلى: ',
+                        style: TextStyle(
+                          color: const Color(0xff2FA09C),
+                          fontFamily: 'NeoSansArabic',
+                          fontSize: 11.sp,
+                        ),
+                        textAlign: TextAlign.right,
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(top: 5.h),
+                      child: Text(
+                        '970${authProvider.phoneController.text}+',
+                        style: TextStyle(
+                          color: const Color(0xff2FA09C),
+                          fontFamily: 'NeoSansArabic',
+                          fontSize: 11.sp,
+                        ),
+                        textAlign: TextAlign.right,
+                      ),
+                    ),
+                  ],
+                ),
+                Center(
+                  child: Padding(
+                    padding: EdgeInsets.only(top: 3.h),
                     child: VerificationCode(
                       keyboardType: TextInputType.number,
-                      length: 6,
-                      autofocus: true,
+                      underlineUnfocusedColor: Colors.grey,
+                      underlineColor: Colors.grey,
+                      // length: 6,
+                      digitsOnly: true,
+                      fullBorder: true,
+                      cursorColor: const Color(0xff2FA09C),
+                      // autofocus: true,
                       onCompleted: (String value) {
                         _code = value;
 
@@ -82,24 +131,26 @@ class _VerificationState extends State<Verification> {
                       },
                     ),
                   ),
-                  Padding(
-                    padding: EdgeInsets.only(top: 10.h),
-                    child: App_Button("تأكيد", 330.w, () {
-                      if (_code == "") {
-                        const SnackBar snackBar = SnackBar(
-                          content: Text("Please Fill the Fields !"),
-                          backgroundColor: Colors.red,
-                        );
-                        snackbarKey.currentState?.showSnackBar(snackBar);
-                      } else {
-                        authProvider.verifyNumber(_code);
-                      }
-                      log(_code);
-                    }),
-                  ),
-                ],
-              ),
-            )),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(top: 4.h),
+                  child: App_Button("تأكيد", 90.w, () {
+                    if (_code == "" || _code.length != 6) {
+                      const SnackBar snackBar = SnackBar(
+                        content: Text(".قم رجاءاً بإدخال كود التحقق اولاً"),
+                        backgroundColor: Colors.red,
+                      );
+                      snackbarKey.currentState?.showSnackBar(snackBar);
+                    } else {
+                      authProvider.verifyNumber(_code);
+                    }
+                    log(_code);
+                  }),
+                ),
+              ],
+            ),
+          ),
+        )),
       );
     });
   }

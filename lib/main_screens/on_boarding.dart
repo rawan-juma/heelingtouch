@@ -66,7 +66,10 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               },
               child: Text(
                 'تخطي',
-                style: TextStyle(color: Colors.black, fontSize: 14.sp),
+                style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 13.sp,
+                    fontFamily: 'NeoSansArabic'),
                 textAlign: TextAlign.right,
               )),
         ),

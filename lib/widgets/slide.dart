@@ -23,7 +23,10 @@ class Slide extends StatelessWidget {
             padding: EdgeInsets.only(top: 4.h, right: 4.w),
             child: Text(
               title,
-              style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                  fontSize: 15.sp,
+                  fontWeight: FontWeight.bold,
+                  fontFamily: 'NeoSansArabic'),
               textAlign: TextAlign.right,
             ),
           ),
@@ -31,7 +34,7 @@ class Slide extends StatelessWidget {
             padding: EdgeInsets.only(top: 2.h, right: 4.w, left: 6.w),
             child: Text(
               subTitle,
-              style: TextStyle(fontSize: 14.sp),
+              style: TextStyle(fontSize: 13.sp, fontFamily: 'NeoSansArabic'),
               textAlign: TextAlign.right,
             ),
           )

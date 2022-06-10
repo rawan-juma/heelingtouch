@@ -6,6 +6,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:heelingtouchproject/controllers/firebase_helper.dart';
 import 'package:heelingtouchproject/controllers/route_helper.dart';
 import 'package:heelingtouchproject/main.dart';
+import 'package:heelingtouchproject/patient/auth/verification_screen.dart';
 import 'package:no_context_navigation/no_context_navigation.dart';
 
 import '../patient/auth/sign_in.dart';
@@ -28,7 +29,8 @@ class AuthHelper {
       phoneNumber: "+970" + phoneNumber,
       verificationCompleted: (PhoneAuthCredential credential) async {
         await firebaseAuth.signInWithCredential(credential).then((value) {
-          log("You are logged in successfully");
+          // log("You are logged in successfully");
+          const Center(child: CircularProgressIndicator());
 
           // navKey.currentState.pushReplacementNamed(routeName);
         });
@@ -38,7 +40,7 @@ class AuthHelper {
         e.message ==
                 "A network error (such as timeout, interrupted connection or unreachable host) has occurred."
             ? Fluttertoast.showToast(
-                msg: "Check Your Internet Connection",
+                msg: "!قم بفحص الانترنت خاصتك",
                 toastLength: Toast.LENGTH_SHORT,
                 gravity: ToastGravity.TOP,
                 timeInSecForIosWeb: 2,
@@ -60,6 +62,7 @@ class AuthHelper {
         otpVisibility = true;
         verificationID = verificationId;
         log(verificationId);
+        navService.pushNamed(Verification.routeName, args: 'From Home Screen');
         // setState(() {});
       },
       codeAutoRetrievalTimeout: (String verificationId) {},
@@ -73,19 +76,41 @@ class AuthHelper {
     log(verificationID);
     try {
       await firebaseAuth.signInWithCredential(credential).then(
-        (value) {
+        (value) async {
+          log(value.toString());
           navService.pushNamed(MyHomePage1.routeName, args: 'From Home Screen');
-        },
-      ).whenComplete(
-        () async {
           await FirestoreHelper.firestoreHelper.addUserToDB(
               firebaseAuth.currentUser!.uid, username, phoneNumber, password);
           verificationID = "";
-          log(verificationID);
         },
       );
     } catch (err) {
-      log(err.toString());
+      if (err.toString() ==
+          "[firebase_auth/invalid-verification-code] The sms verification code used to create the phone auth credential is invalid. Please resend the verification code sms and be sure use the verification code provided by the user.") {
+        const SnackBar snackBar = SnackBar(
+          content: Text(
+            '!الكود الذي قمت بادخاله خاطئ',
+            style: TextStyle(
+              fontFamily: 'NeoSansArabic',
+            ),
+            textAlign: TextAlign.right,
+          ),
+          backgroundColor: Colors.red,
+        );
+        snackbarKey.currentState?.showSnackBar(snackBar);
+      } else {
+        const SnackBar snackBar = SnackBar(
+          content: Text(
+            'هناك خطأ ما!',
+            style: TextStyle(
+              fontFamily: 'NeoSansArabic',
+            ),
+            textAlign: TextAlign.right,
+          ),
+          backgroundColor: Colors.red,
+        );
+        snackbarKey.currentState?.showSnackBar(snackBar);
+      }
     }
   }
 
@@ -143,7 +168,13 @@ class AuthHelper {
       if (e.code == 'user-not-found') {
         log(e.code);
         const SnackBar snackBar = SnackBar(
-          content: Text('user not found'),
+          content: Text(
+            '!هذا الحساب غير موجود',
+            style: TextStyle(
+              fontFamily: 'NeoSansArabic',
+            ),
+            textAlign: TextAlign.right,
+          ),
           backgroundColor: Colors.red,
         );
 
@@ -151,7 +182,13 @@ class AuthHelper {
       } else if (e.code == 'wrong-password') {
         log(e.code);
         const SnackBar snackBar = SnackBar(
-          content: Text('Wrong password provided for that user.'),
+          content: Text(
+            '!كلمة المرور خاطئة',
+            style: TextStyle(
+              fontFamily: 'NeoSansArabic',
+            ),
+            textAlign: TextAlign.right,
+          ),
           backgroundColor: Colors.red,
         );
         snackbarKey.currentState?.showSnackBar(snackBar);

@@ -44,7 +44,8 @@ class ForgetPassword extends StatelessWidget {
             child: Text(
               'إسترجاع كلمة المرور',
               style: TextStyle(
-                fontSize: 18.sp,
+                fontSize: 16.sp,
+                fontFamily: 'NeoSansArabic',
               ),
               textAlign: TextAlign.right,
             ),
@@ -52,8 +53,8 @@ class ForgetPassword extends StatelessWidget {
           Center(
             child: Image.asset(
               'assets/forgetpassword.png',
-              width: 75.w,
-              height: 35.h,
+              width: 70.w,
+              height: 32.h,
               fit: BoxFit.fill,
             ),
           ),

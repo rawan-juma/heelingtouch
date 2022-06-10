@@ -29,9 +29,13 @@ class FirstRigestrePage extends StatelessWidget {
               Text(
                 'التسجيل كـ',
                 style: TextStyle(
+                    fontFamily: 'NeoSansArabic',
                     fontSize: 18.sp,
                     fontWeight: FontWeight.bold,
                     color: const Color(0xff2FA09C)),
+              ),
+              SizedBox(
+                height: 2.h,
               ),
               App_Button('مريض', 90.w, () {
                 Navigator.push(

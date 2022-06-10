@@ -163,7 +163,8 @@ class PatientHome extends StatelessWidget {
                           child: Text(
                             "عرض الكل",
                             style: TextStyle(
-                                fontSize: 11.sp,
+                                fontFamily: 'NeoSansArabic',
+                                fontSize: 10.sp,
                                 color: const Color(0xff2FA09C)),
                           ),
                         )
@@ -187,7 +188,8 @@ class PatientHome extends StatelessWidget {
                       children: [
                         Text(
                           "قصص نجاح",
-                          style: TextStyle(fontSize: 13.sp),
+                          style: TextStyle(
+                              fontFamily: 'NeoSansArabic', fontSize: 13.sp),
                         ),
                         GestureDetector(
                           onTap: () {
@@ -200,7 +202,8 @@ class PatientHome extends StatelessWidget {
                           child: Text(
                             "عرض الكل",
                             style: TextStyle(
-                                fontSize: 11.sp,
+                                fontFamily: 'NeoSansArabic',
+                                fontSize: 10.sp,
                                 color: const Color(0xff2FA09C)),
                           ),
                         )
@@ -214,7 +217,7 @@ class PatientHome extends StatelessWidget {
                         scrollDirection: Axis.horizontal,
                         children: appProvider.storiesList.map((e) {
                           log(e.imgs);
-                          return StorytItem(e.imgs);
+                          return StorytItem(e.description, e.imgs);
                         }).toList()),
                   ),
                 ],

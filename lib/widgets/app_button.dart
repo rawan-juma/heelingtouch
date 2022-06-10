@@ -20,6 +20,7 @@ class App_Button extends StatelessWidget {
               child: Text(
                 title,
                 style: TextStyle(
+                  fontFamily: 'NeoSansArabic',
                   fontSize: 15.sp,
                   color: const Color(0xffFFFFFF),
                 ),
@@ -58,6 +59,7 @@ class App_Button2 extends StatelessWidget {
               child: Text(
                 title,
                 style: TextStyle(
+                  fontFamily: 'NeoSansArabic',
                   fontSize: 15.sp,
                   color: const Color(0xff2FA09C),
                 ),
@@ -94,7 +96,8 @@ class App_Button3 extends StatelessWidget {
             child: Text(
               title,
               style: TextStyle(
-                fontSize: 15.sp,
+                fontFamily: 'NeoSansArabic',
+                fontSize: 13.sp,
                 color: const Color(0xffffffff),
               ),
             ),

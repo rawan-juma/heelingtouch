@@ -194,7 +194,7 @@ class _MyHomePageState1 extends State<MyHomePage1> {
           FABBottomAppBarItem(
               activeIcon: Image.asset("assets/play.png"),
               inActiveIcon: Image.asset("assets/InPlay.png"),
-              text: 'التصفح'),
+              text: 'المحتوى الطبي'),
         ],
         bodyItems: [
           PatientHome(),

@@ -23,18 +23,22 @@ class CustomTextField extends StatelessWidget {
             child: SizedBox(
               height: 10.h,
               child: TextFormField(
-                obscureText:
-                    inputType == TextInputType.visiblePassword ? true : false,
                 // inputType == TextInputType.visiblePassword ? (obscureText: true):(obscureText:false)
                 controller: controller,
+                obscureText:
+                    inputType == TextInputType.visiblePassword ? true : false,
                 keyboardType: inputType,
                 textAlign: TextAlign.right,
-                style: const TextStyle(color: Colors.black),
+                style: const TextStyle(
+                    fontFamily: 'NeoSansArabic', color: Colors.black),
                 maxLength: length,
                 decoration: InputDecoration(
+                  counter: Offstage(),
                   labelText: hint,
                   labelStyle: TextStyle(
-                      fontSize: 13.sp, color: const Color(0xff2FA09C)),
+                      fontFamily: 'NeoSansArabic',
+                      fontSize: 12.sp,
+                      color: const Color(0xff2FA09C)),
                   suffixIcon: iconS,
                   prefixIcon: iconP,
                   enabledBorder: UnderlineInputBorder(
