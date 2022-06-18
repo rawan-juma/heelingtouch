@@ -1,18 +1,11 @@
 import 'dart:developer';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:heelingtouchproject/controllers/firebase_helper.dart';
-import 'package:heelingtouchproject/controllers/route_helper.dart';
 import 'package:heelingtouchproject/main.dart';
 import 'package:heelingtouchproject/patient/auth/verification_screen.dart';
 import 'package:no_context_navigation/no_context_navigation.dart';
-
-import '../patient/auth/sign_in.dart';
-import '../widgets/custom_dialog.dart';
-// import '../patient/auth/verification_screen.dart';
-// import 'package:heelingtouchproject/widgets/custom_dialog.dart';
 
 class AuthHelper {
   AuthHelper._();
@@ -70,7 +63,12 @@ class AuthHelper {
   }
 
   void verifyOTP(
-      String otp, String username, String phoneNumber, String password) async {
+    String otp,
+    String username,
+    String phoneNumber,
+    String address,
+    String age,
+  ) async {
     PhoneAuthCredential credential = PhoneAuthProvider.credential(
         verificationId: verificationID, smsCode: otp);
     log(verificationID);
@@ -80,7 +78,13 @@ class AuthHelper {
           log(value.toString());
           navService.pushNamed(MyHomePage1.routeName, args: 'From Home Screen');
           await FirestoreHelper.firestoreHelper.addUserToDB(
-              firebaseAuth.currentUser!.uid, username, phoneNumber, password);
+            firebaseAuth.currentUser!.uid,
+            username,
+            phoneNumber,
+            address,
+            age,
+          );
+          // FirestoreHelper.firestoreHelper.getUser();
           verificationID = "";
         },
       );
@@ -115,47 +119,8 @@ class AuthHelper {
   }
 
   String getUserId() {
-    // log('user id= ${firebaseAuth.currentUser.uid}');
-    // if (firebaseAuth.currentUser.uid == null) {
-    //   log('no user added yet!');
-    // }
-    // return 'no user added yet';
-    // } else {
-
-    // try {
-    // log(firebaseAuth.currentUser?.uid.toString());
     return firebaseAuth.currentUser!.uid;
-    // } catch (e) {
-    //   log('error from get user id: $e');
-    // }
-    // return "";
-    // }
   }
-
-// // ignore: missing_return
-//   Future<Object> signup(String email, String password) async {
-//     try {
-//       UserCredential userCredential = await firebaseAuth
-//           .createUserWithEmailAndPassword(email: email, password: password);
-//       return userCredential;
-//     } on FirebaseAuthException catch (e) {
-//       if (e.code == 'weak-password') {
-//         CustomDialoug.customDialoug
-//             .showCustomDialoug('The password provided is too weak.');
-//       } else if (e.code == 'email-already-in-use') {
-//         CustomDialoug.customDialoug
-//             .showCustomDialoug('The account already exists for that email.');
-//       } else {
-//         CustomDialoug.customDialoug
-//             .showCustomDialoug('${e.code},check for any space');
-//         // print('errooooooooor$e');
-//       }
-//     } catch (e) {
-//       log(e.toString());
-//     }
-//     return UserCredential;
-//   }
-//   // ignore: missing_return
 
   // ignore: missing_return
   Future<Object> signin(String email, String password) async {

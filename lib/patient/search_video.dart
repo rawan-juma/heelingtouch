@@ -1,18 +1,14 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:heelingtouchproject/patient/therapist_page.dart';
+import 'package:heelingtouchproject/widgets/video_item.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../controllers/app_provider.dart';
-import '../controllers/sp_helper.dart';
 
 // ignore: must_be_immutable
-class SearchTherapist extends StatelessWidget {
-  TextEditingController searchController = TextEditingController();
-
-  SearchTherapist({Key? key}) : super(key: key);
+class SearchVideo extends StatelessWidget {
+  const SearchVideo({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Consumer<AppProvider>(builder: (context, appProvider, x) {
@@ -25,14 +21,14 @@ class SearchTherapist extends StatelessWidget {
               centerTitle: true,
               title: Container(
                 width: double.infinity,
-                height: 5.h,
+                height: 6.h,
                 decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(25)),
                 child: TextField(
                   controller: appProvider.searchController,
                   onSubmitted: (controller) {
-                    appProvider.search();
+                    appProvider.searchVideo();
                   },
                   decoration: InputDecoration(
                       prefixIcon: const Icon(
@@ -74,35 +70,28 @@ class SearchTherapist extends StatelessWidget {
             body: ListView(
                 physics: const BouncingScrollPhysics(),
                 scrollDirection: Axis.vertical,
-                children: appProvider.searchedTherapists.map((e) {
+                children: appProvider.searchedVideos.map((e) {
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          const TherapistDetails()));
-                              SpHelper.spHelper.setTherapistID(e.id);
-                              SpHelper.spHelper.setTherapistFname(e.fName);
-                              SpHelper.spHelper.setTherapistLname(e.lName);
-                              SpHelper.spHelper.setTherapistBio(e.bio);
-                              SpHelper.spHelper.setTherapistImg(e.img);
-                              SpHelper.spHelper
-                                  .setTherapistPhoneNumber(e.phonenumber);
-                              appProvider.fetchTherpistStories(e.therapistID);
-                              log(e.therapistID);
-                            },
-                            child: Text(
-                              "${e.fName} ${e.lName}",
-                              style: const TextStyle(
-                                fontFamily: 'NeoSansArabic',
-                              ),
-                            )),
+                          onTap: () async {
+                            final Uri _url = Uri.parse(e.url);
+
+                            if (!await launchUrl(
+                              _url,
+                              mode: LaunchMode.inAppWebView,
+                              webViewConfiguration: const WebViewConfiguration(
+                                  enableDomStorage: false),
+                            )) {
+                              throw 'Could not launch ${e.url}';
+                            }
+                          },
+                          child: VideoItem(
+                              e.id, e.title, e.description, "", e.url),
+                        ),
                       ),
                       Divider(
                         height: 2.h,

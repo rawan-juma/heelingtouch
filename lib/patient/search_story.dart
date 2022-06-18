@@ -46,6 +46,9 @@ class SearchStory extends StatelessWidget {
                         },
                       ),
                       hintText: 'بحث',
+                      hintStyle: const TextStyle(
+                        fontFamily: 'NeoSansArabic',
+                      ),
                       border: InputBorder.none),
                 ),
               ),
@@ -87,6 +90,9 @@ class SearchStory extends StatelessWidget {
                           },
                           child: Text(
                             e.description,
+                            style: const TextStyle(
+                              fontFamily: 'NeoSansArabic',
+                            ),
                             textAlign: TextAlign.right,
                             overflow: TextOverflow.ellipsis,
                           ),

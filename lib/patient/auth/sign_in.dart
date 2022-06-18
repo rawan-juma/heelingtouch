@@ -1,11 +1,7 @@
 // ignore_for_file: file_names
 
 import 'package:flutter/material.dart';
-// import 'package:fluttertoast/fluttertoast.dart';
 import 'package:heelingtouchproject/controllers/app_provider.dart';
-import 'package:heelingtouchproject/patient/auth/sign_up.dart';
-import 'package:heelingtouchproject/patient/auth/verification_screen.dart';
-import 'package:heelingtouchproject/therapist/auth/forget_password.dart';
 import 'package:heelingtouchproject/widgets/app_button.dart';
 import 'package:heelingtouchproject/widgets/custom_text_field.dart';
 import 'package:provider/provider.dart';

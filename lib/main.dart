@@ -21,6 +21,7 @@ import 'package:no_context_navigation/no_context_navigation.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 import 'controllers/sp_helper.dart';
+import 'main_screens/register_fb.dart';
 import 'main_screens/splash.dart';
 
 void main() async {
@@ -64,6 +65,9 @@ class MyApp extends StatelessWidget {
                 return MaterialPageRoute(builder: (_) => const MyHomePage());
               case MyHomePage1.routeName:
                 return MaterialPageRoute(builder: (_) => const MyHomePage1());
+              case FirstRigestrePage.routeName:
+                return MaterialPageRoute(
+                    builder: (_) => const FirstRigestrePage());
               default:
                 return null;
             }
@@ -75,7 +79,7 @@ class MyApp extends StatelessWidget {
               // primarySwatch: Colors.blue,
               ),
           debugShowCheckedModeBanner: false,
-          home: const MyHomePage1(),
+          home: const Splash(),
         );
       }),
     );

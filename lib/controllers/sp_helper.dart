@@ -108,4 +108,40 @@ class SpHelper {
     String? userID = sharedPreferences?.getString('StoryImg');
     return userID;
   }
+
+  setPatientName(String img) {
+    sharedPreferences?.setString('PatientName', img);
+  }
+
+  getPatientName() {
+    String? userID = sharedPreferences?.getString('PatientName');
+    return userID;
+  }
+
+  setPatientphone(String img) {
+    sharedPreferences?.setString('Patientphone', img);
+  }
+
+  getPatientphone() {
+    String? userID = sharedPreferences?.getString('Patientphone');
+    return userID;
+  }
+
+  setPatientAddress(String img) {
+    sharedPreferences?.setString('PatientAddress', img);
+  }
+
+  getPatientAddress() {
+    String? userID = sharedPreferences?.getString('PatientAddress');
+    return userID;
+  }
+
+  setPatientAge(String img) {
+    sharedPreferences?.setString('PatientAge', img);
+  }
+
+  getPatientAge() {
+    String? userID = sharedPreferences?.getString('PatientAge');
+    return userID;
+  }
 }

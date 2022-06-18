@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:heelingtouchproject/model/articles.dart';
-import 'package:heelingtouchproject/model/videos.dart';
+import 'package:heelingtouchproject/patient/search_article.dart';
 import 'package:heelingtouchproject/widgets/article_item.dart';
 import 'package:heelingtouchproject/widgets/video_item.dart';
 import 'package:provider/provider.dart';
@@ -48,10 +47,11 @@ class Browse extends StatelessWidget {
                     icon: SvgPicture.asset("assets/Search.svg",
                         semanticsLabel: 'search icon'),
                     onPressed: () {
-                      // Navigator.push(
-                      //   context,
-                      //   MaterialPageRoute(builder: (context) => Settings()),
-                      // );
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const SearchArticle()),
+                      );
                     },
                   ),
                   IconButton(

@@ -133,7 +133,7 @@ class VideoItem extends StatelessWidget {
                                 ),
                                 textAlign: TextAlign.right,
                                 overflow: TextOverflow.ellipsis,
-                                maxLines: 4,
+                                maxLines: 2,
                                 softWrap: true,
                               ),
                             ),

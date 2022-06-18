@@ -22,15 +22,17 @@ class _PatientSettingsState extends State<PatientSettings> {
           appBar: AppBar(
             centerTitle: true,
             title: Text('الإعدادات',
-                style:
-                    TextStyle(color: const Color(0xffffffff), fontSize: 13.sp),
+                style: TextStyle(
+                    fontFamily: 'NeoSansArabic',
+                    color: const Color(0xffffffff),
+                    fontSize: 13.sp),
                 textAlign: TextAlign.center),
             backgroundColor: const Color(0xff2FA09C),
             // elevation: 2,
             shadowColor: Colors.grey[100],
             systemOverlayStyle: SystemUiOverlayStyle.light,
             leading: IconButton(
-              icon: Image.asset("assets/Arrow - Right 2.png"),
+              icon: const Icon(Icons.arrow_back_ios),
               onPressed: () {
                 Navigator.pop(
                   context,
@@ -48,7 +50,8 @@ class _PatientSettingsState extends State<PatientSettings> {
                   children: [
                     Text(
                       "الإشعارات",
-                      style: TextStyle(fontSize: 13.sp),
+                      style: TextStyle(
+                          fontFamily: 'NeoSansArabic', fontSize: 12.sp),
                     ),
                     FlutterSwitch(
                       width: 40.0,
@@ -90,7 +93,8 @@ class _PatientSettingsState extends State<PatientSettings> {
                   },
                   child: Text(
                     "حول التطبيق",
-                    style: TextStyle(fontSize: 13.sp),
+                    style:
+                        TextStyle(fontFamily: 'NeoSansArabic', fontSize: 12.sp),
                   ),
                 ),
                 SizedBox(
@@ -105,7 +109,8 @@ class _PatientSettingsState extends State<PatientSettings> {
                 ),
                 Text(
                   "شروط الاستخدام",
-                  style: TextStyle(fontSize: 13.sp),
+                  style:
+                      TextStyle(fontFamily: 'NeoSansArabic', fontSize: 12.sp),
                 ),
                 SizedBox(
                   height: 1.h,

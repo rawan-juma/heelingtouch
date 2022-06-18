@@ -6,7 +6,7 @@ import 'package:sizer/sizer.dart';
 
 class FirstRigestrePage extends StatelessWidget {
   const FirstRigestrePage({Key? key}) : super(key: key);
-
+static const routeName = '/registerHome';
   @override
   Widget build(BuildContext context) {
     return Scaffold(

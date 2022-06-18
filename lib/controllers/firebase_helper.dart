@@ -4,8 +4,9 @@ import 'dart:developer';
 import 'dart:io';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:flutter/material.dart';
 import 'package:heelingtouchproject/controllers/auth_helper.dart';
+import 'package:heelingtouchproject/main.dart';
 import 'package:heelingtouchproject/model/Ads.dart';
 import 'package:heelingtouchproject/model/messege.dart';
 import 'package:heelingtouchproject/model/therapist.dart';
@@ -22,20 +23,49 @@ class FirestoreHelper {
   static FirestoreHelper firestoreHelper = FirestoreHelper._();
   FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
 
-  Future<void> addUserToDB(String userID, String username, String phoneNumber,
-      String password) async {
+  Future<void> addUserToDB(
+    String userID,
+    String username,
+    String phoneNumber,
+    String address,
+    String age,
+  ) async {
     try {
       String uri =
           'https://heelingtouchproject-default-rtdb.firebaseio.com/Patient.json';
-      http.Response res = await http.post(Uri.parse(uri),
-          body: json.encode({
-            'userID': userID,
-            'patient_username': username,
-            'patient_phone_number': phoneNumber,
-            'password': password
-          }));
-
-      log('responseeeeeeeeeeeeeee ${res.body}');
+      List<UserModel> users = await getAllUsers();
+      if (users.isEmpty) {
+        http.Response res = await http.post(Uri.parse(uri),
+            body: json.encode({
+              'userID': userID,
+              'patient_username': username,
+              'patient_phone_number': phoneNumber,
+              'patient_address': address,
+              'patient_age': age,
+              // 'patient_password': password,
+              'patient_image': imageUrl
+            }));
+        log('response from empty check ${res.body}');
+      } else {
+        for (int i = 0; i <= users.length - 1; i++) {
+          if (users[i].userID == userID) {
+            log("this patient has been added before");
+          } else {
+            http.Response res = await http.post(Uri.parse(uri),
+                body: json.encode({
+                  'userID': userID,
+                  'patient_username': username,
+                  'patient_phone_number': phoneNumber,
+                  'patient_address': address,
+                  'patient_age': age,
+                  // 'patient_password': password,
+                  'patient_image': imageUrl
+                }));
+            log('responseeeeeeeeeeeeeee ${res.body}');
+            // log('responseeeeeeeeeeeeeee ${res.body}');
+          }
+        }
+      }
     } catch (err) {
       log('error: $err');
     }
@@ -52,19 +82,108 @@ class FirestoreHelper {
       final extractedData = json.decode(res.body) as Map<String, dynamic>;
 
       extractedData.forEach((userID, userData) {
-        log(userID);
+        // log(userID);
         usersList.add(UserModel(
-            id: userData['userID'],
+            id: userID,
+            userID: userData['userID'],
             phone: userData['patient_phone_number'],
             username: userData['patient_username'],
-            password: userData['password']));
+            address: userData['patient_address'],
+            age: userData['patient_age'],
+            // password: userData['patient_password'],
+            imageUrl: userData['patient_image']));
       });
 
       log('responseeeeeeeeeeeeeeeee${res.body}');
     } catch (err) {
-      log('errorrrrrrrrrrrrrrrrrrr: $err');
+      log('error from patient: $err');
     }
     return usersList;
+  }
+
+  Future<UserModel> getUser() async {
+    UserModel? usersList;
+    try {
+      String uri =
+          'https://heelingtouchproject-default-rtdb.firebaseio.com/Patient.json';
+      http.Response res = await http.get(
+        Uri.parse(uri),
+      );
+      final extractedData = json.decode(res.body) as Map<String, dynamic>;
+
+      extractedData.forEach((userID, userData) {
+        // log(userID);
+        if (userData['userID'] ==
+            AuthHelper.authHelper.firebaseAuth.currentUser!.uid) {
+          usersList = UserModel(
+              id: userID,
+              userID: userData['userID'],
+              phone: userData['patient_phone_number'],
+              username: userData['patient_username'],
+              address: userData['patient_address'],
+              age: userData['patient_age'],
+              // passwordcvfdd: userData['patient_password'],
+              imageUrl: userData['patient_image']);
+        }
+      });
+
+      log('responseeeeeeeeeeeeeeeee${res.body}');
+    } catch (err) {
+      log('error from patient: $err');
+    }
+    return usersList!;
+  }
+
+// ignore: non_constant_identifier_names
+  Future<void> updatePatientData(
+      String name, String address, String age, String userID) async {
+    List<UserModel> therapists = await getAllUsers();
+    late String id;
+    log(therapists.length.toString());
+    for (int i = 0; i <= therapists.length - 1; i++) {
+      log(therapists.length.toString());
+      String name1 = therapists[i].username;
+      log(name);
+      // log(name1);
+      if (userID == therapists[i].userID) {
+        id = therapists[i].id;
+        log("therapist id id id id id id id= $id");
+      }
+    }
+    try {
+      log("therapist id= $id");
+      String uri =
+          'https://heelingtouchproject-default-rtdb.firebaseio.com/Patient/$id.json';
+      if (name == "" || address == "" || age == "" || imageUrl == "") {
+        const SnackBar snackBar = SnackBar(
+          content: Text(
+            'ادخل كل البيانات',
+            style: TextStyle(
+              fontFamily: 'NeoSansArabic',
+            ),
+            textAlign: TextAlign.right,
+          ),
+          backgroundColor: Colors.red,
+        );
+        snackbarKey.currentState?.showSnackBar(snackBar);
+      } else {
+        http.Response res = await http.patch(Uri.parse(uri),
+            body: json.encode({
+              'userID': userID,
+              'patient_username': name,
+              // 'patient_phone_number': phoneNumber,
+              'patient_address': address,
+              'patient_age': age,
+              // 'patient_password': password,
+              'patient_image': imageUrl
+            }));
+        res;
+      }
+
+      // log('responseeeeeeeeeeeeeee ${res.body}');
+    } catch (err) {
+      print('error: $err');
+    }
   }
 
   Future<List<Therapist>> getAllThaerapits() async {
@@ -98,7 +217,7 @@ class FirestoreHelper {
     return usersList;
   }
 
-  Future<void> updateTherapistData(String email, String UserID) async {
+  Future<void> updateTherapistData(String email, String userID) async {
     List<Therapist> therapists = await getAllThaerapits();
     late String id;
     log(therapists.length.toString());
@@ -112,17 +231,14 @@ class FirestoreHelper {
         log("therapist id id id id id id id= $id");
       }
     }
-    // final prodIndex = therapists.indexWhere((element) => element.id == id);
-    // if(prodIndex >= 0 )
-    // log('cart id=======$id');
-    // if (id != null) {
+
     try {
       log("therapist id= $id");
       String uri =
           'https://heelingtouchproject-default-rtdb.firebaseio.com/Physiotherapist/$id.json';
       http.Response res = await http.patch(Uri.parse(uri),
           body: json.encode({
-            'userID': UserID,
+            'userID': userID,
             // 'fName': newTherapist.fName,
             // 'lName': newTherapist.lName,
             // 'bio': newTherapist.bio,
@@ -137,49 +253,7 @@ class FirestoreHelper {
     } catch (err) {
       print('error: $err');
     }
-    // } else {
-    //   log('Null');
-    // }
-    // therapists[prodIndex] = newTherapist;
-    // return newTherapist;
   }
-  // addUserToFirestore(RegisterRequest registerRequest) async {
-  //   try {
-  //     // await firebaseFirestore.collection('Users').add(registerRequest.toMap());
-  //     await firebaseFirestore
-  //         .collection('patients')
-  //         .doc(registerRequest.id)
-  //         .set(registerRequest.toMap());
-  //   } on Exception {
-  //     // print(e);
-  //   }
-  // }
-
-//   late String userName;
-//   Future<UserModel> getUserFromFirestore(String userId) async {
-//     DocumentSnapshot<Map<String, dynamic>> documentSnapshot =
-//         await firebaseFirestore.collection('patients').doc(userId).get();
-//     userName = UserModel.fromMap(documentSnapshot.data()!).username;
-
-//     return UserModel.fromMap(documentSnapshot.data()!);
-//   }
-
-//   Future<List<UserModel>> getAllUsersFromFirestore() async {
-//     QuerySnapshot querySnapshot =
-//         await firebaseFirestore.collection('patients').get();
-//     List docs = querySnapshot.docs;
-//     List<UserModel> users =
-//         docs.map((e) => UserModel.fromMap(e.data())).toList();
-
-//     return users;
-//   }
-
-//   updateProfile(UserModel userModel) async {
-//     await firebaseFirestore
-//         .collection('patients')
-//         .doc(userModel.id)
-//         .update(userModel.toMap());
-//   }
 
   String imageUrl = "";
   Future<void> addStory(
@@ -310,6 +384,34 @@ class FirestoreHelper {
     return articlesList;
   }
 
+  Future<List<Article>> searchArticles(String txt) async {
+    List<Article> articlesList = [];
+    try {
+      String uri =
+          'https://heelingtouchproject-default-rtdb.firebaseio.com/Article.json';
+      http.Response res = await http.get(
+        Uri.parse(uri),
+      );
+      final extractedData = json.decode(res.body) as Map<String, dynamic>;
+
+      extractedData.forEach((articleID, articleData) {
+        if (articleData["article_title"].contains(txt) == true) {
+          articlesList.add(Article(
+            id: articleID,
+            title: articleData['article_title'],
+            description: articleData['article_description'],
+            imgs: articleData["art_image"],
+          ));
+        }
+      });
+
+      log('response of articles ${res.body}');
+    } catch (err) {
+      log('error of articles: $err');
+    }
+    return articlesList;
+  }
+
   Future<List<Video>> fetchVideosFuture() async {
     List<Video> videosList = [];
     try {
@@ -327,6 +429,34 @@ class FirestoreHelper {
             description: videoData['video_description'],
             // imgs: videoData["art_image"],
             url: videoData["video_url"]));
+      });
+
+      log('response of videos ${res.body}');
+    } catch (err) {
+      log('error of videos: $err');
+    }
+    return videosList;
+  }
+
+  Future<List<Video>> searchVideos(String txt) async {
+    List<Video> videosList = [];
+    try {
+      String uri =
+          'https://heelingtouchproject-default-rtdb.firebaseio.com/Video.json';
+      http.Response res = await http.get(
+        Uri.parse(uri),
+      );
+      final extractedData = json.decode(res.body) as Map<String, dynamic>;
+
+      extractedData.forEach((videoID, videoData) {
+        if (videoData["video_title"].contains(txt) == true) {
+          videosList.add(Video(
+              id: videoID,
+              title: videoData['video_title'],
+              description: videoData['video_description'],
+              // imgs: videoData["art_image"],
+              url: videoData["video_url"]));
+        }
       });
 
       log('response of videos ${res.body}');

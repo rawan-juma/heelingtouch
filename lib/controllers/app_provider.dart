@@ -1,31 +1,17 @@
-// import 'dart:developer';
 import 'dart:developer';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:heelingtouchproject/controllers/auth_helper.dart';
-import 'package:heelingtouchproject/controllers/route_helper.dart';
 import 'package:heelingtouchproject/model/Ads.dart';
 import 'package:heelingtouchproject/model/articles.dart';
 import 'package:heelingtouchproject/model/messege.dart';
-// import 'package:firebase_auth/firebase_auth.dart';
-// import 'package:heelingtouchproject/helpers/auth_helper.dart';
-// import 'package:heelingtouchproject/helpers/route_helper.dart';
-// import 'package:heelingtouchproject/main.dart';
-// import 'package:heelingtouchproject/patient/auth/sign_in.dart';
-// import 'package:heelingtouchproject/model/register_request.dart';
 import 'package:heelingtouchproject/model/story.dart';
 import 'package:heelingtouchproject/model/therapist.dart';
 import 'package:heelingtouchproject/model/user_model.dart';
 import 'package:heelingtouchproject/model/videos.dart';
-import 'package:heelingtouchproject/patient/auth/sign_in.dart';
-import 'package:heelingtouchproject/patient/pateint_home.dart';
-import 'package:heelingtouchproject/patient/stories.dart';
 import 'package:no_context_navigation/no_context_navigation.dart';
-// import 'package:heelingtouchproject/widgets/custom_dialog.dart';
 import '../main.dart';
-import '../widgets/custom_dialog.dart';
+import '../main_screens/register_fb.dart';
 import 'firebase_helper.dart';
 
 class AppProvider extends ChangeNotifier {
@@ -38,6 +24,8 @@ class AppProvider extends ChangeNotifier {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController usernameController = TextEditingController();
+  TextEditingController addressController = TextEditingController();
+  TextEditingController ageController = TextEditingController();
   TextEditingController storyDescriptionController = TextEditingController();
   TextEditingController searchController = TextEditingController();
   TextEditingController searchStoryisController = TextEditingController();
@@ -47,37 +35,43 @@ class AppProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  verifyNumber(String otp) {
-    AuthHelper.authHelper.verifyOTP(otp, usernameController.text,
-        phoneController.text, passwordController.text);
+  verifyNumber(String otp) async {
+    AuthHelper.authHelper.verifyOTP(
+      otp,
+      usernameController.text,
+      phoneController.text,
+      addressController.text,
+      ageController.text,
+    );
+    // await FirestoreHelper.firestoreHelper.getUser();
+    // getUser();
     notifyListeners();
   }
 
-  signInUser() async {
-    List<UserModel> users = await FirestoreHelper.firestoreHelper.getAllUsers();
-    for (int i = 0; i <= users.length - 1; i++) {
-      if (phoneController.text == users[i].phone &&
-          passwordController.text == users[i].password) {
-        Fluttertoast.showToast(
-          msg: "${users[i].username}, ${users[i].phone}, ${users[i].id}",
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.TOP,
-          timeInSecForIosWeb: 2,
-          backgroundColor: const Color.fromARGB(255, 0, 209, 28),
-          textColor: Colors.white,
-          fontSize: 16.0,
-        );
-        // RouteHelper.routeHelper.goToPageWithReplacement(PatientHome.routeName);
-      }
-    }
+  updateProfile() async {
+    await FirestoreHelper.firestoreHelper.updatePatientData(
+        usernameController.text,
+        addressController.text,
+        ageController.text,
+        AuthHelper.authHelper.firebaseAuth.currentUser!.uid);
+    getUser();
+    notifyListeners();
+  }
+
+  UserModel? user;
+  getUser() async {
+    user = await FirestoreHelper.firestoreHelper.getUser();
+    notifyListeners();
   }
 
   AppProvider() {
+    getUser();
     fetchStories();
     getTherapists();
     fetchAds();
     search();
     searchStrories();
+    searchArticle();
     fetchArticles();
     fetchVideos();
   }
@@ -87,20 +81,6 @@ class AppProvider extends ChangeNotifier {
     therapistsList = await FirestoreHelper.firestoreHelper.getTherapists();
     notifyListeners();
   }
-
-  // Therapist therapist = Therapist(
-  //     id: "id",
-  //     fName: "fName",
-  //     lName: "lName",
-  //     bio: "bio",
-  //     phonenumber: "phonenumber",
-  //     img: "img",
-  //     status: true,
-  //     email: "password");
-  // getTherapist(String id) async {
-  //   therapist = await FirestoreHelper.firestoreHelper.getTherapist(id);
-  //   notifyListeners();
-  // }
 
   addStory() async {
     await FirestoreHelper.firestoreHelper.addStory(
@@ -185,51 +165,30 @@ class AppProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  List<Article> searchedArticles = [];
+  searchArticle() async {
+    searchedArticles = await FirestoreHelper.firestoreHelper
+        .searchArticles(searchController.text);
+    notifyListeners();
+  }
+
+  List<Video> searchedVideos = [];
+  searchVideo() async {
+    searchedVideos = await FirestoreHelper.firestoreHelper
+        .searchVideos(searchController.text);
+    notifyListeners();
+  }
+
   uploadImage() async {
     await FirestoreHelper.firestoreHelper.uploadImage();
     notifyListeners();
   }
-
-  // getAllUsers() async {
-  //   users = await FirestoreHelper.firestoreHelper.getAllUsersFromFirestore();
-  //   users.removeWhere((element) => element.id == myId);
-  //   notifyListeners();
-  // }
-  // TextEditingController phoneNumberController = TextEditingController();
-
-  // fillControllers() {
-  //   emailController.text = user.email;
-  //   usernameController.text = user.username;
-  // }
-
-  // late UserModel user;
-  // getUserFromFirestore() async {
-  //   String? userId = AuthHelper.authHelper.getUserId();
-  //   user = await FirestoreHelper.firestoreHelper.getUserFromFirestore(userId!);
-
-  //   notifyListeners();
-  // }
 
   resetControllers() {
     usernameController.clear();
     emailController.clear();
     passwordController.clear();
   }
-
-  // updateProfile() async {
-  //   try {
-  //     UserModel userModel = UserModel(
-  //         id: user.id,
-  //         email: emailController.text,
-  //         username: usernameController.text);
-
-  //     await FirestoreHelper.firestoreHelper.updateProfile(userModel);
-  //     getUserFromFirestore();
-  //     // Navigator.of(RouteHelper.routeHelper.navKey.currentContext).pop();
-  //   } catch (err) {
-  //     // print(err);
-  //   }
-  // }
 
   checkLogin() {
     bool isLoggedIn = AuthHelper.authHelper.checkUserLoging();
@@ -247,7 +206,7 @@ class AppProvider extends ChangeNotifier {
 
   logout() async {
     await AuthHelper.authHelper.logout();
-    navService.pushNamedAndRemoveUntil(SignIn.routeName,
+    navService.pushNamedAndRemoveUntil(FirstRigestrePage.routeName,
         args: 'From Home Screen');
 
     // RouteHelper.routeHelper.goToPageWithReplacement(Sign_In.routeName);

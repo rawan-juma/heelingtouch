@@ -18,7 +18,7 @@ import 'patient_profile.dart';
 
 // ignore: must_be_immutable
 class PatientHome extends StatelessWidget {
-  PatientHome({Key? key}) : super(key: key);
+  const PatientHome({Key? key}) : super(key: key);
   static const routeName = "/PatientHome";
 
   @override
