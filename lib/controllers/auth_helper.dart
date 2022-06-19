@@ -2,8 +2,10 @@ import 'dart:developer';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:heelingtouchproject/controllers/app_provider.dart';
 import 'package:heelingtouchproject/controllers/firebase_helper.dart';
 import 'package:heelingtouchproject/main.dart';
+import 'package:heelingtouchproject/main_screens/register_fb.dart';
 import 'package:heelingtouchproject/patient/auth/verification_screen.dart';
 import 'package:no_context_navigation/no_context_navigation.dart';
 
@@ -84,7 +86,8 @@ class AuthHelper {
             address,
             age,
           );
-          // FirestoreHelper.firestoreHelper.getUser();
+
+          await FirestoreHelper.firestoreHelper.getUser();
           verificationID = "";
         },
       );
@@ -186,8 +189,13 @@ class AuthHelper {
 
   bool checkUserLoging() {
     if (firebaseAuth.currentUser == null) {
+      navService.pushNamed(FirstRigestrePage.routeName,
+          args: 'From Home Screen');
+
       return false;
     } else {
+      //  await FirestoreHelper.firestoreHelper.getUser();
+      navService.pushNamed(MyHomePage1.routeName, args: 'From Home Screen');
       return true;
     }
   }

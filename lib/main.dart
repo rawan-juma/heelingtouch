@@ -8,6 +8,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:heelingtouchproject/controllers/app_provider.dart';
 import 'package:heelingtouchproject/controllers/fb_notifications.dart';
+import 'package:heelingtouchproject/controllers/firebase_helper.dart';
 import 'package:heelingtouchproject/patient/auth/sign_in.dart';
 import 'package:heelingtouchproject/patient/auth/sign_up.dart';
 import 'package:heelingtouchproject/patient/auth/verification_screen.dart';
@@ -157,6 +158,12 @@ class MyHomePage1 extends StatefulWidget {
 }
 
 class _MyHomePageState1 extends State<MyHomePage1> {
+  @override
+  void initState() async {
+    super.initState();
+    await FirestoreHelper.firestoreHelper.getUser();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Directionality(

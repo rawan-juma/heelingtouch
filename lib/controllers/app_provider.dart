@@ -65,7 +65,6 @@ class AppProvider extends ChangeNotifier {
   }
 
   AppProvider() {
-    getUser();
     fetchStories();
     getTherapists();
     fetchAds();
@@ -191,7 +190,7 @@ class AppProvider extends ChangeNotifier {
   }
 
   checkLogin() {
-    bool isLoggedIn = AuthHelper.authHelper.checkUserLoging();
+    bool isLoggedIn = AuthHelper.authHelper.checkUserLoging() as bool;
     if (isLoggedIn) {
       AuthHelper.authHelper.getUserId();
       log(AuthHelper.authHelper.getUserId().toString());
