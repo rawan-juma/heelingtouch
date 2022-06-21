@@ -159,9 +159,10 @@ class MyHomePage1 extends StatefulWidget {
 
 class _MyHomePageState1 extends State<MyHomePage1> {
   @override
-  void initState() async {
+  void initState() {
     super.initState();
-    await FirestoreHelper.firestoreHelper.getUser();
+    // AppProvider appProvider = AppProvider();
+    // appProvider.getUser();
   }
 
   @override

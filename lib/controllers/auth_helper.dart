@@ -87,7 +87,7 @@ class AuthHelper {
             age,
           );
 
-          await FirestoreHelper.firestoreHelper.getUser();
+          // await FirestoreHelper.firestoreHelper.getUser();
           verificationID = "";
         },
       );
@@ -194,7 +194,6 @@ class AuthHelper {
 
       return false;
     } else {
-      //  await FirestoreHelper.firestoreHelper.getUser();
       navService.pushNamed(MyHomePage1.routeName, args: 'From Home Screen');
       return true;
     }

@@ -204,7 +204,7 @@ class _TherapistDetailsState extends State<TherapistDetails> {
                         controller: ScrollController(keepScrollOffset: false),
                         shrinkWrap: true,
                         scrollDirection: Axis.vertical,
-                        children: appProvider.TherpistStoriesList.map((value) {
+                        children: appProvider.therpistStoriesList.map((value) {
                           return GestureDetector(
                             onTap: () {
                               Navigator.push(

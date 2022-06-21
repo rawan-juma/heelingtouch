@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:heelingtouchproject/controllers/auth_helper.dart';
 import 'package:heelingtouchproject/model/Ads.dart';
 import 'package:heelingtouchproject/model/articles.dart';
+import 'package:heelingtouchproject/model/chat.dart';
 import 'package:heelingtouchproject/model/messege.dart';
 import 'package:heelingtouchproject/model/story.dart';
 import 'package:heelingtouchproject/model/therapist.dart';
@@ -24,6 +25,7 @@ class AppProvider extends ChangeNotifier {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController usernameController = TextEditingController();
+  TextEditingController bioController = TextEditingController();
   TextEditingController addressController = TextEditingController();
   TextEditingController ageController = TextEditingController();
   TextEditingController storyDescriptionController = TextEditingController();
@@ -54,7 +56,7 @@ class AppProvider extends ChangeNotifier {
         addressController.text,
         ageController.text,
         AuthHelper.authHelper.firebaseAuth.currentUser!.uid);
-    getUser();
+    await getUser();
     notifyListeners();
   }
 
@@ -73,6 +75,7 @@ class AppProvider extends ChangeNotifier {
     searchArticle();
     fetchArticles();
     fetchVideos();
+    // getUser();
   }
   List<Therapist> therapistsList = [];
 
@@ -85,6 +88,7 @@ class AppProvider extends ChangeNotifier {
     await FirestoreHelper.firestoreHelper.addStory(
         AuthHelper.authHelper.getUserId().toString(),
         storyDescriptionController.text);
+    await getUser();
     notifyListeners();
   }
 
@@ -119,13 +123,25 @@ class AppProvider extends ChangeNotifier {
     // log('user id cat ___ ${AuthHelper.authHelper.getUserId()}');
     // SpHelper.spHelper.setUserID(AuthHelper.authHelper.getUserId());
     isLoading = true;
+
     notifyListeners();
   }
 
-  List<Stroies> TherpistStoriesList = [];
+  List<Stroies> therpistStoriesList = [];
   fetchTherpistStories(String id) async {
-    TherpistStoriesList =
+    therpistStoriesList =
         await FirestoreHelper.firestoreHelper.fetchTherapistStoriesFuture(id);
+    // log('user id cat ___ ${AuthHelper.authHelper.getUserId()}');
+    // SpHelper.spHelper.setUserID(AuthHelper.authHelper.getUserId());
+    isLoading = true;
+    notifyListeners();
+  }
+
+  List<Stroies> therpistStoriesList1 = [];
+  fetchTherpistStories1() async {
+    therpistStoriesList = await FirestoreHelper.firestoreHelper
+        .fetchTherapistStoriesFuture(
+            AuthHelper.authHelper.firebaseAuth.currentUser!.uid);
     // log('user id cat ___ ${AuthHelper.authHelper.getUserId()}');
     // SpHelper.spHelper.setUserID(AuthHelper.authHelper.getUserId());
     isLoading = true;
@@ -231,6 +247,7 @@ class AppProvider extends ChangeNotifier {
         userId = userCredinial.user!.uid;
         FirestoreHelper.firestoreHelper
             .updateTherapistData(emailController.text, userCredinial.user!.uid);
+        fetchTherpistStories1();
         resetControllers();
         log('مششششششششش ايرور');
         // navKey.currentState!.pushReplacementNamed(MyHomePage.routeName);
@@ -255,22 +272,57 @@ class AppProvider extends ChangeNotifier {
     }
     // }
 
-    // resetPassword() async {
-    //   AuthHelper.authHelper.resetPassword(emailController.text);
-    //   resetControllers();
-    // }
+    // ignore: unused_element
+  }
+
+  // late Therapist therapist;
+  // getTherapist() async {
+  //   therapist = await FirestoreHelper.firestoreHelper.getTherapist();
+  //   notifyListeners();
+  // }
+
+  updateTherapistProfileData() async {
+    await FirestoreHelper.firestoreHelper.updateTherapistProfileData(
+        AuthHelper.authHelper.firebaseAuth.currentUser!.uid,
+        usernameController.text,
+        " ",
+        bioController.text,
+        phoneController.text);
+    notifyListeners();
+  }
+
+  resetPassword() async {
+    AuthHelper.authHelper.resetPassword(emailController.text);
+    resetControllers();
+    notifyListeners();
   }
 
   createChatRoom(String time, String therapistID, String messege) async {
     MessageModel messageModel = MessageModel(
-      content: messege,
+      content: "",
       recieverId: therapistID,
-      senderId: "ZtkOGoVnH2datRrIqPRfdtF2pH33",
+      senderId: AuthHelper.authHelper.firebaseAuth.currentUser!.uid,
       hour: "3:00",
     );
     await FirestoreHelper.firestoreHelper
-        .CreateChatRoom(time, therapistID, messageModel);
+        .createChatRoom(time, therapistID, messageModel);
     notifyListeners();
+  }
+
+  List<ChatRoom> chats = [];
+  getChats() async {
+    chats = await FirestoreHelper.firestoreHelper.fetchChats();
+    notifyListeners();
+  }
+
+  updateChat() async {
+    await FirestoreHelper.firestoreHelper.updatemessages(
+        "content",
+        "senderIDdkjkugkgjfd",
+        "receiverID",
+        "ZtkOGoVnH2datRrIqPRfdtF2pH33",
+        "RruXHMsFqdVipBIzRYKpPKdZxN93",
+        "time");
   }
 
   sendVericiafion() {

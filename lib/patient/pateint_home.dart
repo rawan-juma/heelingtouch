@@ -14,6 +14,7 @@ import 'package:heelingtouchproject/widgets/stories_item.dart';
 import 'package:heelingtouchproject/widgets/therapist_item.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
+import 'chat_screen.dart';
 import 'patient_profile.dart';
 
 // ignore: must_be_immutable
@@ -48,6 +49,7 @@ class PatientHome extends StatelessWidget {
                   icon: SvgPicture.asset("assets/Profile.svg",
                       semanticsLabel: 'profile icon'),
                   onPressed: () {
+                    appProvider.getUser();
                     Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -58,10 +60,12 @@ class PatientHome extends StatelessWidget {
                 IconButton(
                   icon: SvgPicture.asset("assets/Chat.svg",
                       semanticsLabel: 'chat icon'),
-                  onPressed: () {
+                  onPressed: () async {
+                    appProvider.getChats();
+                    appProvider.updateChat();
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => Chat()),
+                      MaterialPageRoute(builder: (context) => PatientChat()),
                     );
                   },
                 ),

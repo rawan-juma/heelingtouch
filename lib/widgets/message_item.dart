@@ -8,9 +8,8 @@ class messegeItem extends StatelessWidget {
   String name;
   String lastMessege;
   String day;
-  String img;
-  messegeItem(this.id, this.name, this.lastMessege, this.day, this.img,
-      {Key? key})
+  // String img;
+  messegeItem(this.id, this.name, this.lastMessege, this.day, {Key? key})
       : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -32,12 +31,13 @@ class messegeItem extends StatelessWidget {
                     Container(
                         width: 15.w,
                         height: 13.h,
-                        decoration: BoxDecoration(
-                            color: const Color(0xff2FA09C),
+                        decoration: const BoxDecoration(
+                            color: Color(0xff2FA09C),
                             shape: BoxShape.circle,
                             image: DecorationImage(
-                              fit: BoxFit.cover,
-                              image: AssetImage(img),
+                              fit: BoxFit.contain,
+                              image: NetworkImage(
+                                  "https://www.pngall.com/wp-content/uploads/12/Avatar-Profile-Vector-PNG-Clipart.png"),
                             ))),
                     SizedBox(
                       width: 2.w,
