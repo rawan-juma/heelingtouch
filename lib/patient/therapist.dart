@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:heelingtouchproject/controllers/firebase_helper.dart';
 import 'package:heelingtouchproject/patient/search_therapist.dart';
 import 'package:heelingtouchproject/widgets/thirapst2_item.dart';
 import 'package:provider/provider.dart';
@@ -68,20 +69,38 @@ class TherapistList extends StatelessWidget {
               ),
             ],
           ),
-          body: SizedBox(
-              height: 100.h,
-              child: appProvider.therapistsList.isNotEmpty
-                  ? ListView(
-                      physics: const BouncingScrollPhysics(),
-                      scrollDirection: Axis.vertical,
-                      children: appProvider.therapistsList.map((e) {
-                        return Therapist2Item(e.therapistID, e.fName,
-                            e.phonenumber, e.bio, e.img);
-                      }).toList())
-                  : const Center(
-                      child: CircularProgressIndicator(
-                      color: Color(0xff2FA09C),
-                    ))),
+          body: FutureBuilder(
+            future: FirestoreHelper.firestoreHelper.getAllThaerapits(),
+            builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+              if (snapshot.hasData) {
+                return ListView(
+                    physics: const BouncingScrollPhysics(),
+                    scrollDirection: Axis.vertical,
+                    children: appProvider.therapistsList.map((e) {
+                      return Therapist2Item(
+                          e.therapistID, e.fName, e.phonenumber, e.bio, e.img);
+                    }).toList());
+              } else {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+            },
+            // child: SizedBox(
+            //     height: 100.h,
+            //     child: appProvider.therapistsList.isNotEmpty
+            // ? ListView(
+            //     physics: const BouncingScrollPhysics(),
+            //     scrollDirection: Axis.vertical,
+            //     children: appProvider.therapistsList.map((e) {
+            //       return Therapist2Item(e.therapistID, e.fName,
+            //           e.phonenumber, e.bio, e.img);
+            //     }).toList())
+            // : const Center(
+            //     child: CircularProgressIndicator(
+            //     color: Color(0xff2FA09C),
+            //   ))
+          ),
         ),
       );
     });

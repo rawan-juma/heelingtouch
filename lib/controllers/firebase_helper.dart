@@ -50,26 +50,26 @@ class FirestoreHelper {
         // await getUser();
         log('response from empty check ${res.body}');
       } else {
-        // for (int i = 0; i <= users.length - 1; i++) {
-        //   userID = users[i].userID;
-        // ignore: iterable_contains_unrelated_type, unrelated_type_equality_checks
-        if (users.contains(userID) == userID) {
-          log("this patient has been added before");
-        } else {
-          http.Response res = await http.post(Uri.parse(uri),
-              body: json.encode({
-                'userID': userID,
-                'patient_username': username,
-                'patient_phone_number': phoneNumber,
-                'patient_address': address,
-                'patient_age': age,
-                'patient_image': imageUrl
-              }));
-          log('responseeeeeeeeeeeeeee added successfully + ${userID}');
+        for (int i = 0; i <= users.length - 1; i++) {
+          userID = users[i].userID;
+          // ignore: iterable_contains_unrelated_type, unrelated_type_equality_checks
+          if (users[i].userID == userID) {
+            log("this patient has been added before");
+          } else {
+            http.Response res = await http.post(Uri.parse(uri),
+                body: json.encode({
+                  'userID': userID,
+                  'patient_username': username,
+                  'patient_phone_number': phoneNumber,
+                  'patient_address': address,
+                  'patient_age': age,
+                  'patient_image': imageUrl
+                }));
+            log('responseeeeeeeeeeeeeee added successfully + ${userID}');
 
-          // break;
+            // break;
+          }
         }
-        // }
       }
     } catch (err) {
       log('error: $err');
@@ -354,6 +354,42 @@ class FirestoreHelper {
     return consultaionList;
   }
 
+  Future<List<Consultaion>> patientConsultaions() async {
+    List<Consultaion> consultaionList = [];
+    try {
+      String uri =
+          'https://heelingtouchproject-default-rtdb.firebaseio.com/Consultaions.json';
+      http.Response res = await http.get(
+        Uri.parse(uri),
+      );
+      List<Therapist> therapists = await getAllThaerapits();
+
+      final extractedData = json.decode(res.body) as Map<String, dynamic>;
+
+      extractedData.forEach((categoryID, categoryData) {
+        late String name;
+        late String img;
+        if (categoryData['patientID'] ==
+            AuthHelper.authHelper.firebaseAuth.currentUser!.uid) {
+          for (int i = 0; i <= therapists.length - 1; i++) {
+            if (categoryData['therapistID'] == therapists[i].therapistID) {
+              name = therapists[i].fName;
+              img = therapists[i].img;
+            }
+          }
+
+          consultaionList
+              .add(Consultaion(categoryID, name, img, categoryData['date']));
+        }
+      });
+
+      log('responseeeeeeeeeeeeeeeee${res.body}');
+    } catch (err) {
+      log('errorrrrrrrrrrrrrrrrrrr: $err');
+    }
+    return consultaionList;
+  }
+
   String imageUrl = "";
   Future<void> addStory(
     String therapistID,
@@ -585,29 +621,6 @@ class FirestoreHelper {
     } catch (err) {
       log('errorrrrrrrrrrrrrrrrrrr: $err');
     }
-  }
-
-  Future<List<Ads>> fetchConsultaions() async {
-    List<Ads> adsList = [];
-    try {
-      String uri =
-          'https://heelingtouchproject-default-rtdb.firebaseio.com/Consultaions.json';
-      http.Response res = await http.get(
-        Uri.parse(uri),
-      );
-      final extractedData = json.decode(res.body) as Map<String, dynamic>;
-
-      extractedData.forEach((categoryID, categoryData) {
-        adsList.add(Ads(
-          img: categoryData["ads_image"],
-        ));
-      });
-
-      log('responseeeeeeeeeeeeeeeee${res.body}');
-    } catch (err) {
-      log('errorrrrrrrrrrrrrrrrrrr: $err');
-    }
-    return adsList;
   }
 
   Future<List<Ads>> fetchAdsFuture() async {

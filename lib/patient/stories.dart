@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:heelingtouchproject/controllers/firebase_helper.dart';
 import 'package:heelingtouchproject/patient/search_story.dart';
 import 'package:heelingtouchproject/widgets/story2_item.dart';
 import 'package:provider/provider.dart';
@@ -70,12 +71,22 @@ class StoriesList extends StatelessWidget {
           ),
           body: SizedBox(
             height: 100.h,
-            child: ListView(
-                physics: const BouncingScrollPhysics(),
-                scrollDirection: Axis.vertical,
-                children: appProvider.storiesList.map((e) {
-                  return Story2Item(e.id, e.description, e.imgs);
-                }).toList()),
+            child: FutureBuilder(
+              future: FirestoreHelper.firestoreHelper.fetchStoriesFuture(),
+              builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+                if (snapshot.hasData) {
+                  return ListView(
+                      physics: const BouncingScrollPhysics(),
+                      scrollDirection: Axis.vertical,
+                      children: appProvider.storiesList.map((e) {
+                        return Story2Item(e.id, e.description, e.imgs);
+                      }).toList());
+                } else {
+                  return const Center(child: CircularProgressIndicator());
+                }
+              },
+              // child:
+            ),
           ),
         ),
       );

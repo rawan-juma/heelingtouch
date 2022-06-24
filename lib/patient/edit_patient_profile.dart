@@ -98,7 +98,8 @@ class EditPatientProfile extends StatelessWidget {
                       maxLines: null,
                       controller: appProvider.usernameController,
                       textAlign: TextAlign.right,
-                      style: const TextStyle(color: Colors.black),
+                      style: const TextStyle(
+                          fontFamily: 'NeoSansArabic', color: Colors.black),
                       decoration: InputDecoration(
                         hintText: appProvider.user!.username,
                         hintStyle: TextStyle(
@@ -127,7 +128,8 @@ class EditPatientProfile extends StatelessWidget {
                       enabled: false,
                       controller: appProvider.phoneController,
                       textAlign: TextAlign.right,
-                      style: const TextStyle(color: Colors.black),
+                      style: const TextStyle(
+                          fontFamily: 'NeoSansArabic', color: Colors.black),
                       decoration: InputDecoration(
                         hintText: appProvider.user!.phone,
                         hintStyle: TextStyle(
@@ -155,7 +157,8 @@ class EditPatientProfile extends StatelessWidget {
                       maxLines: null,
                       controller: appProvider.addressController,
                       textAlign: TextAlign.right,
-                      style: const TextStyle(color: Colors.black),
+                      style: const TextStyle(
+                          fontFamily: 'NeoSansArabic', color: Colors.black),
                       minLines: null,
                       decoration: InputDecoration(
                         hintText: appProvider.user!.address,
@@ -184,7 +187,8 @@ class EditPatientProfile extends StatelessWidget {
                       maxLines: null,
                       controller: appProvider.ageController,
                       textAlign: TextAlign.right,
-                      style: const TextStyle(color: Colors.black),
+                      style: const TextStyle(
+                          fontFamily: 'NeoSansArabic', color: Colors.black),
                       minLines: null,
                       decoration: InputDecoration(
                         hintText: appProvider.user!.age,
