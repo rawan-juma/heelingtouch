@@ -6,6 +6,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:heelingtouchproject/controllers/auth_helper.dart';
+import 'package:heelingtouchproject/controllers/sp_helper.dart';
 import 'package:heelingtouchproject/main.dart';
 import 'package:heelingtouchproject/model/Ads.dart';
 import 'package:heelingtouchproject/model/chat.dart';
@@ -49,29 +50,26 @@ class FirestoreHelper {
         // await getUser();
         log('response from empty check ${res.body}');
       } else {
-        for (int i = 0; i <= users.length - 1; i++) {
-          if (users[i].userID == userID) {
-            log("this patient has been added before");
+        // for (int i = 0; i <= users.length - 1; i++) {
+        //   userID = users[i].userID;
+        // ignore: iterable_contains_unrelated_type, unrelated_type_equality_checks
+        if (users.contains(userID) == userID) {
+          log("this patient has been added before");
+        } else {
+          http.Response res = await http.post(Uri.parse(uri),
+              body: json.encode({
+                'userID': userID,
+                'patient_username': username,
+                'patient_phone_number': phoneNumber,
+                'patient_address': address,
+                'patient_age': age,
+                'patient_image': imageUrl
+              }));
+          log('responseeeeeeeeeeeeeee added successfully + ${userID}');
 
-            // await getUser();
-            break;
-
-            // await getUser();
-          } else {
-            http.Response res = await http.post(Uri.parse(uri),
-                body: json.encode({
-                  'userID': userID,
-                  'patient_username': username,
-                  'patient_phone_number': phoneNumber,
-                  'patient_address': address,
-                  'patient_age': age,
-                  'patient_image': imageUrl
-                }));
-            log('responseeeeeeeeeeeeeee added successfully${users[i].userID} + ${userID}');
-
-            break;
-          }
+          // break;
         }
+        // }
       }
     } catch (err) {
       log('error: $err');
@@ -823,6 +821,43 @@ class FirestoreHelper {
       log('error in fetching chats: $err');
     }
     return chatList;
+  }
+
+  Future<List<MessageModel>> fetchmessages() async {
+    List<MessageModel> messagesList = [];
+    try {
+      String uri =
+          'https://heelingtouchproject-default-rtdb.firebaseio.com/Chat.json';
+      http.Response res = await http.get(
+        Uri.parse(uri),
+      );
+      final extractedData = json.decode(res.body) as Map<String, dynamic>;
+
+      extractedData.forEach((categoryID, categoryData) {
+        // int index = 1;
+        if (categoryData['patientID'] == SpHelper.spHelper.getPatientID() &&
+            categoryData['therapistID'] == SpHelper.spHelper.getTherapisID()) {
+          // log(categoryData['messges'].length.toString());
+          for (int i = 0; i <= categoryData['messges'].length - 1; i++) {
+            // if (categoryData['messges'][i] == 0) {
+            log("lhhhkhhknhhhhhhh");
+            // } else {
+            messagesList.add(MessageModel(
+                content: categoryData['messges'][i + 1]['content'],
+                recieverId: categoryData['messges'][i + 1]['recieverId'],
+                senderId: categoryData['messges'][i + 1]['senderId'],
+                hour: categoryData['messges'][i + 1]['hour']));
+            log("cccccccccccccccccc${categoryData['messges'][i]['content']}");
+            // }
+          }
+        }
+      });
+
+      log('responseeeeeeeeeeeeeeeee${res.body}');
+    } catch (err) {
+      log('error in fetching messages: $err');
+    }
+    return messagesList;
   }
 
   Future<void> updatemessages(

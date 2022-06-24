@@ -11,7 +11,7 @@ import '../controllers/app_provider.dart';
 
 // ignore: must_be_immutable
 class ConsultationRequests extends StatelessWidget {
-  ConsultationRequests({Key? key}) : super(key: key);
+  const ConsultationRequests({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Consumer<AppProvider>(builder: (context, appProvider, x) {

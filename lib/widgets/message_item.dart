@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:heelingtouchproject/controllers/sp_helper.dart';
 import 'package:heelingtouchproject/therapist/chat_details.dart';
 import 'package:sizer/sizer.dart';
 
@@ -7,9 +8,13 @@ class messegeItem extends StatelessWidget {
   String id;
   String name;
   String lastMessege;
+  String therapistID;
+  String patientID;
   String day;
   // String img;
-  messegeItem(this.id, this.name, this.lastMessege, this.day, {Key? key})
+  messegeItem(this.id, this.name, this.lastMessege, this.therapistID,
+      this.patientID, this.day,
+      {Key? key})
       : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -20,6 +25,8 @@ class messegeItem extends StatelessWidget {
           onTap: () {
             Navigator.push(context,
                 MaterialPageRoute(builder: (context) => const ChatDetails()));
+            SpHelper.spHelper.setTherapistID(therapistID);
+            SpHelper.spHelper.setPatientID(patientID);
           },
           child: SizedBox(
             width: double.infinity,

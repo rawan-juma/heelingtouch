@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
 import '../controllers/app_provider.dart';
+import '../controllers/notification_helper.dart';
 
 class ConsultationRequest extends StatelessWidget {
   const ConsultationRequest({Key? key}) : super(key: key);
@@ -32,7 +33,7 @@ class ConsultationRequest extends StatelessWidget {
               shadowColor: Colors.grey[100],
               systemOverlayStyle: SystemUiOverlayStyle.light,
               leading: IconButton(
-                icon: Image.asset("assets/Arrow - Right 2.png"),
+                icon: const Icon(Icons.arrow_back_ios),
                 onPressed: () {
                   Navigator.pop(
                     context,
@@ -88,7 +89,10 @@ class ConsultationRequest extends StatelessWidget {
                     textAlign: TextAlign.right,
                   ),
                 ),
-                App_Button("تأكيد الحجز", 90.w, () {
+                App_Button("تأكيد الحجز", 90.w, () async {
+                  await NotificationHelper.notificationHelper
+                      .showNotification();
+
                   appProvider.createChatRoom("3:00",
                       SpHelper.spHelper.getTherapisID(), "test test test");
                   appProvider.addConsultaion(SpHelper.spHelper.getTherapisID());

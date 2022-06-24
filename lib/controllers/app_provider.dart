@@ -36,6 +36,8 @@ class AppProvider extends ChangeNotifier {
   TextEditingController newPassController = TextEditingController();
   TextEditingController currentPassController = TextEditingController();
   TextEditingController confirmNewPassController = TextEditingController();
+  TextEditingController messageController = TextEditingController();
+
   register() {
     AuthHelper.authHelper.loginWithPhone(phoneController.text, otpVisibility);
     notifyListeners();
@@ -336,14 +338,21 @@ class AppProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  updateChat() async {
+  List<MessageModel> messages = [];
+  Future<List<MessageModel>> getMessages() async {
+    messages = await FirestoreHelper.firestoreHelper.fetchmessages();
+    notifyListeners();
+    return messages;
+  }
+
+  updateChat(String senderID, String recieverID) async {
     await FirestoreHelper.firestoreHelper.updatemessages(
-        "content",
-        "senderIDdkjkugkgjfd",
-        "receiverID",
-        "ZtkOGoVnH2datRrIqPRfdtF2pH33",
-        "RruXHMsFqdVipBIzRYKpPKdZxN93",
-        "time");
+        messageController.text,
+        senderID,
+        recieverID,
+        SpHelper.spHelper.getPatientID(),
+        SpHelper.spHelper.getTherapisID(),
+        "10:00");
   }
 
   sendVericiafion() {

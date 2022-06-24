@@ -153,4 +153,13 @@ class SpHelper {
     bool? check = sharedPreferences?.getBool('checkUser');
     return check;
   }
+
+  setPatientID(String pt) {
+    sharedPreferences?.setString("patientID", pt);
+  }
+
+  getPatientID() {
+    String? check = sharedPreferences?.getString('patientID');
+    return check;
+  }
 }

@@ -68,7 +68,7 @@ class Chat extends StatelessWidget {
                   scrollDirection: Axis.vertical,
                   children: messeges.map((e) {
                     return messegeItem(
-                      e.id,
+                      e.id, "hhhhhh", "روان جمعه",
                       e.username,
                       e.lastMessege,
                       e.dateTime,

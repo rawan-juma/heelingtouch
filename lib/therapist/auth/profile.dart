@@ -192,7 +192,7 @@ class _ProfileState extends State<Profile> {
                             margin: EdgeInsets.only(
                                 right: 5.w, left: 5.w, top: 1.h),
                             child: ReadMoreText(
-                              snapshot.data!.bio ?? "لم تتم اضافة نبذة بعد",
+                              snapshot.data?.bio ?? "لم تتم اضافة نبذة بعد",
                               trimLines: 3,
                               colorClickableText: Colors.pink,
                               trimMode: TrimMode.Line,

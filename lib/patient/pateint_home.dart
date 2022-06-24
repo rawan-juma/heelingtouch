@@ -8,7 +8,6 @@ import 'package:heelingtouchproject/controllers/app_provider.dart';
 import 'package:heelingtouchproject/patient/search_therapist.dart';
 import 'package:heelingtouchproject/patient/stories.dart';
 import 'package:heelingtouchproject/patient/therapist.dart';
-import 'package:heelingtouchproject/therapist/chat_screen.dart';
 import 'package:heelingtouchproject/therapist/notifications_screen.dart';
 import 'package:heelingtouchproject/widgets/stories_item.dart';
 import 'package:heelingtouchproject/widgets/therapist_item.dart';
@@ -62,7 +61,6 @@ class PatientHome extends StatelessWidget {
                       semanticsLabel: 'chat icon'),
                   onPressed: () async {
                     appProvider.getChats();
-                    appProvider.updateChat();
                     Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) => PatientChat()),

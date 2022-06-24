@@ -70,7 +70,7 @@ class PatientChat extends StatelessWidget {
                     children: appProvider.chats.map((e) {
                       // appProvider.get
                       return messegeItem(
-                        e.id,
+                        e.id, "روان جمعه", "مرحبا",
                         e.therapistID,
                         e.patientID,
                         e.time,

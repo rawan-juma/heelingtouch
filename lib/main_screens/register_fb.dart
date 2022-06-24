@@ -47,7 +47,6 @@ class _FirstRigestrePageState extends State<FirstRigestrePage> {
                 height: 2.h,
               ),
               App_Button('مريض', 90.w, () async {
-                await NotificationHelper.notificationHelper.showNotification();
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => SignIn()),

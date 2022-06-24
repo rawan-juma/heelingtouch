@@ -58,11 +58,11 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           padding: EdgeInsets.only(top: 1.5.h),
           child: GestureDetector(
               onTap: () {
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(
-                //       builder: (context) => const FirstRigestrePage()),
-                // );
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const FirstRigestrePage()),
+                );
               },
               child: Text(
                 'تخطي',
