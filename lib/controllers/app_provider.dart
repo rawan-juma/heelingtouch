@@ -2,9 +2,11 @@ import 'dart:developer';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:heelingtouchproject/controllers/auth_helper.dart';
+import 'package:heelingtouchproject/controllers/sp_helper.dart';
 import 'package:heelingtouchproject/model/Ads.dart';
 import 'package:heelingtouchproject/model/articles.dart';
 import 'package:heelingtouchproject/model/chat.dart';
+import 'package:heelingtouchproject/model/consultations.dart';
 import 'package:heelingtouchproject/model/messege.dart';
 import 'package:heelingtouchproject/model/story.dart';
 import 'package:heelingtouchproject/model/therapist.dart';
@@ -31,7 +33,9 @@ class AppProvider extends ChangeNotifier {
   TextEditingController storyDescriptionController = TextEditingController();
   TextEditingController searchController = TextEditingController();
   TextEditingController searchStoryisController = TextEditingController();
-
+  TextEditingController newPassController = TextEditingController();
+  TextEditingController currentPassController = TextEditingController();
+  TextEditingController confirmNewPassController = TextEditingController();
   register() {
     AuthHelper.authHelper.loginWithPhone(phoneController.text, otpVisibility);
     notifyListeners();
@@ -75,6 +79,7 @@ class AppProvider extends ChangeNotifier {
     searchArticle();
     fetchArticles();
     fetchVideos();
+    // checkLogin();
     // getUser();
   }
   List<Therapist> therapistsList = [];
@@ -103,6 +108,13 @@ class AppProvider extends ChangeNotifier {
 
       snackbarKey.currentState?.showSnackBar(snackBar);
     });
+    notifyListeners();
+  }
+
+  List<Consultaion> therapistConsultaionsList = [];
+  getTherapistConsulations() async {
+    therapistConsultaionsList =
+        await FirestoreHelper.firestoreHelper.therapistConsultaions();
     notifyListeners();
   }
 
@@ -139,12 +151,13 @@ class AppProvider extends ChangeNotifier {
 
   List<Stroies> therpistStoriesList1 = [];
   fetchTherpistStories1() async {
-    therpistStoriesList = await FirestoreHelper.firestoreHelper
+    therpistStoriesList1 = await FirestoreHelper.firestoreHelper
         .fetchTherapistStoriesFuture(
             AuthHelper.authHelper.firebaseAuth.currentUser!.uid);
     // log('user id cat ___ ${AuthHelper.authHelper.getUserId()}');
     // SpHelper.spHelper.setUserID(AuthHelper.authHelper.getUserId());
     isLoading = true;
+    // return therpistStoriesList;
     notifyListeners();
   }
 
@@ -206,17 +219,23 @@ class AppProvider extends ChangeNotifier {
   }
 
   checkLogin() {
-    bool isLoggedIn = AuthHelper.authHelper.checkUserLoging() as bool;
+    bool isLoggedIn = AuthHelper.authHelper.checkUserLoging();
     if (isLoggedIn) {
-      AuthHelper.authHelper.getUserId();
-      log(AuthHelper.authHelper.getUserId().toString());
-      navService.pushNamed(MyHomePage1.routeName, args: 'From Home Screen');
+      // AuthHelper.authHelper.getUserId();
+      // log(AuthHelper.authHelper.getUserId().toString());
+      // navService.pushNamed(MyHomePage1.routeName, args: 'From Home Screen');
     } else {
       AuthHelper.authHelper.getUserId();
       log(AuthHelper.authHelper.getUserId().toString());
       log('user ID+++++++++++++++++++++++');
       navService.pushNamed(MyHomePage1.routeName, args: 'From Home Screen');
     }
+  }
+
+  changePassword() async {
+    AuthHelper.authHelper
+        .changePassword(newPassController.text, currentPassController.text);
+    notifyListeners();
   }
 
   logout() async {
@@ -247,7 +266,9 @@ class AppProvider extends ChangeNotifier {
         userId = userCredinial.user!.uid;
         FirestoreHelper.firestoreHelper
             .updateTherapistData(emailController.text, userCredinial.user!.uid);
+        SpHelper.spHelper.checkUser(true);
         fetchTherpistStories1();
+        getTherapistConsulations();
         resetControllers();
         log('مششششششششش ايرور');
         // navKey.currentState!.pushReplacementNamed(MyHomePage.routeName);

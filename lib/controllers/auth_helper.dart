@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:heelingtouchproject/controllers/app_provider.dart';
 import 'package:heelingtouchproject/controllers/firebase_helper.dart';
+import 'package:heelingtouchproject/controllers/sp_helper.dart';
 import 'package:heelingtouchproject/main.dart';
 import 'package:heelingtouchproject/main_screens/register_fb.dart';
 import 'package:heelingtouchproject/patient/auth/verification_screen.dart';
@@ -86,7 +87,7 @@ class AuthHelper {
             address,
             age,
           );
-
+          SpHelper.spHelper.checkUser(false);
           // await FirestoreHelper.firestoreHelper.getUser();
           verificationID = "";
         },
@@ -194,8 +195,32 @@ class AuthHelper {
 
       return false;
     } else {
-      navService.pushNamed(MyHomePage1.routeName, args: 'From Home Screen');
+      if (SpHelper.spHelper.getBool() == true) {
+        navService.pushNamed(MyHomePage.routeName, args: 'From Home Screen');
+        FirestoreHelper.firestoreHelper.therapistConsultaions();
+        // getTherapistConsulations();
+        FirestoreHelper.firestoreHelper
+            .fetchTherapistStoriesFuture(firebaseAuth.currentUser!.uid);
+      } else {
+        navService.pushNamed(MyHomePage1.routeName, args: 'From Home Screen');
+      }
       return true;
+    }
+  }
+
+  changePassword(String currentPassword, String newPassword) async {
+    try {
+      //  final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+      User currentUser = firebaseAuth.currentUser!;
+      if (newPassword != "") {
+        await currentUser
+            .updatePassword(newPassword)
+            .then((value) => log("updated successfully"));
+      } else {
+        log("error message");
+      }
+    } catch (error) {
+      log(error.toString());
     }
   }
 }

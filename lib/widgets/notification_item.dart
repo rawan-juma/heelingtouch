@@ -45,10 +45,14 @@ class NotificationItem extends StatelessWidget {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(title),
+                        Text(
+                          title,
+                          style: const TextStyle(fontFamily: 'NeoSansArabic'),
+                        ),
                         Text(
                           subtitle,
-                          style: const TextStyle(color: Colors.grey),
+                          style: const TextStyle(
+                              fontFamily: 'NeoSansArabic', color: Colors.grey),
                         )
                       ],
                     ),
@@ -62,7 +66,8 @@ class NotificationItem extends StatelessWidget {
                   padding: EdgeInsets.only(bottom: 2.h),
                   child: Text(
                     day,
-                    style: const TextStyle(color: Colors.grey),
+                    style: const TextStyle(
+                        fontFamily: 'NeoSansArabic', color: Colors.grey),
                   ),
                 )
               ],

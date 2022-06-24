@@ -13,7 +13,7 @@ import '../controllers/sp_helper.dart';
 class Therapist2Item extends StatelessWidget {
   String id;
   String fName;
-  String lName;
+  // String lName;
   String phone;
   String bio;
   // String time;
@@ -21,7 +21,7 @@ class Therapist2Item extends StatelessWidget {
   Therapist2Item(
       this.id,
       this.fName,
-      this.lName,
+      // this.lName,
       this.phone,
       this.bio,
       // this.time,
@@ -41,7 +41,7 @@ class Therapist2Item extends StatelessWidget {
                       builder: (context) => const TherapistDetails()));
               SpHelper.spHelper.setTherapistID(id);
               SpHelper.spHelper.setTherapistFname(fName);
-              SpHelper.spHelper.setTherapistLname(lName);
+              // SpHelper.spHelper.setTherapistLname(lName);
               SpHelper.spHelper.setTherapistBio(bio);
               SpHelper.spHelper.setTherapistImg(img);
               SpHelper.spHelper.setTherapistPhoneNumber(phone);
@@ -90,7 +90,7 @@ class Therapist2Item extends StatelessWidget {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    "د.$fName $lName",
+                                    "د.$fName",
                                     style: TextStyle(
                                         fontFamily: 'NeoSansArabic',
                                         fontSize: 12.sp,

@@ -1,7 +1,10 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:heelingtouchproject/controllers/auth_helper.dart';
 import 'package:heelingtouchproject/controllers/firebase_helper.dart';
 import 'package:heelingtouchproject/model/story.dart';
@@ -60,7 +63,9 @@ class _ProfileState extends State<Profile> {
               centerTitle: true,
               title: Text('بروفايلي',
                   style: TextStyle(
-                      color: const Color(0xffffffff), fontSize: 13.sp),
+                      fontFamily: 'NeoSansArabic',
+                      color: const Color(0xffffffff),
+                      fontSize: 13.sp),
                   textAlign: TextAlign.center),
               backgroundColor: Color(0xff2FA09C),
               // elevation: 2,
@@ -68,7 +73,7 @@ class _ProfileState extends State<Profile> {
               automaticallyImplyLeading: false,
               systemOverlayStyle: SystemUiOverlayStyle.light,
               leading: IconButton(
-                icon: Image.asset("assets/Arrow - Right 2.png"),
+                icon: Icon(Icons.arrow_back_ios),
                 onPressed: () {
                   Navigator.pop(
                     context,
@@ -78,7 +83,8 @@ class _ProfileState extends State<Profile> {
 
               actions: [
                 IconButton(
-                  icon: Image.asset("assets/Notification.png"),
+                  icon: SvgPicture.asset("assets/Notification.svg",
+                      semanticsLabel: 'notification icon'),
                   onPressed: () {
                     Navigator.push(
                       context,
@@ -115,12 +121,12 @@ class _ProfileState extends State<Profile> {
                               Container(
                                   width: 27.w,
                                   height: 24.h,
-                                  decoration: const BoxDecoration(
+                                  decoration: BoxDecoration(
                                       color: Color(0xff2FA09C),
                                       shape: BoxShape.circle,
                                       image: DecorationImage(
                                         fit: BoxFit.cover,
-                                        image: AssetImage("assets/personP.png"),
+                                        image: NetworkImage(snapshot.data!.img),
                                       ))),
                               SizedBox(
                                 width: 2.w,
@@ -133,10 +139,11 @@ class _ProfileState extends State<Profile> {
                                     snapshot.data!.fName,
                                     overflow: TextOverflow.ellipsis,
                                     style: TextStyle(
-                                        fontSize: 14.sp,
-                                        color: Colors.black,
-                                        // fontWeight: FontWeight.bold,
-                                        fontFamily: 'MULI'),
+                                      fontSize: 12.sp,
+                                      color: Colors.black,
+                                      // fontWeight: FontWeight.bold,
+                                      fontFamily: 'NeoSansArabic',
+                                    ),
                                     textAlign: TextAlign.left,
                                   ),
                                   SizedBox(
@@ -146,16 +153,19 @@ class _ProfileState extends State<Profile> {
                                     snapshot.data!.phonenumber,
                                     overflow: TextOverflow.ellipsis,
                                     style: TextStyle(
-                                        fontSize: 14.sp,
-                                        color: Colors.black,
-                                        // fontWeight: FontWeight.bold,
-                                        fontFamily: 'MULI'),
+                                      fontSize: 12.sp,
+                                      color: Colors.black,
+                                      // fontWeight: FontWeight.bold,
+                                      fontFamily: 'NeoSansArabic',
+                                    ),
                                     textAlign: TextAlign.left,
                                   ),
                                   SizedBox(
                                     height: 1.h,
                                   ),
                                   App_Button3('تعديل الملف الشخصي', 60.w, () {
+                                    log(appProvider
+                                        .therpistStoriesList1[0].imgs);
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(
@@ -172,8 +182,9 @@ class _ProfileState extends State<Profile> {
                             child: Text(
                               "نبذة عني",
                               style: TextStyle(
+                                  fontFamily: 'NeoSansArabic',
                                   color: const Color(0xff2FA09C),
-                                  fontSize: 14.sp),
+                                  fontSize: 12.sp),
                             ),
                           ),
                           Container(
@@ -181,7 +192,7 @@ class _ProfileState extends State<Profile> {
                             margin: EdgeInsets.only(
                                 right: 5.w, left: 5.w, top: 1.h),
                             child: ReadMoreText(
-                              "لم تتم اضافة نبذة بعد",
+                              snapshot.data!.bio ?? "لم تتم اضافة نبذة بعد",
                               trimLines: 3,
                               colorClickableText: Colors.pink,
                               trimMode: TrimMode.Line,
@@ -189,13 +200,17 @@ class _ProfileState extends State<Profile> {
                               trimCollapsedText: 'اقرا المزيد',
                               trimExpandedText: 'اخفاء',
                               style: TextStyle(
-                                  color: Colors.black, fontSize: 13.sp),
+                                  fontFamily: 'NeoSansArabic',
+                                  color: Colors.black,
+                                  fontSize: 11.sp),
                               moreStyle: TextStyle(
-                                  fontSize: 13.sp,
+                                  fontFamily: 'NeoSansArabic',
+                                  fontSize: 11.sp,
                                   fontWeight: FontWeight.bold,
                                   color: const Color(0xff2FA09C)),
                               lessStyle: TextStyle(
-                                  fontSize: 13.sp,
+                                  fontFamily: 'NeoSansArabic',
+                                  fontSize: 11.sp,
                                   fontWeight: FontWeight.bold,
                                   color: const Color(0xff2FA09C)),
                             ),
@@ -204,49 +219,47 @@ class _ProfileState extends State<Profile> {
                           //   height: 60.h,
                           //   child:
                           Padding(
-                            padding: const EdgeInsets.all(10.0),
-                            child: FutureBuilder<List<Stroies>>(
-                              future: FirestoreHelper.firestoreHelper
-                                  .fetchTherapistStoriesFuture(AuthHelper
-                                      .authHelper
-                                      .firebaseAuth
-                                      .currentUser!
-                                      .uid),
-                              builder: (BuildContext context,
-                                  AsyncSnapshot<dynamic> snapshot) {
-                                return GridView.count(
-                                    mainAxisSpacing: 5, //horizontal space
-                                    crossAxisSpacing: 5, //vertical space
-                                    crossAxisCount: 3,
-                                    childAspectRatio: (12 / 10),
-                                    controller: ScrollController(
-                                        keepScrollOffset: false),
-                                    shrinkWrap: true,
-                                    scrollDirection: Axis.vertical,
-                                    children: snapshot.data.map((value) {
-                                      return GestureDetector(
-                                        onTap: () {
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    const StroyDetails()),
-                                          );
-                                          SpHelper.spHelper.setStoryDescription(
-                                              value.description);
-                                          SpHelper.spHelper
-                                              .setStoryImg(value.imgs);
-                                        },
-                                        child: Image.network(
-                                          value.imgs,
-                                          fit: BoxFit.fill,
-                                          // height: 50,
-                                        ),
-                                      );
-                                    }).toList());
-                              },
-                            ),
-                          ),
+                              padding: const EdgeInsets.all(10.0),
+                              child:
+                                  //  FutureBuilder<List<dynamic>>(
+                                  //   future: appProvider.fetchTherpistStories1(),
+                                  //   builder: (context, snapshot) {
+                                  // return
+                                  GridView.count(
+                                      mainAxisSpacing: 5, //horizontal space
+                                      crossAxisSpacing: 5, //vertical space
+                                      crossAxisCount: 3,
+                                      childAspectRatio: (12 / 10),
+                                      controller: ScrollController(
+                                          keepScrollOffset: false),
+                                      shrinkWrap: true,
+                                      scrollDirection: Axis.vertical,
+                                      children: appProvider.therpistStoriesList1
+                                          .map((value) {
+                                        return GestureDetector(
+                                          onTap: () {
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      const StroyDetails()),
+                                            );
+                                            SpHelper.spHelper
+                                                .setStoryDescription(
+                                                    value.description);
+                                            SpHelper.spHelper
+                                                .setStoryImg(value.imgs);
+                                          },
+                                          child: Image.network(
+                                            value.imgs,
+                                            fit: BoxFit.fill,
+                                            // height: 50,
+                                          ),
+                                        );
+                                      }).toList())
+                              //   },
+                              // ),
+                              ),
                           // ),
                         ],
                       ),

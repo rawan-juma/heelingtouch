@@ -1,5 +1,6 @@
 import 'dart:developer';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:curved_nav_bar/curved_bar/curved_action_bar.dart';
 import 'package:curved_nav_bar/fab_bar/fab_bottom_app_bar_item.dart';
@@ -8,7 +9,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:heelingtouchproject/controllers/app_provider.dart';
 import 'package:heelingtouchproject/controllers/fb_notifications.dart';
-import 'package:heelingtouchproject/controllers/firebase_helper.dart';
+import 'package:heelingtouchproject/main_screens/splash.dart';
 import 'package:heelingtouchproject/patient/auth/sign_in.dart';
 import 'package:heelingtouchproject/patient/auth/sign_up.dart';
 import 'package:heelingtouchproject/patient/auth/verification_screen.dart';
@@ -21,9 +22,60 @@ import 'package:heelingtouchproject/therapist/therapist_home.dart';
 import 'package:no_context_navigation/no_context_navigation.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
+import 'controllers/notification_helper.dart';
 import 'controllers/sp_helper.dart';
 import 'main_screens/register_fb.dart';
-import 'main_screens/splash.dart';
+import 'dart:async';
+import 'dart:io';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:flutter_native_timezone/flutter_native_timezone.dart';
+import 'package:rxdart/subjects.dart';
+import 'package:timezone/data/latest_all.dart' as tz;
+import 'package:timezone/timezone.dart' as tz;
+import 'controllers/app_provider.dart';
+
+final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+    FlutterLocalNotificationsPlugin();
+final BehaviorSubject<ReceivedNotification> didReceiveLocalNotificationSubject =
+    BehaviorSubject<ReceivedNotification>();
+
+final BehaviorSubject<String?> selectNotificationSubject =
+    BehaviorSubject<String?>();
+
+const MethodChannel platform =
+    MethodChannel('dexterx.dev/flutter_local_notifications_example');
+
+class ReceivedNotification {
+  ReceivedNotification({
+    required this.id,
+    required this.title,
+    required this.body,
+    required this.payload,
+  });
+
+  final int id;
+  final String? title;
+  final String? body;
+  final String? payload;
+}
+
+String? selectedNotificationPayload;
+
+/// IMPORTANT: running the following code on its own won't work as there is
+/// setup required for each platform head project.
+///
+/// Please download the complete example app from the GitHub repository where
+/// all the setup has been done
+late String initialRoute;
+late final NotificationAppLaunchDetails? notificationAppLaunchDetails;
+Future<void> _configureLocalTimeZone() async {
+  if (kIsWeb || Platform.isLinux) {
+    return;
+  }
+  tz.initializeTimeZones();
+  final String? timeZoneName = await FlutterNativeTimezone.getLocalTimezone();
+  tz.setLocalLocation(tz.getLocation(timeZoneName!));
+}
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -33,14 +85,108 @@ void main() async {
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
     statusBarColor: Colors.transparent,
   ));
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await _configureLocalTimeZone();
+
+  notificationAppLaunchDetails = !kIsWeb && Platform.isLinux
+      ? null
+      : await flutterLocalNotificationsPlugin.getNotificationAppLaunchDetails();
+
+  const AndroidInitializationSettings initializationSettingsAndroid =
+      AndroidInitializationSettings('app_icon');
+
+  final IOSInitializationSettings initializationSettingsIOS =
+      IOSInitializationSettings(
+          requestAlertPermission: false,
+          requestBadgePermission: false,
+          requestSoundPermission: false,
+          onDidReceiveLocalNotification: (
+            int id,
+            String? title,
+            String? body,
+            String? payload,
+          ) async {
+            didReceiveLocalNotificationSubject.add(
+              ReceivedNotification(
+                id: id,
+                title: title,
+                body: body,
+                payload: payload,
+              ),
+            );
+          });
+  const MacOSInitializationSettings initializationSettingsMacOS =
+      MacOSInitializationSettings(
+    requestAlertPermission: false,
+    requestBadgePermission: false,
+    requestSoundPermission: false,
+  );
+  final LinuxInitializationSettings initializationSettingsLinux =
+      LinuxInitializationSettings(
+    defaultActionName: 'Open notification',
+    defaultIcon: AssetsLinuxIcon('icons/app_icon.png'),
+  );
+  final InitializationSettings initializationSettings = InitializationSettings(
+    android: initializationSettingsAndroid,
+    iOS: initializationSettingsIOS,
+    macOS: initializationSettingsMacOS,
+    linux: initializationSettingsLinux,
+  );
+  await flutterLocalNotificationsPlugin.initialize(initializationSettings,
+      onSelectNotification: (String? payload) async {
+    if (payload != null) {
+      debugPrint('notification payload: $payload');
+    }
+    selectedNotificationPayload = payload;
+    selectNotificationSubject.add(payload);
+  });
   runApp(const MyApp());
 }
 
 final GlobalKey<ScaffoldMessengerState> snackbarKey =
     GlobalKey<ScaffoldMessengerState>();
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  @override
+  void initState() {
+    super.initState();
+    _requestPermissions();
+  }
+
+  void _requestPermissions() {
+    NotificationHelper.notificationHelper.flutterLocalNotificationsPlugin
+        .resolvePlatformSpecificImplementation<
+            IOSFlutterLocalNotificationsPlugin>()
+        ?.requestPermissions(
+          alert: true,
+          badge: true,
+          sound: true,
+        );
+    NotificationHelper.notificationHelper.flutterLocalNotificationsPlugin
+        .resolvePlatformSpecificImplementation<
+            MacOSFlutterLocalNotificationsPlugin>()
+        ?.requestPermissions(
+          alert: true,
+          badge: true,
+          sound: true,
+        );
+  }
+
+  @override
+  void dispose() {
+    NotificationHelper.notificationHelper.didReceiveLocalNotificationSubject
+        .close();
+    NotificationHelper.notificationHelper.selectNotificationSubject.close();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -211,9 +357,9 @@ class _MyHomePageState1 extends State<MyHomePage1> {
                   semanticsLabel: 'play icon'),
               text: 'المحتوى الطبي'),
         ],
-        bodyItems: [
+        bodyItems: const [
           PatientHome(),
-          const Browse(),
+          Browse(),
         ],
         actionBarView: const ConsultaionRequest(),
       ),

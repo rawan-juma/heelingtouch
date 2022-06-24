@@ -75,7 +75,7 @@ class TherapistList extends StatelessWidget {
                       physics: const BouncingScrollPhysics(),
                       scrollDirection: Axis.vertical,
                       children: appProvider.therapistsList.map((e) {
-                        return Therapist2Item(e.therapistID, e.fName, e.lName,
+                        return Therapist2Item(e.therapistID, e.fName,
                             e.phonenumber, e.bio, e.img);
                       }).toList())
                   : const Center(

@@ -9,6 +9,7 @@ import 'package:heelingtouchproject/controllers/auth_helper.dart';
 import 'package:heelingtouchproject/main.dart';
 import 'package:heelingtouchproject/model/Ads.dart';
 import 'package:heelingtouchproject/model/chat.dart';
+import 'package:heelingtouchproject/model/consultations.dart';
 import 'package:heelingtouchproject/model/messege.dart';
 import 'package:heelingtouchproject/model/therapist.dart';
 import 'package:heelingtouchproject/model/user_model.dart';
@@ -43,16 +44,19 @@ class FirestoreHelper {
               'patient_phone_number': phoneNumber,
               'patient_address': address,
               'patient_age': age,
-              // 'patient_password': password,
               'patient_image': imageUrl
             }));
-        await getUser();
+        // await getUser();
         log('response from empty check ${res.body}');
       } else {
         for (int i = 0; i <= users.length - 1; i++) {
           if (users[i].userID == userID) {
             log("this patient has been added before");
-            await getUser();
+
+            // await getUser();
+            break;
+
+            // await getUser();
           } else {
             http.Response res = await http.post(Uri.parse(uri),
                 body: json.encode({
@@ -61,12 +65,11 @@ class FirestoreHelper {
                   'patient_phone_number': phoneNumber,
                   'patient_address': address,
                   'patient_age': age,
-                  // 'patient_password': password,
                   'patient_image': imageUrl
                 }));
-            await getUser();
-            log('responseeeeeeeeeeeeeee ${res.body}');
-            // log('responseeeeeeeeeeeeeee ${res.body}');
+            log('responseeeeeeeeeeeeeee added successfully${users[i].userID} + ${userID}');
+
+            break;
           }
         }
       }
@@ -116,7 +119,8 @@ class FirestoreHelper {
       final extractedData = json.decode(res.body) as Map<String, dynamic>;
 
       extractedData.forEach((userID, userData) {
-        // log(userID);
+        log(userData['userID']);
+        log("User id ==================================${AuthHelper.authHelper.firebaseAuth.currentUser!.uid}");
         if (userData['userID'] ==
             AuthHelper.authHelper.firebaseAuth.currentUser!.uid) {
           usersList = UserModel(
@@ -129,7 +133,7 @@ class FirestoreHelper {
               // passwordcvfdd: userData['patient_password'],
               imageUrl: userData['patient_image']);
         } else {
-          log("nooooooooooooo data");
+          log("nooooooooooooo any data");
         }
       });
 
@@ -137,7 +141,18 @@ class FirestoreHelper {
     } catch (err) {
       log('error from patient: $err');
     }
-    return usersList!;
+    if (usersList == null) {
+      return UserModel(
+          id: "id",
+          userID: "userID",
+          phone: "phone",
+          username: "username",
+          address: "address",
+          age: "age",
+          imageUrl: "imageUrl");
+    } else {
+      return usersList!;
+    }
   }
 
 // ignore: non_constant_identifier_names
@@ -207,8 +222,8 @@ class FirestoreHelper {
         usersList.add(Therapist(
             id: userID,
             therapistID: therapistData['userID'],
-            fName: therapistData['first_name'],
-            lName: therapistData['family_name'],
+            fName: therapistData['full_name'],
+            // lName: therapistData['family_name'],
             bio: therapistData['bio'],
             phonenumber: therapistData['mobile_number'],
             img: therapistData["img_profile"],
@@ -305,6 +320,42 @@ class FirestoreHelper {
     }
   }
 
+  Future<List<Consultaion>> therapistConsultaions() async {
+    List<Consultaion> consultaionList = [];
+    try {
+      String uri =
+          'https://heelingtouchproject-default-rtdb.firebaseio.com/Consultaions.json';
+      http.Response res = await http.get(
+        Uri.parse(uri),
+      );
+      List<UserModel> patients = await getAllUsers();
+
+      final extractedData = json.decode(res.body) as Map<String, dynamic>;
+
+      extractedData.forEach((categoryID, categoryData) {
+        late String name;
+        late String img;
+        if (categoryData['therapistID'] ==
+            AuthHelper.authHelper.firebaseAuth.currentUser!.uid) {
+          for (int i = 0; i <= patients.length - 1; i++) {
+            if (categoryData['patientID'] == patients[i].userID) {
+              name = patients[i].username;
+              img = patients[i].imageUrl;
+            }
+          }
+
+          consultaionList
+              .add(Consultaion(categoryID, name, img, categoryData['date']));
+        }
+      });
+
+      log('responseeeeeeeeeeeeeeeee${res.body}');
+    } catch (err) {
+      log('errorrrrrrrrrrrrrrrrrrr: $err');
+    }
+    return consultaionList;
+  }
+
   String imageUrl = "";
   Future<void> addStory(
     String therapistID,
@@ -370,6 +421,9 @@ class FirestoreHelper {
             description: categoryData['description'],
             imgs: categoryData["image"],
           ));
+          log("response from therapists Stories${res.body}");
+        } else {
+          log("there is no data");
         }
       });
 
@@ -599,8 +653,8 @@ class FirestoreHelper {
         therapistsList.add(Therapist(
             id: therapistID,
             therapistID: therapistData['userID'],
-            fName: therapistData['first_name'],
-            lName: therapistData['family_name'],
+            fName: therapistData['full_name'],
+            // lName: therapistData['family_name'],
             bio: therapistData['bio'],
             phonenumber: therapistData['mobile_number'],
             img: therapistData["img_profile"],
@@ -633,13 +687,14 @@ class FirestoreHelper {
               // therapistsList.add(Therapist(
               id: therapistID,
               therapistID: therapistData['userID'],
-              fName: therapistData['first_name'],
-              lName: therapistData['family_name'],
+              fName: therapistData['full_name'],
+              // lName: therapistData['family_name'],
               bio: therapistData['bio'],
               phonenumber: therapistData['mobile_number'],
               img: therapistData["img_profile"],
               status: therapistData["status"],
               email: therapistData["email"]);
+          // fetchTherapistStoriesFuture(therapistData['userID']);
         } else {
           log("nooooooooooooo data");
         }
@@ -667,8 +722,8 @@ class FirestoreHelper {
           therapistsList.add(Therapist(
               id: therapistID,
               therapistID: therapistData['userID'],
-              fName: therapistData['first_name'],
-              lName: therapistData['family_name'],
+              fName: therapistData['full_name'],
+              // lName: therapistData['family_name'],
               bio: therapistData['bio'],
               phonenumber: therapistData['mobile_number'],
               img: therapistData["img_profile"],

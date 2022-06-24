@@ -10,12 +10,11 @@ import '../patient/therapist_page.dart';
 class TherapistItem extends StatelessWidget {
   late String id;
   late String fName;
-  late String lName;
+  // late String lName;
   late String phone;
   late String bio;
   late String img;
-  TherapistItem(this.id, this.fName, this.lName, this.phone, this.bio, this.img,
-      {Key? key})
+  TherapistItem(this.id, this.fName, this.phone, this.bio, this.img, {Key? key})
       : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -26,7 +25,7 @@ class TherapistItem extends StatelessWidget {
               MaterialPageRoute(builder: (context) => TherapistDetails()));
           SpHelper.spHelper.setTherapistID(id);
           SpHelper.spHelper.setTherapistFname(fName);
-          SpHelper.spHelper.setTherapistLname(lName);
+          // SpHelper.spHelper.setTherapistLname(lName);
           SpHelper.spHelper.setTherapistBio(bio);
           SpHelper.spHelper.setTherapistImg(img);
           SpHelper.spHelper.setTherapistPhoneNumber(phone);
@@ -66,7 +65,7 @@ class TherapistItem extends StatelessWidget {
                 Padding(
                   padding: EdgeInsets.only(top: 1.h),
                   child: Text(
-                    "د.$fName $lName",
+                    "د.$fName ",
                     style:
                         TextStyle(fontFamily: 'NeoSansArabic', fontSize: 12.sp),
                   ),

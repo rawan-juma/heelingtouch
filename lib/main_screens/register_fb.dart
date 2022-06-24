@@ -1,12 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:heelingtouchproject/controllers/notification_helper.dart';
 import 'package:heelingtouchproject/patient/auth/sign_in.dart';
 import 'package:heelingtouchproject/therapist/auth/sign_in.dart';
 import 'package:heelingtouchproject/widgets/app_button.dart';
 import 'package:sizer/sizer.dart';
 
-class FirstRigestrePage extends StatelessWidget {
+class FirstRigestrePage extends StatefulWidget {
   const FirstRigestrePage({Key? key}) : super(key: key);
-static const routeName = '/registerHome';
+  static const routeName = '/registerHome';
+
+  // final NotificationAppLaunchDetails? notificationAppLaunchDetails;
+
+  @override
+  State<FirstRigestrePage> createState() => _FirstRigestrePageState();
+}
+
+class _FirstRigestrePageState extends State<FirstRigestrePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,7 +46,8 @@ static const routeName = '/registerHome';
               SizedBox(
                 height: 2.h,
               ),
-              App_Button('مريض', 90.w, () {
+              App_Button('مريض', 90.w, () async {
+                await NotificationHelper.notificationHelper.showNotification();
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => SignIn()),

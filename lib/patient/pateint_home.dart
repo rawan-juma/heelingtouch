@@ -183,7 +183,7 @@ class PatientHome extends StatelessWidget {
                         physics: const BouncingScrollPhysics(),
                         scrollDirection: Axis.horizontal,
                         children: appProvider.therapistsList.map((e) {
-                          return TherapistItem(e.therapistID, e.fName, e.lName,
+                          return TherapistItem(e.therapistID, e.fName,
                               e.phonenumber, e.bio, e.img);
                         }).toList()),
                   ),

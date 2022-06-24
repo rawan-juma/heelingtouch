@@ -15,14 +15,17 @@ class StroyDetails extends StatelessWidget {
         appBar: AppBar(
           centerTitle: true,
           title: Text('عنوان قصة النجاح',
-              style: TextStyle(color: const Color(0xffffffff), fontSize: 13.sp),
+              style: TextStyle(
+                  fontFamily: 'NeoSansArabic',
+                  color: const Color(0xffffffff),
+                  fontSize: 13.sp),
               textAlign: TextAlign.center),
           backgroundColor: const Color(0xff2FA09C),
           // elevation: 2,
           shadowColor: Colors.grey[100],
           systemOverlayStyle: SystemUiOverlayStyle.light,
           leading: IconButton(
-            icon: Icon(Icons.arrow_back_ios),
+            icon: const Icon(Icons.arrow_back_ios),
             onPressed: () {
               Navigator.pop(
                 context,
@@ -118,7 +121,9 @@ class StroyDetails extends StatelessWidget {
                 child: Text(
                   "ملخص",
                   style: TextStyle(
-                      color: const Color(0xff2FA09C), fontSize: 14.sp),
+                      fontFamily: 'NeoSansArabic',
+                      color: const Color(0xff2FA09C),
+                      fontSize: 12.sp),
                 ),
               ),
               Container(
@@ -127,7 +132,9 @@ class StroyDetails extends StatelessWidget {
                 child: Text(
                   SpHelper.spHelper.getStoryDescription(),
                   style: TextStyle(
-                      color: const Color(0xff000000), fontSize: 13.sp),
+                      fontFamily: 'NeoSansArabic',
+                      color: const Color(0xff000000),
+                      fontSize: 11.sp),
                 ),
               ),
             ],

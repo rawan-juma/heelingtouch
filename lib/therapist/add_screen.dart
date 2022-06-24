@@ -28,7 +28,9 @@ class AddStoryScreen extends StatelessWidget {
               centerTitle: true,
               title: Text('إضافة قصة نجاح',
                   style: TextStyle(
-                      color: const Color(0xffffffff), fontSize: 13.sp),
+                      fontFamily: 'NeoSansArabic',
+                      color: const Color(0xffffffff),
+                      fontSize: 13.sp),
                   textAlign: TextAlign.center),
               backgroundColor: const Color(0xff2FA09C),
               // elevation: 2,
@@ -144,8 +146,9 @@ class AddStoryScreen extends StatelessWidget {
                           ),
                           Text('إضافة صورة',
                               style: TextStyle(
+                                  fontFamily: 'NeoSansArabic',
                                   color: const Color(0xff2FA09C),
-                                  fontSize: 14.sp)),
+                                  fontSize: 13.sp)),
                         ],
                       ),
                       textColor: Colors.white,
@@ -159,11 +162,13 @@ class AddStoryScreen extends StatelessWidget {
                   ),
                   Container(
                     alignment: Alignment.topRight,
-                    margin: EdgeInsets.only(right: 5.w, top: 1.h),
+                    margin: EdgeInsets.only(right: 5.w, top: 2.h),
                     child: Text(
                       "الوصف",
                       style: TextStyle(
-                          color: const Color(0xff2FA09C), fontSize: 14.sp),
+                          fontFamily: 'NeoSansArabic',
+                          color: const Color(0xff2FA09C),
+                          fontSize: 12.sp),
                     ),
                   ),
                   Padding(
@@ -177,7 +182,9 @@ class AddStoryScreen extends StatelessWidget {
                       decoration: InputDecoration(
                         hintText: "اسال شيئا",
                         hintStyle: TextStyle(
-                            fontSize: 11.sp, color: const Color(0xff000000)),
+                            fontFamily: 'NeoSansArabic',
+                            fontSize: 10.sp,
+                            color: const Color(0xff000000)),
                       ),
                     ),
                   ),

@@ -35,15 +35,17 @@ class NotificationScreen extends StatelessWidget {
           appBar: AppBar(
             centerTitle: true,
             title: Text('الإشعارات',
-                style:
-                    TextStyle(color: const Color(0xffffffff), fontSize: 13.sp),
+                style: TextStyle(
+                    fontFamily: 'NeoSansArabic',
+                    color: const Color(0xffffffff),
+                    fontSize: 13.sp),
                 textAlign: TextAlign.center),
             backgroundColor: const Color(0xff2FA09C),
             // elevation: 2,
             shadowColor: Colors.grey[100],
             systemOverlayStyle: SystemUiOverlayStyle.light,
             leading: IconButton(
-              icon: Image.asset("assets/Arrow - Right 2.png"),
+              icon: const Icon(Icons.arrow_back_ios),
               onPressed: () {
                 Navigator.pop(
                   context,

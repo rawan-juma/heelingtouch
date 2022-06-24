@@ -5,9 +5,9 @@ import 'package:sizer/sizer.dart';
 class ConsultationItem extends StatefulWidget {
   String id;
   String name;
-  String image;
+  String img;
   String time;
-  ConsultationItem(this.id, this.name, this.image, this.time, {Key? key})
+  ConsultationItem(this.id, this.name, this.img, this.time, {Key? key})
       : super(key: key);
 
   @override
@@ -57,7 +57,11 @@ class _ConsultationItemState extends State<ConsultationItem> {
                                   shape: BoxShape.circle,
                                   image: DecorationImage(
                                     fit: BoxFit.cover,
-                                    image: AssetImage(widget.image),
+                                    image: widget.img == ""
+                                        ? const NetworkImage(
+                                            "https://www.pngall.com/wp-content/uploads/12/Avatar-Profile-Vector-PNG-Clipart.png",
+                                          )
+                                        : NetworkImage(widget.img),
                                   ))),
                           SizedBox(
                             width: 2.w,
@@ -73,11 +77,15 @@ class _ConsultationItemState extends State<ConsultationItem> {
                                       widget.name,
                                       overflow: TextOverflow.ellipsis,
                                       style: TextStyle(
-                                          fontSize: 14.sp,
-                                          color: Colors.black,
-                                          // fontWeight: FontWeight.bold,
-                                          fontFamily: 'MULI'),
+                                        fontSize: 12.sp,
+                                        color: Colors.black,
+                                        // fontWeight: FontWeight.bold,
+                                        fontFamily: 'NeoSansArabic',
+                                      ),
                                       textAlign: TextAlign.left,
+                                    ),
+                                    SizedBox(
+                                      height: 2.h,
                                     ),
                                     Container(
                                         width: 22.w,
@@ -100,9 +108,10 @@ class _ConsultationItemState extends State<ConsultationItem> {
                                       widget.time,
                                       overflow: TextOverflow.ellipsis,
                                       style: TextStyle(
-                                          fontSize: 11.sp,
-                                          color: const Color(0xff000000),
-                                          fontFamily: 'MULI'),
+                                        fontSize: 10.sp,
+                                        color: const Color(0xff000000),
+                                        fontFamily: 'NeoSansArabic',
+                                      ),
                                     ),
                                     SizedBox(
                                       height: 3.h,

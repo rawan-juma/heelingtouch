@@ -22,7 +22,9 @@ class EditProfile extends StatelessWidget {
               centerTitle: true,
               title: Text('تعديل المعلومات الشخصية',
                   style: TextStyle(
-                      color: const Color(0xffffffff), fontSize: 13.sp),
+                      fontFamily: 'NeoSansArabic',
+                      color: const Color(0xffffffff),
+                      fontSize: 13.sp),
                   textAlign: TextAlign.center),
               backgroundColor: const Color(0xff2FA09C),
               // elevation: 2,
@@ -82,7 +84,9 @@ class EditProfile extends StatelessWidget {
                     child: Text(
                       "اسم المستخدم",
                       style: TextStyle(
-                          color: const Color(0xff2FA09C), fontSize: 13.sp),
+                          fontFamily: 'NeoSansArabic',
+                          color: const Color(0xff2FA09C),
+                          fontSize: 12.sp),
                     ),
                   ),
                   Padding(
@@ -96,7 +100,9 @@ class EditProfile extends StatelessWidget {
                       decoration: InputDecoration(
                         hintText: "مريم سعيد",
                         hintStyle: TextStyle(
-                            fontSize: 11.sp, color: const Color(0xff000000)),
+                            fontFamily: 'NeoSansArabic',
+                            fontSize: 11.sp,
+                            color: const Color(0xff000000)),
                       ),
                     ),
                   ),
@@ -106,7 +112,9 @@ class EditProfile extends StatelessWidget {
                     child: Text(
                       "رقم الهاتف",
                       style: TextStyle(
-                          color: const Color(0xff2FA09C), fontSize: 13.sp),
+                          fontFamily: 'NeoSansArabic',
+                          color: const Color(0xff2FA09C),
+                          fontSize: 12.sp),
                     ),
                   ),
                   Padding(
@@ -120,7 +128,9 @@ class EditProfile extends StatelessWidget {
                       decoration: InputDecoration(
                         hintText: "0595521535",
                         hintStyle: TextStyle(
-                            fontSize: 11.sp, color: const Color(0xff000000)),
+                            fontFamily: 'NeoSansArabic',
+                            fontSize: 11.sp,
+                            color: const Color(0xff000000)),
                       ),
                     ),
                   ),
@@ -130,7 +140,9 @@ class EditProfile extends StatelessWidget {
                     child: Text(
                       "الوصف",
                       style: TextStyle(
-                          color: const Color(0xff2FA09C), fontSize: 13.sp),
+                          fontFamily: 'NeoSansArabic',
+                          color: const Color(0xff2FA09C),
+                          fontSize: 12.sp),
                     ),
                   ),
                   Padding(
@@ -146,7 +158,9 @@ class EditProfile extends StatelessWidget {
                         hintText:
                             "هذا النص هو مثال لنص يمكن أن يستبدل في نفس المساحة، لقد تم توليد هذا النص من مولد النص العربى، حيث يمكنك أن تولد مثل هذا النص أو العديد من النصوص الأخرى إضافة إلى زيادة عدد الحروف التى يولدها التطبيق",
                         hintStyle: TextStyle(
-                            fontSize: 11.sp, color: const Color(0xff000000)),
+                            fontFamily: 'NeoSansArabic',
+                            fontSize: 11.sp,
+                            color: const Color(0xff000000)),
                       ),
                     ),
                   ),

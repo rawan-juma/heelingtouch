@@ -89,7 +89,7 @@ class SearchTherapist extends StatelessWidget {
                                           const TherapistDetails()));
                               SpHelper.spHelper.setTherapistID(e.id);
                               SpHelper.spHelper.setTherapistFname(e.fName);
-                              SpHelper.spHelper.setTherapistLname(e.lName);
+                              // SpHelper.spHelper.setTherapistLname(e.lName);
                               SpHelper.spHelper.setTherapistBio(e.bio);
                               SpHelper.spHelper.setTherapistImg(e.img);
                               SpHelper.spHelper
@@ -98,7 +98,7 @@ class SearchTherapist extends StatelessWidget {
                               log(e.therapistID);
                             },
                             child: Text(
-                              "${e.fName} ${e.lName}",
+                              "${e.fName}",
                               style: const TextStyle(
                                 fontFamily: 'NeoSansArabic',
                               ),

@@ -1,70 +1,75 @@
-import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_neat_and_clean_calendar/flutter_neat_and_clean_calendar.dart';
 import 'package:heelingtouchproject/therapist/auth/profile.dart';
 import 'package:heelingtouchproject/therapist/chat_screen.dart';
 import 'package:heelingtouchproject/therapist/notifications_screen.dart';
+import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
+
+import '../controllers/app_provider.dart';
 
 class Home extends StatelessWidget {
   const Home({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        centerTitle: true,
-        title: Text('مواعيدي',
-            style: TextStyle(
-                fontFamily: 'NeoSansArabic',
-                color: const Color(0xffffffff),
-                fontSize: 13.sp),
-            textAlign: TextAlign.center),
-        backgroundColor: const Color(0xff2FA09C),
-        // elevation: 2,
-        automaticallyImplyLeading: false,
-        shadowColor: Colors.grey[100],
-        systemOverlayStyle: SystemUiOverlayStyle.light,
-        leading: IconButton(
-          icon: Image.asset(
-            "assets/Profile.png",
+    return Consumer<AppProvider>(builder: (context, appProvider, x) {
+      return Scaffold(
+        backgroundColor: Colors.white,
+        appBar: AppBar(
+          centerTitle: true,
+          title: Text('مواعيدي',
+              style: TextStyle(
+                  fontFamily: 'NeoSansArabic',
+                  color: const Color(0xffffffff),
+                  fontSize: 13.sp),
+              textAlign: TextAlign.center),
+          backgroundColor: const Color(0xff2FA09C),
+          // elevation: 2,
+          automaticallyImplyLeading: false,
+          shadowColor: Colors.grey[100],
+          systemOverlayStyle: SystemUiOverlayStyle.light,
+          leading: IconButton(
+            icon: Image.asset(
+              "assets/Profile.png",
+            ),
+            onPressed: () {
+              appProvider.fetchTherpistStories1();
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const Profile()),
+              );
+            },
           ),
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const Profile()),
-            );
-          },
+          actions: [
+            IconButton(
+              icon: Image.asset("assets/Chat.png"),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => Chat()),
+                );
+              },
+            ),
+            IconButton(
+              icon: Image.asset("assets/Notification.png"),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => NotificationScreen()),
+                );
+              },
+            ),
+          ],
         ),
-        actions: [
-          IconButton(
-            icon: Image.asset("assets/Chat.png"),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => Chat()),
-              );
-            },
-          ),
-          IconButton(
-            icon: Image.asset("assets/Notification.png"),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => NotificationScreen()),
-              );
-            },
-          ),
-        ],
-      ),
-      body: const SizedBox(
-          child: Directionality(
-        textDirection: TextDirection.rtl,
-        child: CalendarScreen(),
-      )),
-    );
+        body: const SizedBox(
+            child: Directionality(
+          textDirection: TextDirection.rtl,
+          child: CalendarScreen(),
+        )),
+      );
+    });
   }
 }
 

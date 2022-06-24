@@ -13,27 +13,27 @@ class Splash extends StatefulWidget {
 }
 
 class _SplashState extends State<Splash> {
-  // Future checkFirstSeen() async {
-  //   SharedPreferences prefs = await SharedPreferences.getInstance();
-  //   bool _seen = (prefs.getBool('seen') ?? false);
+  Future checkFirstSeen() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    bool _seen = (prefs.getBool('seen') ?? false);
 
-  //   if (_seen) {
-  //     AuthHelper.authHelper.checkUserLoging();
-  //   } else {
-  //     await prefs.setBool('seen', true);
-  // Navigator.of(context).pushReplacement(
-  // MaterialPageRoute(builder: (context) => const OnboardingScreen()));
-  //   }
-  // }
+    if (_seen) {
+      AuthHelper.authHelper.checkUserLoging();
+    } else {
+      await prefs.setBool('seen', true);
+      Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (context) => const OnboardingScreen()));
+    }
+  }
 
   @override
   void initState() {
     super.initState;
 
     Timer(const Duration(seconds: 3), () {
-      // checkFirstSeen();
-      Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (context) => const OnboardingScreen()));
+      checkFirstSeen();
+      // Navigator.of(context).pushReplacement(
+      //     MaterialPageRoute(builder: (context) => const OnboardingScreen()));
     });
   }
 

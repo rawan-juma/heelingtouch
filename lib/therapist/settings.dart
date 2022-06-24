@@ -23,15 +23,17 @@ class Settings extends StatelessWidget {
           appBar: AppBar(
             centerTitle: true,
             title: Text('الإعدادات',
-                style:
-                    TextStyle(color: const Color(0xffffffff), fontSize: 13.sp),
+                style: TextStyle(
+                    fontFamily: 'NeoSansArabic',
+                    color: const Color(0xffffffff),
+                    fontSize: 13.sp),
                 textAlign: TextAlign.center),
             backgroundColor: const Color(0xff2FA09C),
             // elevation: 2,
             shadowColor: Colors.grey[100],
             systemOverlayStyle: SystemUiOverlayStyle.light,
             leading: IconButton(
-              icon: Image.asset("assets/Arrow - Right 2.png"),
+              icon: const Icon(Icons.arrow_back_ios),
               onPressed: () {
                 Navigator.pop(
                   context,
@@ -54,7 +56,8 @@ class Settings extends StatelessWidget {
                       leading: Image.asset("assets/meet.png"),
                       title: Text(
                         'مواعيدي',
-                        style: TextStyle(fontSize: 13.sp),
+                        style: TextStyle(
+                            fontFamily: 'NeoSansArabic', fontSize: 12.sp),
                       ),
                       // value: Text('English'),
                       trailing: const Icon(
@@ -71,7 +74,8 @@ class Settings extends StatelessWidget {
                       leading: Image.asset("assets/Lock.png"),
                       title: Text(
                         'تغيير كلمة المرور',
-                        style: TextStyle(fontSize: 13.sp),
+                        style: TextStyle(
+                            fontFamily: 'NeoSansArabic', fontSize: 12.sp),
                       ),
                       // value: Text('English'),
                       trailing: const Icon(
@@ -91,14 +95,16 @@ class Settings extends StatelessWidget {
                       leading: Image.asset("assets/Notification1.png"),
                       title: Text(
                         'الإشعارات',
-                        style: TextStyle(fontSize: 13.sp),
+                        style: TextStyle(
+                            fontFamily: 'NeoSansArabic', fontSize: 12.sp),
                       ),
                     ),
                     SettingsTile.navigation(
                       leading: Image.asset("assets/Password.png"),
                       title: Text(
                         'شروط المستخدم',
-                        style: TextStyle(fontSize: 13.sp),
+                        style: TextStyle(
+                            fontFamily: 'NeoSansArabic', fontSize: 12.sp),
                       ),
                       // value: Text('English'),
                     ),
@@ -106,7 +112,8 @@ class Settings extends StatelessWidget {
                       leading: Image.asset("assets/Logout.png"),
                       title: Text(
                         'تسجيل الخروج',
-                        style: TextStyle(fontSize: 13.sp),
+                        style: TextStyle(
+                            fontFamily: 'NeoSansArabic', fontSize: 12.sp),
                       ),
                       onPressed: (context) => appProvider.logout(),
 

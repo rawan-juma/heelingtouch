@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:heelingtouchproject/controllers/firebase_helper.dart';
 import 'package:heelingtouchproject/patient/personal_info.dart';
 import 'package:heelingtouchproject/patient/settings.dart';
 import 'package:provider/provider.dart';
 import 'package:settings_ui/settings_ui.dart';
 import 'package:sizer/sizer.dart';
 import '../controllers/app_provider.dart';
+import '../model/user_model.dart';
 import '../therapist/notifications_screen.dart';
 
 class PatientProfile extends StatelessWidget {
@@ -54,185 +56,194 @@ class PatientProfile extends StatelessWidget {
                   ),
                 ],
               ),
-              body: Padding(
-                padding: EdgeInsets.only(top: 2.h),
-                child: SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Stack(
-                        children: [
-                          Center(
-                            child: SvgPicture.asset("assets/cover.svg",
-                                width: 90.w, semanticsLabel: 'cover'),
-                          ),
-                          Center(
-                            child: Container(
-                                margin: EdgeInsets.only(top: 8.h),
-                                width: 120,
-                                height: 110,
-                                decoration: BoxDecoration(
-                                    color: const Color(0xffc0c0c0),
-                                    shape: BoxShape.circle,
-                                    image: DecorationImage(
-                                      fit: BoxFit.cover,
-                                      image: appProvider.user!.imageUrl != ""
-                                          ? NetworkImage(
-                                              appProvider.user!.imageUrl)
-                                          : const NetworkImage(
-                                              "https://www.pngall.com/wp-content/uploads/12/Avatar-Profile-Vector-PNG-Clipart.png",
-                                            ),
-                                    ))),
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        height: 2.h,
-                      ),
-                      Text(
-                        appProvider.user!.username,
-                        style: TextStyle(
-                            fontSize: 13.sp, fontFamily: 'NeoSansArabic'),
-                      ),
-                      SizedBox(
-                        height: 50.h,
-                        child: SettingsList(
-                          lightTheme: const SettingsThemeData(
-                              settingsSectionBackground: Colors.black,
-                              dividerColor: Colors.red,
-                              settingsListBackground: Colors.white),
-                          sections: [
-                            SettingsSection(
-                              tiles: <SettingsTile>[
-                                SettingsTile.navigation(
-                                    title: Text(
-                                      'المعلومات الشخصية',
-                                      style: TextStyle(
-                                          fontSize: 12.sp,
-                                          fontFamily: 'NeoSansArabic'),
-                                    ),
-                                    trailing: const Icon(
-                                      Icons.arrow_forward_ios,
-                                      size: 20,
-                                    ),
-                                    onPressed: (context) {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                const PersonalInformation()),
-                                      );
-                                    }),
+              body: FutureBuilder<UserModel>(
+                future: FirestoreHelper.firestoreHelper.getUser(),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    return Padding(
+                      padding: EdgeInsets.only(top: 2.h),
+                      child: SingleChildScrollView(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Stack(
+                              children: [
+                                Center(
+                                  child: SvgPicture.asset("assets/cover.svg",
+                                      width: 90.w, semanticsLabel: 'cover'),
+                                ),
+                                Center(
+                                  child: Container(
+                                      margin: EdgeInsets.only(top: 8.h),
+                                      width: 120,
+                                      height: 110,
+                                      decoration: BoxDecoration(
+                                          color: const Color(0xffc0c0c0),
+                                          shape: BoxShape.circle,
+                                          image: DecorationImage(
+                                              fit: BoxFit.cover,
+                                              image:
+                                                  snapshot.data?.imageUrl == ""
+                                                      ? const NetworkImage(
+                                                          "https://www.pngall.com/wp-content/uploads/12/Avatar-Profile-Vector-PNG-Clipart.png",
+                                                        )
+                                                      : NetworkImage(snapshot
+                                                          .data!.imageUrl)))),
+                                ),
                               ],
                             ),
-                            SettingsSection(
-                              tiles: <SettingsTile>[
-                                SettingsTile.navigation(
-                                    title: Text(
-                                      'تذاكري',
-                                      style: TextStyle(
-                                          fontSize: 12.sp,
-                                          fontFamily: 'NeoSansArabic'),
-                                    ),
-                                    trailing: const Icon(
-                                      Icons.arrow_forward_ios,
-                                      size: 20,
-                                    ),
-                                    onPressed: (context) {
-                                      // Navigator.push(
-                                      //   context,
-                                      //   MaterialPageRoute(
-                                      //       builder: (context) => MyAppointments()),
-                                      // );
-                                    }),
-                              ],
+                            SizedBox(
+                              height: 2.h,
                             ),
-                            SettingsSection(
-                              tiles: <SettingsTile>[
-                                SettingsTile.navigation(
-                                    title: Text(
-                                      'استشاراتي',
-                                      style: TextStyle(
-                                          fontSize: 12.sp,
-                                          fontFamily: 'NeoSansArabic'),
-                                    ),
-                                    trailing: const Icon(
-                                      Icons.arrow_forward_ios,
-                                      size: 20,
-                                    ),
-                                    onPressed: (context) {
-                                      // Navigator.push(
-                                      //   context,
-                                      //   MaterialPageRoute(
-                                      //       builder: (context) => MyAppointments()),
-                                      // );
-                                    }),
-                              ],
+                            Text(
+                              snapshot.data!.username,
+                              style: TextStyle(
+                                  fontSize: 13.sp, fontFamily: 'NeoSansArabic'),
                             ),
-                            // SettingsSection(
-                            //   tiles: <SettingsTile>[
-                            //     SettingsTile.navigation(
-                            //         title: Text(
-                            //           'تغيير كلمة المرور',
-                            //           style: TextStyle(fontSize: 13.sp),
-                            //         ),
-                            //         trailing: const Icon(
-                            //           Icons.arrow_forward_ios,
-                            //           size: 20,
-                            //         ),
-                            //         onPressed: (context) {
-                            //           Navigator.push(
-                            //             context,
-                            //             MaterialPageRoute(
-                            //                 builder: (context) =>
-                            //                     ChangePatientPassword()),
-                            //           );
-                            //         }),
-                            //   ],
-                            // ),
-                            SettingsSection(
-                              tiles: <SettingsTile>[
-                                SettingsTile.navigation(
-                                    title: Text(
-                                      'الاعدادات',
-                                      style: TextStyle(
-                                          fontSize: 12.sp,
-                                          fontFamily: 'NeoSansArabic'),
-                                    ),
-                                    trailing: const Icon(
-                                      Icons.arrow_forward_ios,
-                                      size: 20,
-                                    ),
-                                    onPressed: (context) {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                const PatientSettings()),
-                                      );
-                                    }),
-                              ],
-                            ),
-                            SettingsSection(
-                              tiles: <SettingsTile>[
-                                SettingsTile.navigation(
-                                    title: Text(
-                                      'تسجيل الخروج',
-                                      style: TextStyle(
-                                          fontSize: 12.sp,
-                                          fontFamily: 'NeoSansArabic'),
-                                    ),
-                                    onPressed: (context) {
-                                      appProvider.logout();
-                                    }),
-                              ],
+                            SizedBox(
+                              height: 50.h,
+                              child: SettingsList(
+                                lightTheme: const SettingsThemeData(
+                                    settingsSectionBackground: Colors.black,
+                                    dividerColor: Colors.red,
+                                    settingsListBackground: Colors.white),
+                                sections: [
+                                  SettingsSection(
+                                    tiles: <SettingsTile>[
+                                      SettingsTile.navigation(
+                                          title: Text(
+                                            'المعلومات الشخصية',
+                                            style: TextStyle(
+                                                fontSize: 12.sp,
+                                                fontFamily: 'NeoSansArabic'),
+                                          ),
+                                          trailing: const Icon(
+                                            Icons.arrow_forward_ios,
+                                            size: 20,
+                                          ),
+                                          onPressed: (context) {
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      const PersonalInformation()),
+                                            );
+                                          }),
+                                    ],
+                                  ),
+                                  SettingsSection(
+                                    tiles: <SettingsTile>[
+                                      SettingsTile.navigation(
+                                          title: Text(
+                                            'تذاكري',
+                                            style: TextStyle(
+                                                fontSize: 12.sp,
+                                                fontFamily: 'NeoSansArabic'),
+                                          ),
+                                          trailing: const Icon(
+                                            Icons.arrow_forward_ios,
+                                            size: 20,
+                                          ),
+                                          onPressed: (context) {
+                                            // Navigator.push(
+                                            //   context,
+                                            //   MaterialPageRoute(
+                                            //       builder: (context) => MyAppointments()),
+                                            // );
+                                          }),
+                                    ],
+                                  ),
+                                  SettingsSection(
+                                    tiles: <SettingsTile>[
+                                      SettingsTile.navigation(
+                                          title: Text(
+                                            'استشاراتي',
+                                            style: TextStyle(
+                                                fontSize: 12.sp,
+                                                fontFamily: 'NeoSansArabic'),
+                                          ),
+                                          trailing: const Icon(
+                                            Icons.arrow_forward_ios,
+                                            size: 20,
+                                          ),
+                                          onPressed: (context) {
+                                            // Navigator.push(
+                                            //   context,
+                                            //   MaterialPageRoute(
+                                            //       builder: (context) => MyAppointments()),
+                                            // );
+                                          }),
+                                    ],
+                                  ),
+                                  // SettingsSection(
+                                  //   tiles: <SettingsTile>[
+                                  //     SettingsTile.navigation(
+                                  //         title: Text(
+                                  //           'تغيير كلمة المرور',
+                                  //           style: TextStyle(fontSize: 13.sp),
+                                  //         ),
+                                  //         trailing: const Icon(
+                                  //           Icons.arrow_forward_ios,
+                                  //           size: 20,
+                                  //         ),
+                                  //         onPressed: (context) {
+                                  //           Navigator.push(
+                                  //             context,
+                                  //             MaterialPageRoute(
+                                  //                 builder: (context) =>
+                                  //                     ChangePatientPassword()),
+                                  //           );
+                                  //         }),
+                                  //   ],
+                                  // ),
+                                  SettingsSection(
+                                    tiles: <SettingsTile>[
+                                      SettingsTile.navigation(
+                                          title: Text(
+                                            'الاعدادات',
+                                            style: TextStyle(
+                                                fontSize: 12.sp,
+                                                fontFamily: 'NeoSansArabic'),
+                                          ),
+                                          trailing: const Icon(
+                                            Icons.arrow_forward_ios,
+                                            size: 20,
+                                          ),
+                                          onPressed: (context) {
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      const PatientSettings()),
+                                            );
+                                          }),
+                                    ],
+                                  ),
+                                  SettingsSection(
+                                    tiles: <SettingsTile>[
+                                      SettingsTile.navigation(
+                                          title: Text(
+                                            'تسجيل الخروج',
+                                            style: TextStyle(
+                                                fontSize: 12.sp,
+                                                fontFamily: 'NeoSansArabic'),
+                                          ),
+                                          onPressed: (context) {
+                                            appProvider.logout();
+                                          }),
+                                    ],
+                                  ),
+                                ],
+                              ),
                             ),
                           ],
                         ),
                       ),
-                    ],
-                  ),
-                ),
+                    );
+                  } else {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+                },
               )));
     });
   }

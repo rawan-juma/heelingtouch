@@ -45,7 +45,7 @@ class ConsultationRequest extends StatelessWidget {
                 Therapist2Item(
                     SpHelper.spHelper.getTherapisID(),
                     SpHelper.spHelper.getTherapisFname(),
-                    SpHelper.spHelper.getTherapisIDLname(),
+                    // SpHelper.spHelper.getTherapisIDLname(),
                     SpHelper.spHelper.getTherapisPhoneNumber(),
                     SpHelper.spHelper.getTherapisBio(),
                     SpHelper.spHelper.getTherapisImg()),

@@ -144,4 +144,13 @@ class SpHelper {
     String? userID = sharedPreferences?.getString('PatientAge');
     return userID;
   }
+
+  checkUser(bool pt) {
+    sharedPreferences?.setBool("checkUser", pt);
+  }
+
+  getBool() {
+    bool? check = sharedPreferences?.getBool('checkUser');
+    return check;
+  }
 }
