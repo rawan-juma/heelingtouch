@@ -97,7 +97,7 @@ class Browse extends StatelessWidget {
                       scrollDirection: Axis.vertical,
                       children: appProvider.videosList.map((e) {
                         return VideoItem(
-                            e.id, e.title, e.description, "", e.url);
+                            e.id, e.title, e.description, e.imgs, e.url);
                       }).toList()),
                   ListView(
                       physics: const BouncingScrollPhysics(),

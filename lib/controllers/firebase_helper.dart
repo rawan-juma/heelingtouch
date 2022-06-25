@@ -106,6 +106,7 @@ class FirestoreHelper {
     return usersList;
   }
 
+  String? userName;
   Future<UserModel> getUser() async {
     UserModel? usersList;
     try {
@@ -130,6 +131,7 @@ class FirestoreHelper {
               age: userData['patient_age'],
               // passwordcvfdd: userData['patient_password'],
               imageUrl: userData['patient_image']);
+          userName = userData['patient_username'];
         } else {
           log("nooooooooooooo any data");
         }
@@ -302,8 +304,8 @@ class FirestoreHelper {
       http.Response res = await http.patch(Uri.parse(uri),
           body: json.encode({
             'userID': userID,
-            'first_name': fName,
-            'family_name': lName,
+            'full_name': fName,
+            // 'family_name': lName,
             'bio': bio,
             'mobile_number': phoneNumber,
             'img_profile': imageUrl,
@@ -565,7 +567,7 @@ class FirestoreHelper {
             id: videoID,
             title: videoData['video_title'],
             description: videoData['video_description'],
-            // imgs: videoData["art_image"],
+            imgs: videoData["ved_image"],
             url: videoData["video_url"]));
       });
 
@@ -592,7 +594,7 @@ class FirestoreHelper {
               id: videoID,
               title: videoData['video_title'],
               description: videoData['video_description'],
-              // imgs: videoData["art_image"],
+              imgs: videoData["ved_image"],
               url: videoData["video_url"]));
         }
       });
@@ -707,7 +709,7 @@ class FirestoreHelper {
               email: therapistData["email"]);
           // fetchTherapistStoriesFuture(therapistData['userID']);
         } else {
-          log("nooooooooooooo data");
+          log("no data");
         }
       });
 
@@ -785,7 +787,7 @@ class FirestoreHelper {
   //   return therapist!;
   // }
 
-  Future<void> createChatRoom(
+  Future<void> createChatRoom(String patientName, String therapistName,
       String time, String therpistID, MessageModel messege) async {
     try {
       String uri =
@@ -795,6 +797,8 @@ class FirestoreHelper {
       http.Response res = await http.post(Uri.parse(uri),
           body: json.encode({
             'patientID': AuthHelper.authHelper.getUserId(),
+            'patientName': patientName,
+            'therapistName': therapistName,
             'time': time,
             'messges': messages,
             'therapistID': therpistID
@@ -825,6 +829,8 @@ class FirestoreHelper {
               messages: (categoryData['messges'] as List<dynamic>),
               therapistID: categoryData['therapistID'],
               patientID: categoryData['patientID'],
+              patientName: categoryData['patientName'],
+              therapistName: categoryData['therapistName'],
               time: categoryData['time']));
         }
       });

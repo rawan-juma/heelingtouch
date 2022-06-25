@@ -16,9 +16,10 @@ import 'package:no_context_navigation/no_context_navigation.dart';
 import '../main.dart';
 import '../main_screens/register_fb.dart';
 import 'firebase_helper.dart';
+import 'notification_helper.dart';
 
 class AppProvider extends ChangeNotifier {
-  late List<UserModel> users;
+  // late List<UserModel> users;
   late String myId;
   bool otpVisibility = false;
 
@@ -67,8 +68,10 @@ class AppProvider extends ChangeNotifier {
   }
 
   UserModel? user;
+  String? username;
   getUser() async {
     user = await FirestoreHelper.firestoreHelper.getUser();
+    username = FirestoreHelper.firestoreHelper.userName;
     notifyListeners();
   }
 
@@ -81,6 +84,7 @@ class AppProvider extends ChangeNotifier {
     searchArticle();
     fetchArticles();
     fetchVideos();
+    getAllUsers();
     // checkLogin();
     // getUser();
   }
@@ -101,8 +105,10 @@ class AppProvider extends ChangeNotifier {
 
   addConsultaion(String therpistID) async {
     await FirestoreHelper.firestoreHelper
-        .requestConsultaion("ZtkOGoVnH2datRrIqPRfdtF2pH33", therpistID)
-        .whenComplete(() {
+        .requestConsultaion(
+            AuthHelper.authHelper.firebaseAuth.currentUser!.uid, therpistID)
+        .whenComplete(() async {
+      await NotificationHelper.notificationHelper.showNotification();
       const SnackBar snackBar = SnackBar(
         content: Text('تم تاكيد طلبك بنجاح'),
         backgroundColor: Colors.green,
@@ -273,6 +279,7 @@ class AppProvider extends ChangeNotifier {
         getTherapistConsulations();
         resetControllers();
         log('مششششششششش ايرور');
+        log(userCredinial.user!.uid.toString());
         // navKey.currentState!.pushReplacementNamed(MyHomePage.routeName);
       } else {
         log('errorrrrrrrrrrrrrrrrrrrrr ');
@@ -320,15 +327,16 @@ class AppProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  createChatRoom(String time, String therapistID, String messege) async {
+  createChatRoom(String patientName, String therapistName, String time,
+      String therapistID, String messege) async {
     MessageModel messageModel = MessageModel(
       content: "",
       recieverId: therapistID,
       senderId: AuthHelper.authHelper.firebaseAuth.currentUser!.uid,
       hour: "3:00",
     );
-    await FirestoreHelper.firestoreHelper
-        .createChatRoom(time, therapistID, messageModel);
+    await FirestoreHelper.firestoreHelper.createChatRoom(
+        patientName, therapistName, time, therapistID, messageModel);
     notifyListeners();
   }
 
@@ -353,6 +361,12 @@ class AppProvider extends ChangeNotifier {
         SpHelper.spHelper.getPatientID(),
         SpHelper.spHelper.getTherapisID(),
         "10:00");
+  }
+
+  List<UserModel> users = [];
+  getAllUsers() async {
+    users = await FirestoreHelper.firestoreHelper.getAllUsers();
+    notifyListeners();
   }
 
   sendVericiafion() {

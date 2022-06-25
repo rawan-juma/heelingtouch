@@ -111,7 +111,7 @@ class _TherapistDetailsState extends State<TherapistDetails> {
                         // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            "${SpHelper.spHelper.getTherapisFname()} ${SpHelper.spHelper.getTherapisIDLname()}",
+                            "${SpHelper.spHelper.getTherapisFname()}",
                             overflow: TextOverflow.ellipsis,
                             style: TextStyle(
                               fontSize: 13.sp,
@@ -137,6 +137,7 @@ class _TherapistDetailsState extends State<TherapistDetails> {
                             height: 1.h,
                           ),
                           App_Button3('احجز موعد الآن', 60.w, () {
+                            appProvider.getUser();
                             Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -212,6 +213,7 @@ class _TherapistDetailsState extends State<TherapistDetails> {
                                 MaterialPageRoute(
                                     builder: (context) => const StroyDetails()),
                               );
+
                               SpHelper.spHelper
                                   .setStoryDescription(value.description);
                               SpHelper.spHelper.setStoryImg(value.imgs);

@@ -126,7 +126,11 @@ class _ProfileState extends State<Profile> {
                                       shape: BoxShape.circle,
                                       image: DecorationImage(
                                         fit: BoxFit.cover,
-                                        image: NetworkImage(snapshot.data!.img),
+                                        image: snapshot.data!.img == null
+                                            ? const NetworkImage(
+                                                "https://www.pngall.com/wp-content/uploads/12/Avatar-Profile-Vector-PNG-Clipart.png",
+                                              )
+                                            : NetworkImage(snapshot.data!.img),
                                       ))),
                               SizedBox(
                                 width: 2.w,
@@ -164,8 +168,8 @@ class _ProfileState extends State<Profile> {
                                     height: 1.h,
                                   ),
                                   App_Button3('تعديل الملف الشخصي', 60.w, () {
-                                    log(appProvider
-                                        .therpistStoriesList1[0].imgs);
+                                    // log(appProvider
+                                    //     .therpistStoriesList1[0].imgs);
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(
@@ -225,42 +229,48 @@ class _ProfileState extends State<Profile> {
                                   //   future: appProvider.fetchTherpistStories1(),
                                   //   builder: (context, snapshot) {
                                   // return
-                                  GridView.count(
-                                      mainAxisSpacing: 5, //horizontal space
-                                      crossAxisSpacing: 5, //vertical space
-                                      crossAxisCount: 3,
-                                      childAspectRatio: (12 / 10),
-                                      controller: ScrollController(
-                                          keepScrollOffset: false),
-                                      shrinkWrap: true,
-                                      scrollDirection: Axis.vertical,
-                                      children: appProvider.therpistStoriesList1
-                                          .map((value) {
-                                        return GestureDetector(
-                                          onTap: () {
-                                            Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      const StroyDetails()),
+                                  appProvider.therpistStoriesList1.isNotEmpty
+                                      ? GridView.count(
+                                          mainAxisSpacing: 5, //horizontal space
+                                          crossAxisSpacing: 5, //vertical space
+                                          crossAxisCount: 3,
+                                          childAspectRatio: (12 / 10),
+                                          controller: ScrollController(
+                                              keepScrollOffset: false),
+                                          shrinkWrap: true,
+                                          scrollDirection: Axis.vertical,
+                                          children: appProvider
+                                              .therpistStoriesList1
+                                              .map((value) {
+                                            return GestureDetector(
+                                              onTap: () {
+                                                Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          const StroyDetails()),
+                                                );
+                                                SpHelper.spHelper
+                                                    .setStoryDescription(
+                                                        value.description);
+                                                SpHelper.spHelper
+                                                    .setStoryImg(value.imgs);
+                                              },
+                                              child: Image.network(
+                                                value.imgs,
+                                                fit: BoxFit.fill,
+                                                // height: 50,
+                                              ),
                                             );
-                                            SpHelper.spHelper
-                                                .setStoryDescription(
-                                                    value.description);
-                                            SpHelper.spHelper
-                                                .setStoryImg(value.imgs);
-                                          },
-                                          child: Image.network(
-                                            value.imgs,
-                                            fit: BoxFit.fill,
-                                            // height: 50,
-                                          ),
-                                        );
-                                      }).toList())
-                              //   },
-                              // ),
-                              ),
-                          // ),
+                                          }).toList())
+                                      //   },
+                                      // ),
+                                      : Text("لا يوجد اي قصص نجاح",
+                                          style: TextStyle(
+                                              fontFamily: 'NeoSansArabic',
+                                              fontSize: 11.sp,
+                                              fontWeight: FontWeight.bold,
+                                              color: const Color(0xff2FA09C)))),
                         ],
                       ),
                     ),

@@ -95,12 +95,12 @@ class AddStoryScreen extends StatelessWidget {
                   //   ),
                   // ),
                   Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: EdgeInsets.only(top: 3.h, bottom: 3.h),
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(6.0),
                       child: Container(
-                        width: 310,
-                        height: 150,
+                        width: 90.w,
+                        height: 170,
                         decoration: BoxDecoration(
                             borderRadius:
                                 const BorderRadius.all(Radius.circular(8.0)),
@@ -111,7 +111,7 @@ class AddStoryScreen extends StatelessWidget {
                                             ""
                                         ? NetworkImage(FirestoreHelper
                                             .firestoreHelper.imageUrl)
-                                        : const AssetImage('assets/story.png')
+                                        : const AssetImage('assets/default.png')
                                             as ImageProvider)),
                         // child: Center(
                         //   child: IconButton(

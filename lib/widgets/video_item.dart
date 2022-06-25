@@ -100,43 +100,59 @@ class VideoItem extends StatelessWidget {
                       borderRadius: const BorderRadius.all(Radius.circular(15)),
                     ),
                     child: Padding(
-                      padding: EdgeInsets.only(right: 8.0, top: 15.h),
+                      padding: EdgeInsets.only(right: 8.0, top: 10.h),
                       child: Column(
-                        // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          SizedBox(
-                            width: 100.w,
-                            child: Text(
-                              title,
-                              style: TextStyle(
-                                  fontFamily: 'NeoSansArabic',
-                                  fontSize: 12.sp,
-                                  color: const Color(0xff2FA09C),
-                                  fontWeight: FontWeight.bold),
-                              overflow: TextOverflow.ellipsis,
+                          Container(
+                            height: 5.h,
+                            width: 10.w,
+                            decoration: const BoxDecoration(
+                              color: Colors.transparent,
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(15)),
+                              image: DecorationImage(
+                                  fit: BoxFit.fill,
+                                  image: AssetImage("assets/playVid.png")),
                             ),
                           ),
-                          SizedBox(
-                            height: 1.h,
-                          ),
-                          Visibility(
-                            visible: true,
-                            child: SizedBox(
-                              width: 100.w,
-                              child: Text(
-                                description,
-                                style: const TextStyle(
-                                  height: 1.3,
-                                  fontFamily: 'NeoSansArabic',
-                                  color: Color(0xffffffff),
+                          Column(
+                            // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SizedBox(
+                                width: 100.w,
+                                child: Text(
+                                  title,
+                                  style: TextStyle(
+                                      fontFamily: 'NeoSansArabic',
+                                      fontSize: 12.sp,
+                                      color: const Color(0xff2FA09C),
+                                      fontWeight: FontWeight.bold),
+                                  overflow: TextOverflow.ellipsis,
                                 ),
-                                textAlign: TextAlign.right,
-                                overflow: TextOverflow.ellipsis,
-                                maxLines: 2,
-                                softWrap: true,
                               ),
-                            ),
+                              SizedBox(
+                                height: 1.h,
+                              ),
+                              Visibility(
+                                visible: true,
+                                child: SizedBox(
+                                  width: 100.w,
+                                  child: Text(
+                                    description,
+                                    style: const TextStyle(
+                                      height: 1.3,
+                                      fontFamily: 'NeoSansArabic',
+                                      color: Color(0xffffffff),
+                                    ),
+                                    textAlign: TextAlign.right,
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 2,
+                                    softWrap: true,
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
                         ],
                       ),

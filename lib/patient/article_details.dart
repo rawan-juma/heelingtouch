@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
 import 'package:heelingtouchproject/controllers/sp_helper.dart';
-import 'package:heelingtouchproject/therapist/notifications_screen.dart';
 import 'package:sizer/sizer.dart';
 
 class ArticleDetails extends StatelessWidget {
@@ -17,7 +15,10 @@ class ArticleDetails extends StatelessWidget {
         appBar: AppBar(
           centerTitle: true,
           title: Text(SpHelper.spHelper.getArticleTitle(),
-              style: TextStyle(color: const Color(0xffffffff), fontSize: 13.sp),
+              style: TextStyle(
+                  fontFamily: 'NeoSansArabic',
+                  color: const Color(0xffffffff),
+                  fontSize: 13.sp),
               textAlign: TextAlign.center),
           backgroundColor: const Color(0xff2FA09C),
           // elevation: 2,
@@ -65,50 +66,6 @@ class ArticleDetails extends StatelessWidget {
                     ),
                   ),
                 ),
-                //  ImageSlideshow(
-                //   width: double.infinity,
-                //   height: 200,
-                //   initialPage: 0,
-                //   indicatorColor: Colors.blue,
-                //   indicatorBackgroundColor: Colors.grey,
-                //   onPageChanged: (value) {
-                //     debugPrint('Page changed: $value');
-                //   },
-                //   autoPlayInterval: 3000,
-                //   isLoop: true,
-                //   children: [
-                //     ClipRRect(
-                //       borderRadius: BorderRadius.circular(20), // Image border
-                //       child: SizedBox.fromSize(
-                //         size: const Size.fromRadius(48), // Image radius
-                //         child: Image.network(
-                //           SpHelper.spHelper.getArticleImg(),
-                //           fit: BoxFit.cover,
-                //         ),
-                //       ),
-                //     ),
-                //     ClipRRect(
-                //       borderRadius: BorderRadius.circular(20), // Image border
-                //       child: SizedBox.fromSize(
-                //         size: const Size.fromRadius(48), // Image radius
-                //         child: Image.asset(
-                //           'assets/story.png',
-                //           fit: BoxFit.cover,
-                //         ),
-                //       ),
-                //     ),
-                //     ClipRRect(
-                //       borderRadius: BorderRadius.circular(20), // Image border
-                //       child: SizedBox.fromSize(
-                //         size: const Size.fromRadius(48), // Image radius
-                //         child: Image.asset(
-                //           'assets/story.png',
-                //           fit: BoxFit.cover,
-                //         ),
-                //       ),
-                //     ),
-                //   ],
-                // ),
               ),
               Container(
                 alignment: Alignment.topRight,
@@ -116,7 +73,9 @@ class ArticleDetails extends StatelessWidget {
                 child: Text(
                   "ملخص",
                   style: TextStyle(
-                      color: const Color(0xff2FA09C), fontSize: 14.sp),
+                      fontFamily: 'NeoSansArabic',
+                      color: const Color(0xff2FA09C),
+                      fontSize: 12.sp),
                 ),
               ),
               Container(
@@ -125,7 +84,9 @@ class ArticleDetails extends StatelessWidget {
                 child: Text(
                   SpHelper.spHelper.getArticleDescription(),
                   style: TextStyle(
-                      color: const Color(0xff000000), fontSize: 13.sp),
+                      fontFamily: 'NeoSansArabic',
+                      color: const Color(0xff000000),
+                      fontSize: 11.sp),
                 ),
               ),
             ],

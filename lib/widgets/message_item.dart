@@ -26,6 +26,7 @@ class messegeItem extends StatelessWidget {
             Navigator.push(context,
                 MaterialPageRoute(builder: (context) => const ChatDetails()));
             SpHelper.spHelper.setTherapistID(therapistID);
+            SpHelper.spHelper.setTherapistFname(name);
             SpHelper.spHelper.setPatientID(patientID);
           },
           child: SizedBox(

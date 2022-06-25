@@ -1,9 +1,9 @@
-import 'package:heelingtouchproject/model/messege.dart';
-
 class ChatRoom {
   late String id;
   late String therapistID;
   late String patientID;
+  late String patientName;
+  late String therapistName;
 //  FieldValue timeStamp;
   late String time;
   late List<dynamic> messages;
@@ -15,6 +15,8 @@ class ChatRoom {
     required this.messages,
     required this.therapistID,
     required this.patientID,
+    required this.patientName,
+    required this.therapistName,
     //   required this.timeStamp,
     required this.time,
     // required this.urlImage,

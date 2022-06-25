@@ -140,7 +140,7 @@ class PatientHome extends StatelessWidget {
                                         48), // Image radius
                                     child: Image.network(
                                       e.img,
-                                      fit: BoxFit.cover,
+                                      fit: BoxFit.fill,
                                     ),
                                   ),
                                 );

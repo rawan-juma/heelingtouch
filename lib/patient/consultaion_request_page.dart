@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:heelingtouchproject/controllers/firebase_helper.dart';
 import 'package:heelingtouchproject/controllers/sp_helper.dart';
 import 'package:heelingtouchproject/model/messege.dart';
 import 'package:heelingtouchproject/widgets/app_button.dart';
@@ -90,11 +91,12 @@ class ConsultationRequest extends StatelessWidget {
                   ),
                 ),
                 App_Button("تأكيد الحجز", 90.w, () async {
-                  await NotificationHelper.notificationHelper
-                      .showNotification();
-
-                  appProvider.createChatRoom("3:00",
-                      SpHelper.spHelper.getTherapisID(), "test test test");
+                  appProvider.createChatRoom(
+                      appProvider.username.toString(),
+                      SpHelper.spHelper.getTherapisFname(),
+                      "3:00",
+                      SpHelper.spHelper.getTherapisID(),
+                      "test test test");
                   appProvider.addConsultaion(SpHelper.spHelper.getTherapisID());
                 })
               ],

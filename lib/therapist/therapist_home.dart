@@ -46,6 +46,7 @@ class Home extends StatelessWidget {
             IconButton(
               icon: Image.asset("assets/Chat.png"),
               onPressed: () {
+                appProvider.getChats();
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => Chat()),
