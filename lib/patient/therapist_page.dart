@@ -87,11 +87,11 @@ class _TherapistDetailsState extends State<TherapistDetails> {
                   Row(
                     children: [
                       SizedBox(
-                        width: 4.w,
+                        width: 2.w,
                       ),
                       Container(
-                          width: 120,
-                          height: 160,
+                          width: 100,
+                          height: 140,
                           decoration: BoxDecoration(
                               color: Colors.white,
                               shape: BoxShape.circle,

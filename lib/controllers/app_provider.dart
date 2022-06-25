@@ -126,6 +126,13 @@ class AppProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  List<Consultaion> patientConsultaionsList = [];
+  getPatientConsulations() async {
+    patientConsultaionsList =
+        await FirestoreHelper.firestoreHelper.patientConsultaions();
+    notifyListeners();
+  }
+
   List<Ads> adsList = [];
   fetchAds() async {
     adsList = await FirestoreHelper.firestoreHelper.fetchAdsFuture();

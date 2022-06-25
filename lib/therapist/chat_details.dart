@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:heelingtouchproject/controllers/auth_helper.dart';
 import 'package:heelingtouchproject/controllers/firebase_helper.dart';
+import 'package:heelingtouchproject/controllers/notification_helper.dart';
 import 'package:heelingtouchproject/controllers/sp_helper.dart';
 import 'package:heelingtouchproject/model/messege.dart';
 import 'package:provider/provider.dart';
@@ -165,7 +166,7 @@ class ChatDetails extends StatelessWidget {
                         ),
                         SizedBox(
                           height: 6.5.h,
-                          width: 80.w,
+                          width: 75.w,
                           child: TextField(
                             controller: appProvider.messageController,
                             textAlign: TextAlign.right,

@@ -85,21 +85,21 @@ class CalendarScreen extends StatefulWidget {
 
 class _CalendarScreenState extends State<CalendarScreen> {
   final List<NeatCleanCalendarEvent> _eventList = [
-    // NeatCleanCalendarEvent('داليا محمد',
-    //     startTime: DateTime(DateTime.now().year, DateTime.now().month,
-    //         DateTime.now().day, 10, 0),
-    //     endTime: DateTime(DateTime.now().year, DateTime.now().month,
-    //         DateTime.now().day + 2, 12, 0),
-    //     color: Colors.orange,
-    //     isMultiDay: true),
-    NeatCleanCalendarEvent('مريم سعيد',
-        startTime: DateTime(DateTime.now().year, DateTime.now().month,
-            DateTime.now().day, DateTime.now().hour, DateTime.now().minute),
-        endTime: DateTime(DateTime.now().year, DateTime.now().month,
-            DateTime.now().day, DateTime.now().hour, DateTime.now().minute),
-        color: Colors.pink,
-        isAllDay: false,
-        isMultiDay: true),
+    NeatCleanCalendarEvent(
+      'داليا محمد',
+      startTime: DateTime(2022, 5, 12, 10, DateTime.now().minute),
+      endTime: DateTime(2022, 5, 12, 10, 20),
+      color: Colors.orange,
+    ),
+    NeatCleanCalendarEvent(
+      'مريم سعيد',
+      startTime: DateTime(DateTime.now().year, DateTime.now().month,
+          DateTime.now().day, DateTime.now().hour, DateTime.now().minute),
+      endTime: DateTime(DateTime.now().year, DateTime.now().month,
+          DateTime.now().day, DateTime.now().hour, DateTime.now().minute),
+      color: Colors.pink,
+      isAllDay: false,
+    ),
   ];
 
   @override

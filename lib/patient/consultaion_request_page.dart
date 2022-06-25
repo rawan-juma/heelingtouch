@@ -1,7 +1,10 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:heelingtouchproject/controllers/firebase_helper.dart';
 import 'package:heelingtouchproject/controllers/sp_helper.dart';
+import 'package:heelingtouchproject/model/consultations.dart';
 import 'package:heelingtouchproject/model/messege.dart';
 import 'package:heelingtouchproject/widgets/app_button.dart';
 import 'package:heelingtouchproject/widgets/thirapst2_item.dart';
@@ -91,13 +94,42 @@ class ConsultationRequest extends StatelessWidget {
                   ),
                 ),
                 App_Button("تأكيد الحجز", 90.w, () async {
-                  appProvider.createChatRoom(
-                      appProvider.username.toString(),
-                      SpHelper.spHelper.getTherapisFname(),
-                      "3:00",
-                      SpHelper.spHelper.getTherapisID(),
-                      "test test test");
-                  appProvider.addConsultaion(SpHelper.spHelper.getTherapisID());
+                  List<Consultaion> cons = await FirestoreHelper.firestoreHelper
+                      .patientConsultaions();
+                  if (cons.length < 3) {
+                    appProvider.createChatRoom(
+                        appProvider.username.toString(),
+                        SpHelper.spHelper.getTherapisFname(),
+                        "3:00",
+                        SpHelper.spHelper.getTherapisID(),
+                        "test test test");
+                    appProvider
+                        .addConsultaion(SpHelper.spHelper.getTherapisID());
+                  } else {
+                    log("Alert message");
+                    showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: Text(
+                              "إستشارة",
+                              style: TextStyle(
+                                  fontFamily: 'NeoSansArabic',
+                                  color: const Color(0xff2FA09C),
+                                  fontSize: 13.sp),
+                              textAlign: TextAlign.right,
+                            ),
+                            content: Text(
+                              "لقد قمت باستهلاك جميع التذاكر, قم بشراء المزيد",
+                              style: TextStyle(
+                                  fontFamily: 'NeoSansArabic',
+                                  color: const Color(0xff000000),
+                                  fontSize: 11.sp),
+                              textAlign: TextAlign.right,
+                            ),
+                          );
+                        });
+                  }
                 })
               ],
             ),

@@ -343,7 +343,6 @@ class FirestoreHelper {
               img = patients[i].imageUrl;
             }
           }
-
           consultaionList
               .add(Consultaion(categoryID, name, img, categoryData['date']));
         }

@@ -80,6 +80,7 @@ class AuthHelper {
         (value) async {
           log(value.toString());
           navService.pushNamed(MyHomePage1.routeName, args: 'From Home Screen');
+          await FirestoreHelper.firestoreHelper.patientConsultaions();
           await FirestoreHelper.firestoreHelper.addUserToDB(
             firebaseAuth.currentUser!.uid,
             username,
