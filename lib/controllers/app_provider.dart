@@ -69,9 +69,13 @@ class AppProvider extends ChangeNotifier {
 
   UserModel? user;
   String? username;
+  String? img;
+  String? phone;
   getUser() async {
     user = await FirestoreHelper.firestoreHelper.getUser();
     username = FirestoreHelper.firestoreHelper.userName;
+    img = FirestoreHelper.firestoreHelper.img;
+    phone = FirestoreHelper.firestoreHelper.phone;
     notifyListeners();
   }
 
@@ -103,10 +107,11 @@ class AppProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  addConsultaion(String therpistID) async {
+  addConsultaion(
+      String therpistID, int year, int month, int day, int hour) async {
     await FirestoreHelper.firestoreHelper
-        .requestConsultaion(
-            AuthHelper.authHelper.firebaseAuth.currentUser!.uid, therpistID)
+        .requestConsultaion(AuthHelper.authHelper.firebaseAuth.currentUser!.uid,
+            therpistID, year, month, day, hour)
         .whenComplete(() async {
       await NotificationHelper.notificationHelper.showNotification();
       const SnackBar snackBar = SnackBar(
@@ -334,16 +339,30 @@ class AppProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  createChatRoom(String patientName, String therapistName, String time,
-      String therapistID, String messege) async {
+  createChatRoom(
+      String patientName,
+      String therapistName,
+      String patientImg,
+      String therapistImg,
+      int time,
+      String therapistID,
+      String messege,
+      String phone) async {
     MessageModel messageModel = MessageModel(
       content: "",
       recieverId: therapistID,
       senderId: AuthHelper.authHelper.firebaseAuth.currentUser!.uid,
-      hour: "3:00",
+      hour: time.toString(),
     );
     await FirestoreHelper.firestoreHelper.createChatRoom(
-        patientName, therapistName, time, therapistID, messageModel);
+        patientName,
+        therapistName,
+        patientImg,
+        therapistImg,
+        time,
+        therapistID,
+        messageModel,
+        phone);
     notifyListeners();
   }
 
@@ -367,7 +386,7 @@ class AppProvider extends ChangeNotifier {
         recieverID,
         SpHelper.spHelper.getPatientID(),
         SpHelper.spHelper.getTherapisID(),
-        "10:00");
+        "${DateTime.now().minute}:${DateTime.now().minute}");
   }
 
   List<UserModel> users = [];

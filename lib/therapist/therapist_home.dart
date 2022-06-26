@@ -86,19 +86,21 @@ class CalendarScreen extends StatefulWidget {
 class _CalendarScreenState extends State<CalendarScreen> {
   final List<NeatCleanCalendarEvent> _eventList = [
     NeatCleanCalendarEvent(
-      'داليا محمد',
-      startTime: DateTime(2022, 5, 12, 10, DateTime.now().minute),
-      endTime: DateTime(2022, 5, 12, 10, 20),
-      color: Colors.orange,
-    ),
-    NeatCleanCalendarEvent(
-      'مريم سعيد',
+      'خولة محمد',
       startTime: DateTime(DateTime.now().year, DateTime.now().month,
           DateTime.now().day, DateTime.now().hour, DateTime.now().minute),
       endTime: DateTime(DateTime.now().year, DateTime.now().month,
+          DateTime.now().day, DateTime.now().hour + 1, DateTime.now().minute),
+      color: Colors.orange,
+    ),
+    NeatCleanCalendarEvent(
+      'احمد الباشا',
+      startTime: DateTime(DateTime.now().year, DateTime.now().month,
           DateTime.now().day, DateTime.now().hour, DateTime.now().minute),
+      endTime: DateTime(DateTime.now().year, DateTime.now().month,
+          DateTime.now().day, DateTime.now().hour + 1, DateTime.now().minute),
       color: Colors.pink,
-      isAllDay: false,
+      // isAllDay: false,
     ),
   ];
 

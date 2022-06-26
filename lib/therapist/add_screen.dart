@@ -55,45 +55,6 @@ class AddStoryScreen extends StatelessWidget {
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                  // Container(
-                  //   margin: const EdgeInsets.all(15),
-                  //   child: CarouselSlider.builder(
-                  //     itemCount: imgList.length,
-                  //     options: CarouselOptions(
-                  //       enlargeCenterPage: true,
-                  //       height: 30.h,
-                  //       autoPlay: false,
-                  //       autoPlayInterval: const Duration(seconds: 0),
-                  //       reverse: false,
-                  //       aspectRatio: 5.0,
-                  //     ),
-                  //     itemBuilder: (context, i, id) {
-                  //       //for onTap to redirect to another screen
-                  //       return GestureDetector(
-                  //         child: Container(
-                  //           decoration: BoxDecoration(
-                  //               borderRadius: BorderRadius.circular(15),
-                  //               border: Border.all(
-                  //                 color: Colors.white,
-                  //               )),
-                  //           //ClipRRect for image border radius
-                  //           child: ClipRRect(
-                  //             borderRadius: BorderRadius.circular(15),
-                  //             child: Image.asset(
-                  //               imgList[i],
-                  //               width: 80.w,
-                  //               fit: BoxFit.cover,
-                  //             ),
-                  //           ),
-                  //         ),
-                  //         onTap: () {
-                  //           var url = imgList[i];
-                  //           log(url.toString());
-                  //         },
-                  //       );
-                  //     },
-                  //   ),
-                  // ),
                   Padding(
                     padding: EdgeInsets.only(top: 3.h, bottom: 3.h),
                     child: ClipRRect(

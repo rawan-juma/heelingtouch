@@ -98,7 +98,7 @@ class SearchTherapist extends StatelessWidget {
                               log(e.therapistID);
                             },
                             child: Text(
-                              "${e.fName}",
+                              e.fName,
                               style: const TextStyle(
                                 fontFamily: 'NeoSansArabic',
                               ),

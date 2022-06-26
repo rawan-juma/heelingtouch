@@ -4,6 +4,7 @@ import 'package:heelingtouchproject/widgets/app_button.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 import '../controllers/app_provider.dart';
+import '../controllers/firebase_helper.dart';
 
 // ignore: must_be_immutable
 class EditPatientProfile extends StatelessWidget {
@@ -56,10 +57,12 @@ class EditPatientProfile extends StatelessWidget {
                             },
                             child: CircleAvatar(
                               backgroundColor: Colors.transparent,
-                              backgroundImage: appProvider.user!.imageUrl != ""
-                                  ? NetworkImage(appProvider.user!.imageUrl)
-                                      as ImageProvider
-                                  : const AssetImage("assets/tt.png"),
+                              backgroundImage:
+                                  FirestoreHelper.firestoreHelper.imageUrl != ""
+                                      ? NetworkImage(FirestoreHelper
+                                          .firestoreHelper
+                                          .imageUrl) as ImageProvider
+                                      : const AssetImage("assets/tt.png"),
                             ),
                           ),
                           Positioned(
@@ -183,7 +186,7 @@ class EditPatientProfile extends StatelessWidget {
                   Padding(
                     padding: EdgeInsets.only(right: 5.w, left: 5.w),
                     child: TextFormField(
-                      keyboardType: TextInputType.multiline,
+                      keyboardType: TextInputType.number,
                       maxLines: null,
                       controller: appProvider.ageController,
                       textAlign: TextAlign.right,

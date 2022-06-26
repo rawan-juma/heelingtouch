@@ -125,7 +125,7 @@ class _ProfileState extends State<Profile> {
                                       color: Color(0xff2FA09C),
                                       shape: BoxShape.circle,
                                       image: DecorationImage(
-                                        fit: BoxFit.cover,
+                                        fit: BoxFit.contain,
                                         image: snapshot.data!.img == null
                                             ? const NetworkImage(
                                                 "https://www.pngall.com/wp-content/uploads/12/Avatar-Profile-Vector-PNG-Clipart.png",

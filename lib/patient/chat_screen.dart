@@ -64,11 +64,13 @@ class PatientChat extends StatelessWidget {
                               scrollDirection: Axis.vertical,
                               children: snapshot.data!.map((e) {
                                 return messegeItem(
-                                  e.id, e.therapistName, "مرحبا",
+                                  e.id,
+                                  e.therapistName,
+                                  e.messages[e.messages.length - 1]['content'],
                                   e.therapistID,
                                   e.patientID,
-                                  e.time,
-                                  // e.img,
+                                  e.time.toString(),
+                                  e.therapistImg,
                                 );
                               }).toList());
                           // }

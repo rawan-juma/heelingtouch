@@ -4,8 +4,10 @@ class ChatRoom {
   late String patientID;
   late String patientName;
   late String therapistName;
+  late String patientImg;
+  late String therapistImg;
 //  FieldValue timeStamp;
-  late String time;
+  late int time;
   late List<dynamic> messages;
   // late String urlImage;
   // late bool isRead;
@@ -17,6 +19,8 @@ class ChatRoom {
     required this.patientID,
     required this.patientName,
     required this.therapistName,
+    required this.patientImg,
+    required this.therapistImg,
     //   required this.timeStamp,
     required this.time,
     // required this.urlImage,

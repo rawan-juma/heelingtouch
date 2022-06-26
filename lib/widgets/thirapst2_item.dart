@@ -130,7 +130,7 @@ class Therapist2Item extends StatelessWidget {
                                       //   onPressed: () {},
                                       // ),
                                       const Text(
-                                        "09:00am - 03:00pm",
+                                        "08:00am - 04:00pm",
                                         textAlign: TextAlign.right,
                                         style: TextStyle(
                                             fontFamily: 'NeoSansArabic',

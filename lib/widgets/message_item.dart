@@ -11,9 +11,9 @@ class messegeItem extends StatelessWidget {
   String therapistID;
   String patientID;
   String day;
-  // String img;
+  String img;
   messegeItem(this.id, this.name, this.lastMessege, this.therapistID,
-      this.patientID, this.day,
+      this.patientID, this.day, this.img,
       {Key? key})
       : super(key: key);
   @override
@@ -28,6 +28,7 @@ class messegeItem extends StatelessWidget {
             SpHelper.spHelper.setTherapistID(therapistID);
             SpHelper.spHelper.setTherapistFname(name);
             SpHelper.spHelper.setPatientID(patientID);
+            SpHelper.spHelper.setTimeID(day);
           },
           child: SizedBox(
             width: double.infinity,
@@ -39,14 +40,15 @@ class messegeItem extends StatelessWidget {
                     Container(
                         width: 15.w,
                         height: 13.h,
-                        decoration: const BoxDecoration(
-                            color: Color(0xff2FA09C),
+                        decoration: BoxDecoration(
+                            color: const Color(0xff2FA09C),
                             shape: BoxShape.circle,
                             image: DecorationImage(
-                              fit: BoxFit.contain,
-                              image: NetworkImage(
-                                  "https://www.pngall.com/wp-content/uploads/12/Avatar-Profile-Vector-PNG-Clipart.png"),
-                            ))),
+                                fit: BoxFit.fill,
+                                image: img == ""
+                                    ? const NetworkImage(
+                                        "https://www.pngall.com/wp-content/uploads/12/Avatar-Profile-Vector-PNG-Clipart.png")
+                                    : NetworkImage(img)))),
                     SizedBox(
                       width: 2.w,
                     ),
@@ -73,7 +75,7 @@ class messegeItem extends StatelessWidget {
                 Padding(
                   padding: EdgeInsets.only(bottom: 2.h),
                   child: Text(
-                    day,
+                    "$day:00",
                     style: const TextStyle(
                         fontFamily: 'NeoSansArabic', color: Colors.grey),
                   ),

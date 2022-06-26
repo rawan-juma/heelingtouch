@@ -107,6 +107,8 @@ class FirestoreHelper {
   }
 
   String? userName;
+  String? img;
+  String? phone;
   Future<UserModel> getUser() async {
     UserModel? usersList;
     try {
@@ -132,6 +134,8 @@ class FirestoreHelper {
               // passwordcvfdd: userData['patient_password'],
               imageUrl: userData['patient_image']);
           userName = userData['patient_username'];
+          img = userData['patient_image'];
+          phone = "+970${userData['patient_phone_number']}";
         } else {
           log("nooooooooooooo any data");
         }
@@ -233,7 +237,7 @@ class FirestoreHelper {
 
       log('responseeeeeeeeeeeeeeeee${res.body}');
     } catch (err) {
-      log('errorrrrrrrrrrrrrrrrrrr: $err');
+      log('errorrrrrrrrrrrrrrrrrrr getAllThaerapits: $err');
     }
     return usersList;
   }
@@ -350,7 +354,7 @@ class FirestoreHelper {
 
       log('responseeeeeeeeeeeeeeeee${res.body}');
     } catch (err) {
-      log('errorrrrrrrrrrrrrrrrrrr: $err');
+      log('errorrrrrrrrrrrrrrrrrrr therapistConsultaions: $err');
     }
     return consultaionList;
   }
@@ -379,14 +383,14 @@ class FirestoreHelper {
             }
           }
 
-          consultaionList
-              .add(Consultaion(categoryID, name, img, categoryData['date']));
+          consultaionList.add(Consultaion(
+              categoryID, name, img, categoryData['hour'].toString()));
         }
       });
 
       log('responseeeeeeeeeeeeeeeee${res.body}');
     } catch (err) {
-      log('errorrrrrrrrrrrrrrrrrrr: $err');
+      log('cons patient error: $err');
     }
     return consultaionList;
   }
@@ -408,7 +412,7 @@ class FirestoreHelper {
 
       log('responseeeeeeeeeeeeeee ${res.body}');
     } catch (err) {
-      log('errorrrrrrrrrrrrrrrrrrr: $err');
+      log('errorrrrrrrrrrrrrrrrrrr addStory: $err');
     }
   }
 
@@ -433,7 +437,7 @@ class FirestoreHelper {
 
       log('responseeeeeeeeeeeeeeeee${res.body}');
     } catch (err) {
-      log('errorrrrrrrrrrrrrrrrrrr: $err');
+      log('errorrrrrrrrrrrrrrrrrrr fron fetching stories: $err');
     }
     return storiesList;
   }
@@ -464,7 +468,7 @@ class FirestoreHelper {
 
       log('responseeeeeeeeeeeeeeeee${res.body}');
     } catch (err) {
-      log('errorrrrrrrrrrrrrrrrrrr: $err');
+      log('errorrrrrrrrrrrrrrrrrrr in fetch therapist stories: $err');
     }
     return storiesList;
   }
@@ -492,7 +496,7 @@ class FirestoreHelper {
 
       log('responseeeeeeeeeeeeeeeee${res.body}');
     } catch (err) {
-      log('errorrrrrrrrrrrrrrrrrrr: $err');
+      log('errorrrrrrrrrrrrrrrrrrr SearchStories: $err');
     }
     return storiesList;
   }
@@ -605,7 +609,8 @@ class FirestoreHelper {
     return videosList;
   }
 
-  Future<void> requestConsultaion(String userID, String therpistID) async {
+  Future<void> requestConsultaion(String userID, String therpistID, int year,
+      int month, int day, int hour) async {
     try {
       String uri =
           'https://heelingtouchproject-default-rtdb.firebaseio.com/Consultaions.json';
@@ -613,14 +618,17 @@ class FirestoreHelper {
           body: json.encode({
             // 'therapistID':therapistID,
             'patientID': userID,
-            'date': "3:00",
-            'type': "chat",
+            'year': year,
+            'month': month,
+            'day': day,
+            'hour': hour,
+            'type': "chat, call",
             'therapistID': therpistID
           }));
 
       log('responseeeeeeeeeeeeeee ${res.body}');
     } catch (err) {
-      log('errorrrrrrrrrrrrrrrrrrr: $err');
+      log('errorrrrrrrrrrrrrrrrrrr requestConsultaion: $err');
     }
   }
 
@@ -730,7 +738,7 @@ class FirestoreHelper {
       final extractedData = json.decode(res.body) as Map<String, dynamic>;
 
       extractedData.forEach((therapistID, therapistData) {
-        if (therapistData['first_name'].contains(txt) == true) {
+        if (therapistData['full_name'].contains(txt) == true) {
           therapistsList.add(Therapist(
               id: therapistID,
               therapistID: therapistData['userID'],
@@ -786,8 +794,15 @@ class FirestoreHelper {
   //   return therapist!;
   // }
 
-  Future<void> createChatRoom(String patientName, String therapistName,
-      String time, String therpistID, MessageModel messege) async {
+  Future<void> createChatRoom(
+      String patientName,
+      String therapistName,
+      String patientImg,
+      String therapistImg,
+      int time,
+      String therpistID,
+      MessageModel messege,
+      String phone) async {
     try {
       String uri =
           'https://heelingtouchproject-default-rtdb.firebaseio.com/Chat.json';
@@ -798,7 +813,10 @@ class FirestoreHelper {
             'patientID': AuthHelper.authHelper.getUserId(),
             'patientName': patientName,
             'therapistName': therapistName,
+            'patientImg': patientImg,
+            'therapistImg': therapistImg,
             'time': time,
+            'patientNumber': phone,
             'messges': messages,
             'therapistID': therpistID
           }));
@@ -830,6 +848,8 @@ class FirestoreHelper {
               patientID: categoryData['patientID'],
               patientName: categoryData['patientName'],
               therapistName: categoryData['therapistName'],
+              patientImg: categoryData['patientImg'],
+              therapistImg: categoryData['therapistImg'],
               time: categoryData['time']));
         }
       });
@@ -854,17 +874,18 @@ class FirestoreHelper {
       extractedData.forEach((categoryID, categoryData) {
         // int index = 1;
         if (categoryData['patientID'] == SpHelper.spHelper.getPatientID() &&
-            categoryData['therapistID'] == SpHelper.spHelper.getTherapisID()) {
+            categoryData['therapistID'] == SpHelper.spHelper.getTherapisID() &&
+            categoryData['time'] == int.parse(SpHelper.spHelper.getTimeID())) {
           // log(categoryData['messges'].length.toString());
           for (int i = 0; i <= categoryData['messges'].length - 1; i++) {
             // if (categoryData['messges'][i] == 0) {
             log("lhhhkhhknhhhhhhh");
             // } else {
             messagesList.add(MessageModel(
-                content: categoryData['messges'][i + 1]['content'],
-                recieverId: categoryData['messges'][i + 1]['recieverId'],
-                senderId: categoryData['messges'][i + 1]['senderId'],
-                hour: categoryData['messges'][i + 1]['hour']));
+                content: categoryData['messges'][i]['content'],
+                recieverId: categoryData['messges'][i]['recieverId'],
+                senderId: categoryData['messges'][i]['senderId'],
+                hour: categoryData['messges'][i]['hour']));
             log("cccccccccccccccccc${categoryData['messges'][i]['content']}");
             // }
           }
@@ -950,7 +971,7 @@ class FirestoreHelper {
 
       // log('responseeeeeeeeeeeeeee ${res.body}');
     } catch (err) {
-      print('error: $err');
+      print('error from update messages: $err');
     }
   }
 

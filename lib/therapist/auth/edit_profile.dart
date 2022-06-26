@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../controllers/app_provider.dart';
+import '../../controllers/firebase_helper.dart';
 
 // ignore: must_be_immutable
 class EditProfile extends StatelessWidget {
@@ -55,9 +56,14 @@ class EditProfile extends StatelessWidget {
                             onTap: () {
                               appProvider.uploadImage();
                             },
-                            child: const CircleAvatar(
+                            child: CircleAvatar(
                               backgroundColor: Colors.transparent,
-                              backgroundImage: AssetImage("assets/tt.png"),
+                              backgroundImage:
+                                  FirestoreHelper.firestoreHelper.imageUrl != ""
+                                      ? NetworkImage(FirestoreHelper
+                                          .firestoreHelper
+                                          .imageUrl) as ImageProvider
+                                      : const AssetImage("assets/tt.png"),
                             ),
                           ),
                           Positioned(

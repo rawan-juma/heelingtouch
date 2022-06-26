@@ -162,4 +162,13 @@ class SpHelper {
     String? check = sharedPreferences?.getString('patientID');
     return check;
   }
+
+  setTimeID(String pt) {
+    sharedPreferences?.setString("time", pt);
+  }
+
+  getTimeID() {
+    String? check = sharedPreferences?.getString('time');
+    return check;
+  }
 }

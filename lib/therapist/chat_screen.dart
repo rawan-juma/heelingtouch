@@ -69,11 +69,13 @@ class Chat extends StatelessWidget {
                             children: snapshot.data!.map((e) {
                               log("messagemessagemessage");
                               return messegeItem(
-                                e.id, e.patientName, "مرحبا",
+                                e.id,
+                                e.patientName,
+                                e.messages[e.messages.length - 1]['content'],
                                 e.therapistID,
                                 e.patientID,
-                                e.time,
-                                // e.img,
+                                e.time.toString(),
+                                e.patientImg,
                               );
                             }).toList());
                         // }
