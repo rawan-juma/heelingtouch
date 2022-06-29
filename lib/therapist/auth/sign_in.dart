@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:heelingtouchproject/therapist/auth/forget_password.dart';
 import 'package:heelingtouchproject/widgets/app_button.dart';
@@ -32,6 +34,31 @@ class _TherapistSignInState extends State<TherapistSignIn>
 
   @override
   Widget build(BuildContext context) {
+    void _onLoading() {
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        // useRootNavigator: false,
+        barrierColor: Colors.black26,
+        builder: (BuildContext context) {
+          return Center(
+            child: Container(
+                height: 70,
+                width: 70,
+                decoration: const BoxDecoration(
+                    color: Color.fromARGB(255, 68, 68, 68),
+                    borderRadius: BorderRadius.all(Radius.circular(10))),
+                child: const Padding(
+                  padding: EdgeInsets.all(20.0),
+                  child: CircularProgressIndicator(
+                    color: Color(0xff2FA09C),
+                  ),
+                )),
+          );
+        },
+      );
+    }
+
     return Consumer<AppProvider>(builder: (context, appProvider, x) {
       return Scaffold(
           body: Directionality(
@@ -145,6 +172,12 @@ class _TherapistSignInState extends State<TherapistSignIn>
                   } else {
                     // Timer(const Duration(seconds: 3), () {});
                     appProvider.login1();
+                    appProvider.isLoading = true;
+                    if (appProvider.isLoading) {
+                      _onLoading();
+                    } else {
+                      log("logged in successfully");
+                    }
                   }
                   // Navigator.push(
                   //   context,

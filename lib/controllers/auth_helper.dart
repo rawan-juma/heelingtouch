@@ -58,6 +58,7 @@ class AuthHelper {
         otpVisibility = true;
         verificationID = verificationId;
         log(verificationId);
+        // isLoading = true;
         navService.pushNamed(Verification.routeName, args: 'From Home Screen');
         // setState(() {});
       },
@@ -65,6 +66,7 @@ class AuthHelper {
     );
   }
 
+  bool isLoading = false;
   void verifyOTP(
     String otp,
     String username,
@@ -78,9 +80,12 @@ class AuthHelper {
     try {
       await firebaseAuth.signInWithCredential(credential).then(
         (value) async {
+          // isLoading = true;
           log(value.toString());
           navService.pushNamed(MyHomePage1.routeName, args: 'From Home Screen');
           await FirestoreHelper.firestoreHelper.patientConsultaions();
+          // await FirestoreHelper.firestoreHelper.getUser();
+          log("mmmmmmmmmmmmmmmmmmmm${firebaseAuth.currentUser!.uid}");
           await FirestoreHelper.firestoreHelper.addUserToDB(
             firebaseAuth.currentUser!.uid,
             username,
@@ -199,6 +204,7 @@ class AuthHelper {
       if (SpHelper.spHelper.getBool() == true) {
         navService.pushNamed(MyHomePage.routeName, args: 'From Home Screen');
         FirestoreHelper.firestoreHelper.therapistConsultaions();
+        FirestoreHelper.firestoreHelper.therapistConsultaionsForCalender();
         // getTherapistConsulations();
         FirestoreHelper.firestoreHelper
             .fetchTherapistStoriesFuture(firebaseAuth.currentUser!.uid);
@@ -213,10 +219,21 @@ class AuthHelper {
     try {
       //  final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
       User currentUser = firebaseAuth.currentUser!;
+
       if (newPassword != "") {
-        await currentUser
-            .updatePassword(newPassword)
-            .then((value) => log("updated successfully"));
+        await currentUser.updatePassword(newPassword).then((value) {
+          const SnackBar snackBar = SnackBar(
+            content: Text(
+              "لقد قمت بتغيير كلمة المرور بنجاح",
+              style: TextStyle(
+                fontFamily: 'NeoSansArabic',
+              ),
+              textAlign: TextAlign.right,
+            ),
+            backgroundColor: Colors.green,
+          );
+          snackbarKey.currentState?.showSnackBar(snackBar);
+        });
       } else {
         log("error message");
       }

@@ -57,12 +57,12 @@ class EditPatientProfile extends StatelessWidget {
                             },
                             child: CircleAvatar(
                               backgroundColor: Colors.transparent,
-                              backgroundImage:
-                                  FirestoreHelper.firestoreHelper.imageUrl != ""
-                                      ? NetworkImage(FirestoreHelper
-                                          .firestoreHelper
-                                          .imageUrl) as ImageProvider
-                                      : const AssetImage("assets/tt.png"),
+                              backgroundImage: FirestoreHelper
+                                          .firestoreHelper.imageUrl !=
+                                      ""
+                                  ? NetworkImage(FirestoreHelper.firestoreHelper
+                                      .imageUrl) as ImageProvider
+                                  : NetworkImage(appProvider.user!.imageUrl),
                             ),
                           ),
                           Positioned(
@@ -99,6 +99,7 @@ class EditPatientProfile extends StatelessWidget {
                     child: TextFormField(
                       keyboardType: TextInputType.multiline,
                       maxLines: null,
+                      // initialValue: "appProvider.user!.username",
                       controller: appProvider.usernameController,
                       textAlign: TextAlign.right,
                       style: const TextStyle(

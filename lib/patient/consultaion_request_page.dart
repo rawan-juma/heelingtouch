@@ -1,12 +1,10 @@
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:heelingtouchproject/controllers/auth_helper.dart';
 import 'package:heelingtouchproject/controllers/firebase_helper.dart';
 import 'package:heelingtouchproject/controllers/sp_helper.dart';
-import 'package:heelingtouchproject/model/chat.dart';
 import 'package:heelingtouchproject/model/consultations.dart';
-import 'package:heelingtouchproject/therapist/chat_screen.dart';
 import 'package:heelingtouchproject/widgets/app_button.dart';
 import 'package:heelingtouchproject/widgets/thirapst2_item.dart';
 import 'package:provider/provider.dart';
@@ -120,17 +118,12 @@ class _ConsultationRequestState extends State<ConsultationRequest> {
                           _selectedYear = date.year;
                           _selectedMonth = date.month;
                           _selectedDay = date.day;
-                          // _selectedHour = DateTime.now().hour;
-                          log(_selectedYear.toString());
-                          log(_selectedMonth.toString());
-                          log(_selectedDay.toString());
-                          log(_selectedHour.toString());
                         });
                       },
                     ),
                   ),
                   Container(
-                    margin: EdgeInsets.only(top: 2.h, right: 8.0, left: 8.0),
+                    margin: EdgeInsets.only(top: 3.h, right: 8.0, left: 8.0),
                     child: SingleChildScrollView(
                       scrollDirection: Axis.horizontal,
                       child: Row(
@@ -327,13 +320,27 @@ class _ConsultationRequestState extends State<ConsultationRequest> {
                     ),
                   ),
                   Container(
-                    margin: EdgeInsets.only(top: 25.h),
+                    margin: EdgeInsets.only(top: 22.h),
                     alignment: Alignment.bottomCenter,
                     child: App_Button("تأكيد الحجز", 90.w, () async {
                       List<Consultaion> cons = await FirestoreHelper
                           .firestoreHelper
                           .patientConsultaions();
                       if (cons.length < 3) {
+                        log(cons.length.toString());
+                        FirestoreHelper.firestoreHelper.addNotification(
+                            SpHelper.spHelper.getTherapisID(),
+                            AuthHelper.authHelper.firebaseAuth.currentUser!.uid,
+                            SpHelper.spHelper.getTherapisImg(),
+                            appProvider.img.toString(),
+                            SpHelper.spHelper.getTherapisFname(),
+                            appProvider.username.toString());
+                        appProvider.addConsultaion(
+                            SpHelper.spHelper.getTherapisID(),
+                            _selectedYear,
+                            _selectedMonth,
+                            _selectedDay,
+                            _selectedHour);
                         appProvider.createChatRoom(
                             appProvider.username.toString(),
                             SpHelper.spHelper.getTherapisFname(),
@@ -342,13 +349,8 @@ class _ConsultationRequestState extends State<ConsultationRequest> {
                             _selectedHour,
                             SpHelper.spHelper.getTherapisID(),
                             "test test test",
-                            appProvider.phone.toString());
-                        appProvider.addConsultaion(
-                            SpHelper.spHelper.getTherapisID(),
-                            _selectedYear,
-                            _selectedMonth,
-                            _selectedDay,
-                            _selectedHour);
+                            appProvider.phone.toString(),
+                            SpHelper.spHelper.getTherapisPhoneNumber());
                       } else {
                         log("Alert message");
                         showDialog(
@@ -371,6 +373,33 @@ class _ConsultationRequestState extends State<ConsultationRequest> {
                                       fontSize: 11.sp),
                                   textAlign: TextAlign.right,
                                 ),
+                                actions: [
+                                  GestureDetector(
+                                    onTap: () {
+                                      Navigator.pop(
+                                        context,
+                                      );
+                                    },
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      children: [
+                                        Padding(
+                                          padding: EdgeInsets.only(
+                                              left: 4.w, bottom: 1.h),
+                                          child: Text(
+                                            "اغلاق",
+                                            style: TextStyle(
+                                                fontFamily: 'NeoSansArabic',
+                                                color: const Color(0xff2FA09C),
+                                                fontSize: 10.sp),
+                                            textAlign: TextAlign.left,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  )
+                                ],
                               );
                             });
                       }

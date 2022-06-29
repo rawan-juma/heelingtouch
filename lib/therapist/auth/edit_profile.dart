@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:heelingtouchproject/controllers/sp_helper.dart';
 import 'package:heelingtouchproject/widgets/app_button.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
@@ -63,7 +64,8 @@ class EditProfile extends StatelessWidget {
                                       ? NetworkImage(FirestoreHelper
                                           .firestoreHelper
                                           .imageUrl) as ImageProvider
-                                      : const AssetImage("assets/tt.png"),
+                                      : NetworkImage(
+                                          SpHelper.spHelper.getTherapisImg()),
                             ),
                           ),
                           Positioned(
@@ -92,7 +94,7 @@ class EditProfile extends StatelessWidget {
                       style: TextStyle(
                           fontFamily: 'NeoSansArabic',
                           color: const Color(0xff2FA09C),
-                          fontSize: 12.sp),
+                          fontSize: 11.sp),
                     ),
                   ),
                   Padding(
@@ -102,9 +104,12 @@ class EditProfile extends StatelessWidget {
                       maxLines: null,
                       controller: appProvider.usernameController,
                       textAlign: TextAlign.right,
-                      style: const TextStyle(color: Colors.black),
+                      style: const TextStyle(
+                          fontFamily: 'NeoSansArabic', color: Colors.black),
                       decoration: InputDecoration(
-                        hintText: "مريم سعيد",
+                        hintText: SpHelper.spHelper.getTherapisFname() == ""
+                            ? "اسم المستخدم"
+                            : SpHelper.spHelper.getTherapisFname(),
                         hintStyle: TextStyle(
                             fontFamily: 'NeoSansArabic',
                             fontSize: 11.sp,
@@ -130,9 +135,13 @@ class EditProfile extends StatelessWidget {
                       maxLines: null,
                       controller: appProvider.phoneController,
                       textAlign: TextAlign.right,
-                      style: const TextStyle(color: Colors.black),
+                      style: const TextStyle(
+                          fontFamily: 'NeoSansArabic', color: Colors.black),
                       decoration: InputDecoration(
-                        hintText: "0595521535",
+                        hintText:
+                            SpHelper.spHelper.getTherapisPhoneNumber() == ""
+                                ? "رقم الهاتف"
+                                : SpHelper.spHelper.getTherapisPhoneNumber(),
                         hintStyle: TextStyle(
                             fontFamily: 'NeoSansArabic',
                             fontSize: 11.sp,
@@ -158,11 +167,13 @@ class EditProfile extends StatelessWidget {
                       maxLines: 3,
                       controller: appProvider.bioController,
                       textAlign: TextAlign.right,
-                      style: const TextStyle(color: Colors.black),
+                      style: const TextStyle(
+                          fontFamily: 'NeoSansArabic', color: Colors.black),
                       minLines: 3,
                       decoration: InputDecoration(
-                        hintText:
-                            "هذا النص هو مثال لنص يمكن أن يستبدل في نفس المساحة، لقد تم توليد هذا النص من مولد النص العربى، حيث يمكنك أن تولد مثل هذا النص أو العديد من النصوص الأخرى إضافة إلى زيادة عدد الحروف التى يولدها التطبيق",
+                        hintText: SpHelper.spHelper.getTherapisBio() == ""
+                            ? "نبذة عما تفعله"
+                            : SpHelper.spHelper.getTherapisBio(),
                         hintStyle: TextStyle(
                             fontFamily: 'NeoSansArabic',
                             fontSize: 11.sp,

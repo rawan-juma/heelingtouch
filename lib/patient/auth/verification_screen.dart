@@ -112,6 +112,7 @@ class _VerificationState extends State<Verification> {
                       keyboardType: TextInputType.number,
                       underlineUnfocusedColor: Colors.grey,
                       underlineColor: Colors.grey,
+                      itemSize: 55,
                       // length: 6,
                       digitsOnly: true,
                       fullBorder: true,

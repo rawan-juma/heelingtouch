@@ -71,6 +71,54 @@ class ForgetPassword extends StatelessWidget {
               padding: EdgeInsets.only(top: 4.h),
               child: App_Button('ارسال كلمة المرور', 90.w, () {
                 appProvider.resetPassword();
+                showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        title: Text(
+                          "إستشارة",
+                          style: TextStyle(
+                              fontFamily: 'NeoSansArabic',
+                              color: const Color(0xff2FA09C),
+                              fontSize: 13.sp),
+                          textAlign: TextAlign.right,
+                        ),
+                        content: Text(
+                          "لقد تم ارسال ايميل عبر بريدك الالكتروني قم بفحصها",
+                          style: TextStyle(
+                              fontFamily: 'NeoSansArabic',
+                              color: const Color(0xff000000),
+                              fontSize: 11.sp),
+                          textAlign: TextAlign.right,
+                        ),
+                        actions: [
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.pop(
+                                context,
+                              );
+                            },
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Padding(
+                                  padding:
+                                      EdgeInsets.only(left: 4.w, bottom: 1.h),
+                                  child: Text(
+                                    "موافق",
+                                    style: TextStyle(
+                                        fontFamily: 'NeoSansArabic',
+                                        color: const Color(0xff2FA09C),
+                                        fontSize: 10.sp),
+                                    textAlign: TextAlign.left,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          )
+                        ],
+                      );
+                    });
               }),
             ),
           ],

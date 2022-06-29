@@ -12,8 +12,9 @@ class messegeItem extends StatelessWidget {
   String patientID;
   String day;
   String img;
-  messegeItem(this.id, this.name, this.lastMessege, this.therapistID,
-      this.patientID, this.day, this.img,
+  String phone;
+  messegeItem(this.id, this.name, this.phone, this.lastMessege,
+      this.therapistID, this.patientID, this.day, this.img,
       {Key? key})
       : super(key: key);
   @override
@@ -29,6 +30,7 @@ class messegeItem extends StatelessWidget {
             SpHelper.spHelper.setTherapistFname(name);
             SpHelper.spHelper.setPatientID(patientID);
             SpHelper.spHelper.setTimeID(day);
+            SpHelper.spHelper.setPhone(phone);
           },
           child: SizedBox(
             width: double.infinity,

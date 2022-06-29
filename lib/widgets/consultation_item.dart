@@ -105,7 +105,7 @@ class _ConsultationItemState extends State<ConsultationItem> {
                                 Column(
                                   children: [
                                     Text(
-                                      widget.time,
+                                      "${widget.time}:00",
                                       overflow: TextOverflow.ellipsis,
                                       style: TextStyle(
                                         fontSize: 10.sp,

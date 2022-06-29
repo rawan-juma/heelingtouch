@@ -71,6 +71,7 @@ class Chat extends StatelessWidget {
                               return messegeItem(
                                 e.id,
                                 e.patientName,
+                                e.patientPhone,
                                 e.messages[e.messages.length - 1]['content'],
                                 e.therapistID,
                                 e.patientID,

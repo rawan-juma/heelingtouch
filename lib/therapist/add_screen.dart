@@ -1,4 +1,6 @@
 // ignore_for_file: deprecated_member_use
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:heelingtouchproject/controllers/app_provider.dart';
@@ -18,9 +20,29 @@ class AddStoryScreen extends StatelessWidget {
     'assets/story.png',
     'assets/story.png'
   ];
+  bool isRequested = false;
   TextEditingController descriptionController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
+    void _onLoading() {
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return Dialog(
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: const [
+                CircularProgressIndicator(),
+                Text("Loading"),
+              ],
+            ),
+          );
+        },
+      );
+    }
+
     return Consumer<AppProvider>(builder: (context, appProvider, x) {
       return Scaffold(
           backgroundColor: Colors.white,
@@ -74,16 +96,6 @@ class AddStoryScreen extends StatelessWidget {
                                             .firestoreHelper.imageUrl)
                                         : const AssetImage('assets/default.png')
                                             as ImageProvider)),
-                        // child: Center(
-                        //   child: IconButton(
-                        //       icon: Icon(Icons.add_a_photo,
-                        //           color: Colors.yellow[600]),
-                        //       onPressed: () {
-                        // print(
-                        //     'imaaaaaaaaaaaaaaaage${FirestoreHelper.firestoreHelper.imageUrl}');
-
-                        // }),
-                        // ),
                       ),
                     ),
                   ),
@@ -92,7 +104,7 @@ class AddStoryScreen extends StatelessWidget {
                     height: 8.h,
                     child: FlatButton(
                       onPressed: () {
-                        appProvider.uploadImage();
+                        FirestoreHelper.firestoreHelper.uploadImage();
                       },
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
@@ -153,6 +165,12 @@ class AddStoryScreen extends StatelessWidget {
                     padding: EdgeInsets.only(top: 8.h, bottom: 15.h),
                     child: App_Button('نشر', 90.w, () {
                       appProvider.addStory();
+                      // if (FirestoreHelper.firestoreHelper.imageUrl == "") {
+                      //   // _onLoading();
+                      //   log("Not Added Yet");
+                      // } else {
+                      //   log("Added Successfully");
+                      // }
                       // Navigator.push(
                       //   context,
                       //   MaterialPageRoute(builder: (context) => const Home()),

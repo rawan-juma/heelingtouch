@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_neat_and_clean_calendar/flutter_neat_and_clean_calendar.dart';
+import 'package:heelingtouchproject/controllers/firebase_helper.dart';
 import 'package:heelingtouchproject/therapist/auth/profile.dart';
 import 'package:heelingtouchproject/therapist/chat_screen.dart';
 import 'package:heelingtouchproject/therapist/notifications_screen.dart';
@@ -84,85 +85,71 @@ class CalendarScreen extends StatefulWidget {
 }
 
 class _CalendarScreenState extends State<CalendarScreen> {
-  final List<NeatCleanCalendarEvent> _eventList = [
-    NeatCleanCalendarEvent(
-      'خولة محمد',
-      startTime: DateTime(DateTime.now().year, DateTime.now().month,
-          DateTime.now().day, DateTime.now().hour, DateTime.now().minute),
-      endTime: DateTime(DateTime.now().year, DateTime.now().month,
-          DateTime.now().day, DateTime.now().hour + 1, DateTime.now().minute),
-      color: Colors.orange,
-    ),
-    NeatCleanCalendarEvent(
-      'احمد الباشا',
-      startTime: DateTime(DateTime.now().year, DateTime.now().month,
-          DateTime.now().day, DateTime.now().hour, DateTime.now().minute),
-      endTime: DateTime(DateTime.now().year, DateTime.now().month,
-          DateTime.now().day, DateTime.now().hour + 1, DateTime.now().minute),
-      color: Colors.pink,
-      // isAllDay: false,
-    ),
-  ];
-
-  @override
-  void initState() {
-    super.initState();
-    // Force selection of today on first load, so that the list of today's events gets shown.
-    // _handleNewDate(DateTime(
-    //     DateTime.now().year, DateTime.now().month, DateTime.now().day));
-  }
-
   @override
   Widget build(BuildContext context) {
+    // return Consumer<AppProvider>(builder: (context, appProvider, x) {
     return Scaffold(
         backgroundColor: Colors.white,
         body: SafeArea(
           child: Directionality(
             textDirection: TextDirection.rtl,
-            child: Padding(
-              padding: EdgeInsets.all(2.h),
-              child: Calendar(
-                startOnMonday: true,
-                weekDays: const [
-                  'اثنين',
-                  'ثلاثاء',
-                  'اربعاء',
-                  'خميس',
-                  'جمعة',
-                  'سبت',
-                  'احد'
-                ],
-                bottomBarColor: const Color(0xff2FA09C),
-                bottomBarArrowColor: Colors.white,
-                eventsList: _eventList,
-                isExpandable: true,
-                hideTodayIcon: true,
-                eventDoneColor: Colors.green,
-                selectedColor: const Color(0xff2FA09C),
-                todayColor: Colors.blue,
-                eventColor: null,
-                locale: 'ar',
-                bottomBarTextStyle: const TextStyle(color: Colors.white),
-                // todayButtonText: 'Heute',
-                // allDayEventText: 'Ganztägig',
-                // multiDayEndText: 'Ende',
-                isExpanded: true,
-                expandableDateFormat: 'EEEE, dd. MMMM yyyy',
-                // datePickerType: DatePickerType.date,
-                displayMonthTextStyle: const TextStyle(
-                    fontFamily: 'NeoSansArabic',
-                    color: Colors.black,
-                    fontWeight: FontWeight.w800,
-                    fontSize: 13),
-                dayOfWeekStyle: const TextStyle(
-                    fontFamily: 'NeoSansArabic',
-                    color: Colors.black,
-                    fontWeight: FontWeight.w800,
-                    fontSize: 11),
-              ),
+            // child: Padding(
+            // padding: EdgeInsets.all(2.h),
+            child: FutureBuilder<List<NeatCleanCalendarEvent>>(
+              future: FirestoreHelper.firestoreHelper
+                  .therapistConsultaionsForCalender(),
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  return Calendar(
+                    startOnMonday: true,
+                    weekDays: const [
+                      'اثنين',
+                      'ثلاثاء',
+                      'اربعاء',
+                      'خميس',
+                      'جمعة',
+                      'سبت',
+                      'احد'
+                    ],
+                    bottomBarColor: const Color(0xff2FA09C),
+                    bottomBarArrowColor: Colors.white,
+                    eventsList: snapshot.data!,
+                    isExpandable: true,
+                    hideTodayIcon: true,
+                    eventDoneColor: Colors.green,
+                    selectedColor: const Color(0xff2FA09C),
+                    todayColor: Colors.blue,
+                    eventColor: null,
+                    locale: 'ar',
+                    bottomBarTextStyle: const TextStyle(color: Colors.white),
+                    // todayButtonText: 'Heute',
+                    // allDayEventText: 'Ganztägig',
+                    // multiDayEndText: 'Ende',
+                    isExpanded: true,
+                    expandableDateFormat: 'EEEE, dd. MMMM yyyy',
+                    // datePickerType: DatePickerType.date,
+                    displayMonthTextStyle: const TextStyle(
+                        fontFamily: 'NeoSansArabic',
+                        color: Colors.black,
+                        fontWeight: FontWeight.w800,
+                        fontSize: 13),
+                    dayOfWeekStyle: const TextStyle(
+                        fontFamily: 'NeoSansArabic',
+                        color: Colors.black,
+                        fontWeight: FontWeight.w800,
+                        fontSize: 11),
+                  );
+                } else {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+              },
             ),
+            // ),
           ),
         ));
+    // });
   }
 
   // void _handleNewDate(date) {

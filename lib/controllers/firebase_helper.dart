@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_neat_and_clean_calendar/neat_and_clean_calendar_event.dart';
 import 'package:heelingtouchproject/controllers/auth_helper.dart';
 import 'package:heelingtouchproject/controllers/sp_helper.dart';
 import 'package:heelingtouchproject/main.dart';
@@ -19,7 +20,9 @@ import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import '../model/articles.dart';
+import '../model/notification.dart';
 import '../model/story.dart';
+import 'dart:math' as math;
 
 class FirestoreHelper {
   FirestoreHelper._();
@@ -37,6 +40,7 @@ class FirestoreHelper {
       String uri =
           'https://heelingtouchproject-default-rtdb.firebaseio.com/Patient.json';
       List<UserModel> users = await getAllUsers();
+
       if (users.isEmpty) {
         http.Response res = await http.post(Uri.parse(uri),
             body: json.encode({
@@ -48,27 +52,29 @@ class FirestoreHelper {
               'patient_image': imageUrl
             }));
         // await getUser();
+
         log('response from empty check ${res.body}');
       } else {
+        List<String> list = [];
         for (int i = 0; i <= users.length - 1; i++) {
-          userID = users[i].userID;
-          // ignore: iterable_contains_unrelated_type, unrelated_type_equality_checks
-          if (users[i].userID == userID) {
-            log("this patient has been added before");
-          } else {
-            http.Response res = await http.post(Uri.parse(uri),
-                body: json.encode({
-                  'userID': userID,
-                  'patient_username': username,
-                  'patient_phone_number': phoneNumber,
-                  'patient_address': address,
-                  'patient_age': age,
-                  'patient_image': imageUrl
-                }));
-            log('responseeeeeeeeeeeeeee added successfully + ${userID}');
+          //   // userID = users[i].userID;
 
+          if (users[i].userID == userID) {
+            list.add(users[i].userID);
+            log("this patient has been added before");
             // break;
           }
+        }
+        if (list.isEmpty) {
+          http.Response res = await http.post(Uri.parse(uri),
+              body: json.encode({
+                'userID': userID,
+                'patient_username': username,
+                'patient_phone_number': phoneNumber,
+                'patient_address': address,
+                'patient_age': age,
+                'patient_image': imageUrl
+              }));
         }
       }
     } catch (err) {
@@ -305,17 +311,32 @@ class FirestoreHelper {
       log("therapist id= $id");
       String uri =
           'https://heelingtouchproject-default-rtdb.firebaseio.com/Physiotherapist/$id.json';
-      http.Response res = await http.patch(Uri.parse(uri),
-          body: json.encode({
-            'userID': userID,
-            'full_name': fName,
-            // 'family_name': lName,
-            'bio': bio,
-            'mobile_number': phoneNumber,
-            'img_profile': imageUrl,
-            // 'status': newTherapist.status,
-            // 'email': newTherapist.email
-          }));
+      http.Response res = await http
+          .patch(Uri.parse(uri),
+              body: json.encode({
+                'userID': userID,
+                'full_name': fName,
+                // 'family_name': lName,
+                'bio': bio,
+                'mobile_number': phoneNumber,
+                'img_profile': imageUrl,
+                // 'status': newTherapist.status,
+                // 'email': newTherapist.email
+              }))
+          .whenComplete(() {
+        const SnackBar snackBar = SnackBar(
+          content: Text(
+            'تمت تعديل بيناتك بنجاح',
+            style: TextStyle(
+              fontFamily: 'NeoSansArabic',
+            ),
+            textAlign: TextAlign.right,
+          ),
+          backgroundColor: Colors.red,
+        );
+        snackbarKey.currentState?.showSnackBar(snackBar);
+      });
+
       res;
 
       // log('responseeeeeeeeeeeeeee ${res.body}');
@@ -337,6 +358,50 @@ class FirestoreHelper {
       final extractedData = json.decode(res.body) as Map<String, dynamic>;
 
       extractedData.forEach((categoryID, categoryData) {
+        String? name;
+        String? img;
+        log(categoryData['therapistID']);
+        if (categoryData['therapistID'] ==
+            AuthHelper.authHelper.firebaseAuth.currentUser!.uid) {
+          for (int i = 0; i <= patients.length - 1; i++) {
+            log(patients[i].username);
+            if (categoryData['patientID'] == patients[i].userID) {
+              name = patients[i].username;
+              img = patients[i].imageUrl;
+            }
+          }
+          consultaionList.add(Consultaion(
+              categoryID,
+              name!,
+              img!,
+              categoryData['year'],
+              categoryData['month'],
+              categoryData['day'],
+              categoryData['hour']));
+        }
+      });
+
+      log('responseeeeeeeeeeeeeeeee${res.body}');
+    } catch (err) {
+      log('errorrrrrrrrrrrrrrrrrrr therapistConsultaions: $err');
+    }
+    return consultaionList;
+  }
+
+  Future<List<NeatCleanCalendarEvent>>
+      therapistConsultaionsForCalender() async {
+    List<NeatCleanCalendarEvent> consultaionList = [];
+    try {
+      String uri =
+          'https://heelingtouchproject-default-rtdb.firebaseio.com/Consultaions.json';
+      http.Response res = await http.get(
+        Uri.parse(uri),
+      );
+      List<UserModel> patients = await getAllUsers();
+
+      final extractedData = json.decode(res.body) as Map<String, dynamic>;
+
+      extractedData.forEach((categoryID, categoryData) {
         late String name;
         late String img;
         if (categoryData['therapistID'] ==
@@ -347,14 +412,21 @@ class FirestoreHelper {
               img = patients[i].imageUrl;
             }
           }
-          consultaionList
-              .add(Consultaion(categoryID, name, img, categoryData['date']));
+          consultaionList.add(NeatCleanCalendarEvent(
+            name.toString(),
+            startTime: DateTime(categoryData['year'], categoryData['month'],
+                categoryData['day'], categoryData['hour']),
+            endTime: DateTime(categoryData['year'], categoryData['month'],
+                categoryData['day'], categoryData['hour'], 30),
+            color: Colors
+                .primaries[math.Random().nextInt(Colors.primaries.length)],
+          ));
         }
       });
 
-      log('responseeeeeeeeeeeeeeeee${res.body}');
+      log('responseeeeeeeeeeeeeeeee therapistConsultaionsForCalender${res.body}');
     } catch (err) {
-      log('errorrrrrrrrrrrrrrrrrrr therapistConsultaions: $err');
+      log('errorrrrrrrrrrrrrrrrrrr therapistConsultaionsForCallendr: $err');
     }
     return consultaionList;
   }
@@ -372,8 +444,8 @@ class FirestoreHelper {
       final extractedData = json.decode(res.body) as Map<String, dynamic>;
 
       extractedData.forEach((categoryID, categoryData) {
-        late String name;
-        late String img;
+        String? name;
+        String? img;
         if (categoryData['patientID'] ==
             AuthHelper.authHelper.firebaseAuth.currentUser!.uid) {
           for (int i = 0; i <= therapists.length - 1; i++) {
@@ -384,7 +456,13 @@ class FirestoreHelper {
           }
 
           consultaionList.add(Consultaion(
-              categoryID, name, img, categoryData['hour'].toString()));
+              categoryID,
+              name.toString(),
+              img.toString(),
+              categoryData['year'],
+              categoryData['month'],
+              categoryData['day'],
+              categoryData['hour']));
         }
       });
 
@@ -393,6 +471,87 @@ class FirestoreHelper {
       log('cons patient error: $err');
     }
     return consultaionList;
+  }
+
+  Future<void> addNotification(
+    String therapistID,
+    String patientID,
+    String patientImage,
+    String therapistImage,
+    String patientName,
+    String therapistName,
+  ) async {
+    try {
+      String uri =
+          'https://heelingtouchproject-default-rtdb.firebaseio.com/Notifications.json';
+      http.Response res = await http.post(Uri.parse(uri),
+          body: json.encode({
+            'therapistID': therapistID,
+            'patientID': patientID,
+            'pateintImage': patientImage,
+            'therapistImage': therapistImage,
+            'pateintName': patientName,
+            'therapistName': therapistName,
+            // 'content1': "لقد قمت بحجز استشارة",
+            // 'content2': "لقد قام مريض بحجز استشارة للتو!",
+            'day': DateTime.now().day,
+          }));
+
+      log('responseeeeeeeeeeeeeee ${res.body}');
+    } catch (err) {
+      log('errorrrrrrrrrrrrrrrrrrr addStory: $err');
+    }
+  }
+
+  Future<List<Notifications>> fetchNotifications() async {
+    List<Notifications> storiesList = [];
+    try {
+      String uri =
+          'https://heelingtouchproject-default-rtdb.firebaseio.com/Notifications.json';
+      http.Response res = await http.get(
+        Uri.parse(uri),
+      );
+      final extractedData = json.decode(res.body) as Map<String, dynamic>;
+
+      extractedData.forEach((categoryID, categoryData) {
+        if (AuthHelper.authHelper.firebaseAuth.currentUser!.uid ==
+            categoryData['therapistID']) {
+          storiesList.add(Notifications(
+            id: categoryID,
+            therapistID: categoryData['therapistID'],
+            patientID: categoryData['patientID'],
+            therapistImage: categoryData['therapistImage'],
+            patientImage: categoryData['pateintImage'],
+            therapistName: categoryData['therapistName'],
+            patientName: categoryData['pateintName'],
+            // content: categoryData["content2"],
+            day: categoryData["day"],
+          ));
+          log("response from therapists Stories${res.body}");
+        } else if (AuthHelper.authHelper.firebaseAuth.currentUser!.uid ==
+            categoryData['patientID']) {
+          storiesList.add(Notifications(
+            id: categoryID,
+            therapistID: categoryData['therapistID'],
+            patientID: categoryData['patientID'],
+            therapistImage: categoryData['therapistImage'],
+            patientImage: categoryData['pateintImage'],
+            therapistName: categoryData['therapistName'],
+            patientName: categoryData['pateintName'],
+            // content: categoryData["content1"],
+            day: categoryData["day"],
+          ));
+          log("response from therapists Stories${res.body}");
+        } else {
+          log("there is no data");
+        }
+      });
+
+      log('responseeeeeeeeeeeeeeeee${res.body}');
+    } catch (err) {
+      log('errorrrrrrrrrrrrrrrrrrr in fetch therapist stories: $err');
+    }
+    return storiesList;
   }
 
   String imageUrl = "";
@@ -802,7 +961,8 @@ class FirestoreHelper {
       int time,
       String therpistID,
       MessageModel messege,
-      String phone) async {
+      String phone,
+      String therapistPhone) async {
     try {
       String uri =
           'https://heelingtouchproject-default-rtdb.firebaseio.com/Chat.json';
@@ -817,6 +977,7 @@ class FirestoreHelper {
             'therapistImg': therapistImg,
             'time': time,
             'patientNumber': phone,
+            'therapistNumber': therapistPhone,
             'messges': messages,
             'therapistID': therpistID
           }));
@@ -850,6 +1011,8 @@ class FirestoreHelper {
               therapistName: categoryData['therapistName'],
               patientImg: categoryData['patientImg'],
               therapistImg: categoryData['therapistImg'],
+              patientPhone: categoryData['patientNumber'],
+              therapistPhone: categoryData['therapistNumber'],
               time: categoryData['time']));
         }
       });
@@ -882,11 +1045,11 @@ class FirestoreHelper {
             log("lhhhkhhknhhhhhhh");
             // } else {
             messagesList.add(MessageModel(
-                content: categoryData['messges'][i]['content'],
-                recieverId: categoryData['messges'][i]['recieverId'],
-                senderId: categoryData['messges'][i]['senderId'],
-                hour: categoryData['messges'][i]['hour']));
-            log("cccccccccccccccccc${categoryData['messges'][i]['content']}");
+                content: categoryData['messges'][i + 1]['content'],
+                recieverId: categoryData['messges'][i + 1]['recieverId'],
+                senderId: categoryData['messges'][i + 1]['senderId'],
+                hour: categoryData['messges'][i + 1]['hour']));
+            log("cccccccccccccccccc${categoryData['messges'][i + 1]['content']}");
             // }
           }
         }
@@ -975,6 +1138,7 @@ class FirestoreHelper {
     }
   }
 
+  //  isRequested = false;
   uploadImage() async {
     final _picker = ImagePicker();
     PickedFile? image;
@@ -1007,6 +1171,11 @@ class FirestoreHelper {
       // final String url = await storageReference.getDownloadURL();
 
       imageUrl = downloadUrl;
+      // if (imageUrl == "") {
+      //   isRequested = false;
+      // } else {
+      //   isRequested = true;
+      // }
       log('imageUrllllllllllllllllll$downloadUrl');
       // } else {
       //   log('No Path Received');

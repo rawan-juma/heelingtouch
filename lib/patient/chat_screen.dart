@@ -66,6 +66,7 @@ class PatientChat extends StatelessWidget {
                                 return messegeItem(
                                   e.id,
                                   e.therapistName,
+                                  e.therapistPhone,
                                   e.messages[e.messages.length - 1]['content'],
                                   e.therapistID,
                                   e.patientID,

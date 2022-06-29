@@ -101,9 +101,9 @@ class Therapist2Item extends StatelessWidget {
                                     visible: true,
                                     child: SizedBox(
                                       width: 58.w,
-                                      child: const Text(
-                                        "هذا النص هو مثال لنص يمكن أن يستبدل في نفس المساحة، لقد تم توليد هذا النص من مولد النص العربى، حيث يمكنك أن تولد مثل هذا النص أو العديد من النصوص الأخرى إضافة إلى زيادة عدد الحروف التى يولدها التطبيق",
-                                        style: TextStyle(
+                                      child: Text(
+                                        bio,
+                                        style: const TextStyle(
                                           height: 1.3,
                                           fontFamily: 'NeoSansArabic',
                                           color: Color(0xff1D1D1D),

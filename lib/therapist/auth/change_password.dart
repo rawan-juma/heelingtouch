@@ -71,7 +71,7 @@ class ChangePassword extends StatelessWidget {
                           Icons.remove_red_eye_outlined,
                           color: Color(0xff2FA09C),
                         ),
-                        hintText: "******",
+                        // hintText: "******",
                         hintStyle: TextStyle(
                             fontFamily: 'NeoSansArabic',
                             fontSize: 11.sp,
@@ -106,7 +106,7 @@ class ChangePassword extends StatelessWidget {
                           Icons.remove_red_eye_outlined,
                           color: Color(0xff2FA09C),
                         ),
-                        hintText: "******",
+                        // hintText: "******",
                         hintStyle: TextStyle(
                             fontFamily: 'NeoSansArabic',
                             fontSize: 11.sp,
@@ -139,7 +139,7 @@ class ChangePassword extends StatelessWidget {
                           Icons.remove_red_eye_outlined,
                           color: Color(0xff2FA09C),
                         ),
-                        hintText: "******",
+                        // hintText: "******",
                         hintStyle: TextStyle(
                             fontFamily: 'NeoSansArabic',
                             fontSize: 11.sp,
@@ -151,6 +151,7 @@ class ChangePassword extends StatelessWidget {
                     padding: EdgeInsets.only(top: 8.h, bottom: 15.h),
                     child: App_Button('حفظ التعديلات', 90.w, () {
                       appProvider.changePassword();
+
                       log(appProvider.newPassController.text);
                       // Navigator.push(
                       //   context,

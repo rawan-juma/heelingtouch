@@ -10,6 +10,15 @@ class SpHelper {
     // int x = 1+1;
   }
 
+  setPhone(String userID) {
+    sharedPreferences?.setString('phone', userID);
+  }
+
+  getPhone() {
+    String? userID = sharedPreferences?.getString('phone');
+    return userID;
+  }
+
   setTherapistID(String userID) {
     sharedPreferences?.setString('userID', userID);
   }

@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_neat_and_clean_calendar/neat_and_clean_calendar_event.dart';
 import 'package:heelingtouchproject/controllers/auth_helper.dart';
 import 'package:heelingtouchproject/controllers/sp_helper.dart';
 import 'package:heelingtouchproject/model/Ads.dart';
@@ -89,6 +90,7 @@ class AppProvider extends ChangeNotifier {
     fetchArticles();
     fetchVideos();
     getAllUsers();
+    // isRequested;
     // checkLogin();
     // getUser();
   }
@@ -115,7 +117,7 @@ class AppProvider extends ChangeNotifier {
         .whenComplete(() async {
       await NotificationHelper.notificationHelper.showNotification();
       const SnackBar snackBar = SnackBar(
-        content: Text('تم تاكيد طلبك بنجاح'),
+        content: Text('لقد استهلكت تذكرة من التذاكر المجانية المتاحة!'),
         backgroundColor: Colors.green,
       );
 
@@ -125,10 +127,20 @@ class AppProvider extends ChangeNotifier {
   }
 
   List<Consultaion> therapistConsultaionsList = [];
+
   getTherapistConsulations() async {
     therapistConsultaionsList =
         await FirestoreHelper.firestoreHelper.therapistConsultaions();
     notifyListeners();
+  }
+
+  List<NeatCleanCalendarEvent> eventList = [];
+  Future<List<NeatCleanCalendarEvent>>
+      getTherapistConsulationsForCalender() async {
+    eventList = await FirestoreHelper.firestoreHelper
+        .therapistConsultaionsForCalender();
+    notifyListeners();
+    return eventList;
   }
 
   List<Consultaion> patientConsultaionsList = [];
@@ -147,14 +159,14 @@ class AppProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  bool isLoading = false;
+  // bool isLoading = false;
 
   List<Stroies> storiesList = [];
   fetchStories() async {
     storiesList = await FirestoreHelper.firestoreHelper.fetchStoriesFuture();
     // log('user id cat ___ ${AuthHelper.authHelper.getUserId()}');
     // SpHelper.spHelper.setUserID(AuthHelper.authHelper.getUserId());
-    isLoading = true;
+    // isLoading = true;
 
     notifyListeners();
   }
@@ -165,7 +177,7 @@ class AppProvider extends ChangeNotifier {
         await FirestoreHelper.firestoreHelper.fetchTherapistStoriesFuture(id);
     // log('user id cat ___ ${AuthHelper.authHelper.getUserId()}');
     // SpHelper.spHelper.setUserID(AuthHelper.authHelper.getUserId());
-    isLoading = true;
+    // isLoading = true;
     notifyListeners();
   }
 
@@ -176,7 +188,7 @@ class AppProvider extends ChangeNotifier {
             AuthHelper.authHelper.firebaseAuth.currentUser!.uid);
     // log('user id cat ___ ${AuthHelper.authHelper.getUserId()}');
     // SpHelper.spHelper.setUserID(AuthHelper.authHelper.getUserId());
-    isLoading = true;
+    // isLoading = true;
     // return therpistStoriesList;
     notifyListeners();
   }
@@ -186,7 +198,7 @@ class AppProvider extends ChangeNotifier {
     articlesList = await FirestoreHelper.firestoreHelper.fetchArticlesFuture();
     // log('user id cat ___ ${AuthHelper.authHelper.getUserId()}');
     // SpHelper.spHelper.setUserID(AuthHelper.authHelper.getUserId());
-    isLoading = true;
+    // isLoading = true;
     notifyListeners();
   }
 
@@ -195,7 +207,7 @@ class AppProvider extends ChangeNotifier {
     videosList = await FirestoreHelper.firestoreHelper.fetchVideosFuture();
     // log('user id cat ___ ${AuthHelper.authHelper.getUserId()}');
     // SpHelper.spHelper.setUserID(AuthHelper.authHelper.getUserId());
-    isLoading = true;
+    // isLoading = true;
     notifyListeners();
   }
 
@@ -227,8 +239,10 @@ class AppProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  // bool? isRequested = false;
   uploadImage() async {
     await FirestoreHelper.firestoreHelper.uploadImage();
+    // isRequested = FirestoreHelper.firestoreHelper.isRequested;
     notifyListeners();
   }
 
@@ -266,6 +280,7 @@ class AppProvider extends ChangeNotifier {
     // RouteHelper.routeHelper.goToPageWithReplacement(Sign_In.routeName);
   }
 
+  bool isLoading = false;
   GlobalKey<NavigatorState> navKey = GlobalKey<NavigatorState>();
   late String userId;
   login1() async {
@@ -280,7 +295,7 @@ class AppProvider extends ChangeNotifier {
       log(isVerifiedEmail.toString());
       if (isVerifiedEmail) {
         //  .whenComplete(() =>
-
+        isLoading = false;
         navService.pushNamed(MyHomePage.routeName, args: 'From Home Screen');
         // )
         userId = userCredinial.user!.uid;
@@ -289,6 +304,7 @@ class AppProvider extends ChangeNotifier {
         SpHelper.spHelper.checkUser(true);
         fetchTherpistStories1();
         getTherapistConsulations();
+        getTherapistConsulationsForCalender();
         resetControllers();
         log('مششششششششش ايرور');
         log(userCredinial.user!.uid.toString());
@@ -347,7 +363,8 @@ class AppProvider extends ChangeNotifier {
       int time,
       String therapistID,
       String messege,
-      String phone) async {
+      String phone,
+      String therapistPhone) async {
     MessageModel messageModel = MessageModel(
       content: "",
       recieverId: therapistID,
@@ -362,9 +379,18 @@ class AppProvider extends ChangeNotifier {
         time,
         therapistID,
         messageModel,
-        phone);
+        phone,
+        therapistPhone);
     notifyListeners();
   }
+
+  // List<Notifications> notificationsList = [];
+  // notifications() async {
+  //   notificationsList = await FirestoreHelper.firestoreHelper
+  //       .fetchNotifications(
+  //           AuthHelper.authHelper.firebaseAuth.currentUser!.uid);
+  //   notifyListeners();
+  // }
 
   List<ChatRoom> chats = [];
   getChats() async {

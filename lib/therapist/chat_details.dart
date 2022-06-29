@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:chat_bubbles/bubbles/bubble_normal.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:heelingtouchproject/controllers/auth_helper.dart';
 import 'package:heelingtouchproject/controllers/firebase_helper.dart';
 import 'package:heelingtouchproject/controllers/notification_helper.dart';
@@ -30,6 +31,14 @@ class ChatDetails extends StatelessWidget {
               icon: const Icon(Icons.call_outlined),
               color: Colors.white,
               onPressed: () {
+                log("==========${SpHelper.spHelper.getPhone()}");
+                if (SpHelper.spHelper.getPhone().toString().startsWith("+")) {
+                  FlutterPhoneDirectCaller.callNumber(
+                      "${SpHelper.spHelper.getPhone()}");
+                } else {
+                  FlutterPhoneDirectCaller.callNumber(
+                      "+970${SpHelper.spHelper.getPhone()}");
+                }
                 // Navigator.push(
                 //   context,
                 //   MaterialPageRoute(builder: (context) => const Search()),

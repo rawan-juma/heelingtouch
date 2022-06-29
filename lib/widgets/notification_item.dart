@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:heelingtouchproject/controllers/sp_helper.dart';
 import 'package:heelingtouchproject/therapist/chat_details.dart';
 import 'package:sizer/sizer.dart';
 
@@ -6,10 +7,11 @@ import 'package:sizer/sizer.dart';
 class NotificationItem extends StatelessWidget {
   String id;
   String title;
-  String subtitle;
+  // String subtitle;
   String day;
   String img;
-  NotificationItem(this.id, this.title, this.subtitle, this.day, this.img,
+  String username;
+  NotificationItem(this.id, this.title, this.day, this.img, this.username,
       {Key? key})
       : super(key: key);
   @override
@@ -36,8 +38,10 @@ class NotificationItem extends StatelessWidget {
                             color: const Color(0xff2FA09C),
                             shape: BoxShape.circle,
                             image: DecorationImage(
-                              fit: BoxFit.cover,
-                              image: AssetImage(img),
+                              fit: BoxFit.contain,
+                              image: img == ""
+                                  ? NetworkImage(img)
+                                  : NetworkImage(img),
                             ))),
                     SizedBox(
                       width: 2.w,
@@ -50,7 +54,9 @@ class NotificationItem extends StatelessWidget {
                           style: const TextStyle(fontFamily: 'NeoSansArabic'),
                         ),
                         Text(
-                          subtitle,
+                          username == SpHelper.spHelper.getTherapisFname()
+                              ? "لقد قمت بحجز استشارة لدى $username"
+                              : "لقد قام $username بحجز استشارة لديك",
                           style: const TextStyle(
                               fontFamily: 'NeoSansArabic', color: Colors.grey),
                         )

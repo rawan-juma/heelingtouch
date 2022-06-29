@@ -170,6 +170,14 @@ class _ProfileState extends State<Profile> {
                                   App_Button3('تعديل الملف الشخصي', 60.w, () {
                                     // log(appProvider
                                     //     .therpistStoriesList1[0].imgs);
+                                    SpHelper.spHelper
+                                        .setTherapistImg(snapshot.data!.img);
+                                    SpHelper.spHelper.setTherapistFname(
+                                        snapshot.data!.fName);
+                                    SpHelper.spHelper
+                                        .setTherapistBio(snapshot.data!.bio);
+                                    SpHelper.spHelper.setTherapistPhoneNumber(
+                                        snapshot.data!.phonenumber);
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(
